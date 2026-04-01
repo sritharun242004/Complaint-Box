@@ -83,7 +83,7 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/20">&copy; {t.footer.copy}</p>
+          <p className="text-xs text-white/20">&copy; {new Date().getFullYear()} {t.footer.copy}</p>
           <div className="flex items-center gap-2">
             <BJPLotus size={18} animate={false} />
             <span className="text-xs text-white/20">Bharatiya Janata Party</span>
