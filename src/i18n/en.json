@@ -1,0 +1,157 @@
+{
+  "lang": "en",
+  "langName": "English",
+  "notificationBar": {
+    "text": "Have an issue in your area? Raise it now.",
+    "button": "Submit Complaint"
+  },
+  "nav": {
+    "about": "About",
+    "journey": "Journey",
+    "vision": "Vision",
+    "pugaarPetti": "Pugaar Petti"
+  },
+  "hero": {
+    "eyebrow": "Mylapore Constituency",
+    "headline": "MBBS Doctor. Former Governor. Your Voice in Mylapore.",
+    "subtext": "From treating patients at Madras Medical College to serving as Governor of Telangana and Lt. Governor of Puducherry — I chose public service over practice. Now I'm here for Mylapore.",
+    "cta1": "Raise Your Issue",
+    "cta2": "See My Journey"
+  },
+  "whoIAm": {
+    "header": "A doctor who chose to serve beyond the clinic.",
+    "point1": "MBBS from Madras Medical College — practiced medicine before entering public life",
+    "point2": "First woman BJP State President of Tamil Nadu — led the party for 5 years",
+    "point3": "Served as Governor of Telangana & Lt. Governor of Puducherry",
+    "point4": "Returned to grassroots politics to directly serve Mylapore constituency",
+    "point5": "Known for free medical camps, women's health awareness, and accessible governance"
+  },
+  "trust": {
+    "header": "People trust me because...",
+    "card1": "I listen before I speak",
+    "card2": "I show up, not just during elections",
+    "card3": "I understand real, everyday problems",
+    "card4": "I've worked inside the system",
+    "card5": "I stay connected to people"
+  },
+  "achievements": {
+    "header": "What I've done so far",
+    "card1title": "Governor of Telangana",
+    "card1desc": "First woman to serve as Governor of Telangana (2019-2023). Opened Raj Bhavan to the public and conducted health awareness programs.",
+    "card2title": "Lt. Governor of Puducherry",
+    "card2desc": "Held additional charge as Lt. Governor of Puducherry (2021-2023). Focused on healthcare infrastructure and women's safety.",
+    "card3title": "BJP Tamil Nadu President",
+    "card3desc": "First woman BJP State President of Tamil Nadu (2014-2019). Built the party's grassroots presence across every district.",
+    "card4title": "Doctor & Health Advocate",
+    "card4desc": "MBBS from Madras Medical College. Conducted hundreds of free medical camps. Led COVID vaccination drives during her governorship."
+  },
+  "timeline": {
+    "header": "My journey in public life",
+    "subtext": "Built step by step. With people at the center.",
+    "items": [
+      { "year": "1999", "title": "Started with service, not politics", "desc": "Began through BJP medical wing focusing on healthcare" },
+      { "year": "2001", "title": "Stepped into leadership early", "desc": "State General Secretary, Medical Wing" },
+      { "year": "2005", "title": "Expanded impact beyond Tamil Nadu", "desc": "Handled southern states responsibilities" },
+      { "year": "2010", "title": "Recognized at state leadership", "desc": "State Vice-President, BJP Tamil Nadu" },
+      { "year": "2013", "title": "Entered national leadership", "desc": "National Secretary, BJP" },
+      { "year": "2014", "title": "Led Tamil Nadu BJP", "desc": "State President" },
+      { "year": "2014-19", "title": "Stayed on the ground", "desc": "Worked across districts" },
+      { "year": "2019", "title": "Became Governor of Telangana", "desc": "First woman Governor of the state" },
+      { "year": "2021", "title": "Additional responsibility", "desc": "Lieutenant Governor, Puducherry" },
+      { "year": "2024", "title": "Returned to active politics", "desc": "Chose direct engagement" },
+      { "year": "Now", "title": "Standing with people", "desc": "Listening, understanding, acting" }
+    ]
+  },
+  "journeyMeaning": {
+    "header": "What this journey means",
+    "point1": "I understand the system from inside",
+    "point2": "I understand people from ground level",
+    "point3": "I know where problems exist",
+    "point4": "I focus on solving, not speaking"
+  },
+  "ctaBanner": {
+    "header": "Listening is where change begins",
+    "subtext": "Every issue matters. Every voice counts.",
+    "button": "Go to Pugaar Petti"
+  },
+  "footer": {
+    "copy": "2024 Dr. Tamilisai. All rights reserved."
+  },
+  "pugaarPetti": {
+    "heroTitle": "Pugaar Petti",
+    "heroTamil": "புகார் பெட்டி",
+    "heroSubtext": "Your complaint. Your area. Your voice.",
+    "heroButton": "Submit Complaint",
+    "howItWorks": "Simple. Direct. Public.",
+    "step1": "Submit your issue",
+    "step2": "Add photo if needed",
+    "step3": "People support it",
+    "step4": "We track what matters",
+    "formTitle": "Raise a complaint",
+    "fieldName": "Full Name",
+    "fieldMobile": "Mobile Number",
+    "fieldArea": "Area / Ward",
+    "fieldIssueTitle": "Issue Title",
+    "fieldDescription": "Description",
+    "fieldPhoto": "Upload Photo (optional)",
+    "fieldCategory": "Category",
+    "submitButton": "Submit Complaint",
+    "feedTitle": "What people are saying",
+    "filterArea": "All Areas",
+    "filterCategory": "All Categories",
+    "sortRecent": "Recent",
+    "sortPopular": "Most Supported",
+    "upvote": "Support",
+    "share": "Share",
+    "vision": "My vision for Mylapore",
+    "vision1": "Cleaner streets and better maintenance",
+    "vision2": "Faster response to local issues",
+    "vision3": "Transparent issue tracking",
+    "vision4": "Safer neighborhoods",
+    "vision5": "A system that listens daily",
+    "trustHeader": "This is not just a form",
+    "trustLine1": "This is a space to be heard",
+    "trustLine2": "To highlight real problems",
+    "trustLine3": "To build a better Mylapore together",
+    "finalCtaHeader": "Start with one complaint",
+    "finalCtaButton1": "Submit Complaint",
+    "finalCtaButton2": "View Issues"
+  },
+  "complaint": {
+    "back": "Back to Pugaar Petti",
+    "postedOn": "Posted on",
+    "status": "Status",
+    "supports": "supports",
+    "supportThis": "Support this complaint",
+    "shareTitle": "Share this complaint",
+    "copyLink": "Copy Link",
+    "shareWhatsApp": "Share on WhatsApp",
+    "shareX": "Share on X",
+    "copied": "Copied!"
+  },
+  "otp": {
+    "title": "Verify your mobile",
+    "subtitle": "Enter your mobile number to support this complaint",
+    "mobilePlaceholder": "Enter 10-digit mobile number",
+    "sendOtp": "Send OTP",
+    "otpPlaceholder": "Enter 6-digit OTP",
+    "verify": "Verify & Support",
+    "sending": "Sending...",
+    "verifying": "Verifying..."
+  },
+  "areas": {
+    "mylapore": "Mylapore",
+    "mandaveli": "Mandaveli",
+    "alwarpet": "Alwarpet",
+    "rajaAnnamalaiPuram": "Raja Annamalai Puram",
+    "royapettah": "Royapettah"
+  },
+  "categories": {
+    "roads": "Roads",
+    "water": "Water",
+    "sanitation": "Sanitation",
+    "electricity": "Electricity",
+    "safety": "Safety",
+    "other": "Other"
+  }
+}
