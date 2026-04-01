@@ -12,7 +12,8 @@ type Props = {
     description: string
     area: string
     category: string
-    imageUrl: string | null
+    hasImage: boolean
+    hasAdminReplyImage: boolean
     upvotes: number
     adminReply: string | null
     status: string
@@ -43,14 +44,15 @@ export default function ComplaintCard({ complaint }: Props) {
     >
       <Link
         href={`/complaint/${complaint.id}`}
-        className="group block bg-white rounded-2xl shadow-sm border border-border/50 overflow-hidden hover:shadow-lg hover:shadow-primary/5 hover:border-primary/10 transition-all"
+        className="group block bg-[#FFFAF5] rounded-2xl shadow-sm border border-[#E8DDD2]/50 overflow-hidden hover:shadow-lg hover:shadow-primary/5 hover:border-primary/10 transition-all"
       >
-        {/* Image */}
-        {complaint.imageUrl && (
+        {/* Image served via API route */}
+        {complaint.hasImage && (
           <div className="relative aspect-video overflow-hidden">
             <img
-              src={complaint.imageUrl}
+              src={`/api/image/${complaint.id}`}
               alt={complaint.title}
+              loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -60,7 +62,7 @@ export default function ComplaintCard({ complaint }: Props) {
           </div>
         )}
 
-        {!complaint.imageUrl && (
+        {!complaint.hasImage && (
           <div className="flex justify-end p-4 pb-0">
             <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
               {t.categories[categoryKey] || complaint.category}
@@ -81,25 +83,29 @@ export default function ComplaintCard({ complaint }: Props) {
           </div>
           <p className="text-sm text-muted line-clamp-2 mb-3 leading-relaxed">{complaint.description}</p>
 
+          {/* Admin reply: green tint for official response */}
           {complaint.adminReply && (
-            <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-3">
+            <div className="bg-[#138808]/5 border border-[#138808]/10 rounded-xl p-3 mb-3">
               <div className="flex items-center gap-1.5 mb-1">
-                <div className="w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-[#138808] rounded-full flex items-center justify-center">
                   <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <span className="text-xs font-semibold text-primary">Admin Reply</span>
+                <span className="text-xs font-semibold text-[#138808]">Admin Reply</span>
               </div>
               <p className="text-xs text-muted line-clamp-2">{complaint.adminReply}</p>
+              {complaint.hasAdminReplyImage && (
+                <img src={`/api/reply-image/${complaint.id}`} alt="" loading="lazy" className="mt-2 w-full rounded-lg object-cover max-h-24" />
+              )}
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-3 border-t border-border/50">
+          <div className="flex items-center justify-between pt-3 border-t border-[#E8DDD2]/50">
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-text">👍 {complaint.upvotes}</span>
               {complaint.status === 'resolved' && (
-                <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Resolved</span>
+                <span className="text-[10px] font-bold bg-[#138808]/10 text-[#138808] px-2 py-0.5 rounded-full">Resolved</span>
               )}
             </div>
             <button

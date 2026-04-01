@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 const AREAS = ['mylapore', 'mandaveli', 'alwarpet', 'rajaAnnamalaiPuram', 'royapettah'] as const
 const CATEGORIES = ['roads', 'water', 'sanitation', 'electricity', 'safety', 'other'] as const
 
-const inputClasses = "w-full px-4 py-3.5 rounded-2xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all text-text placeholder:text-muted/50"
+const inputClasses = "w-full px-4 py-3.5 rounded-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text placeholder:text-muted/50"
 const labelClasses = "block text-sm font-semibold text-text mb-2"
 
 export default function ComplaintForm() {
@@ -50,7 +50,7 @@ export default function ComplaintForm() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white rounded-3xl shadow-lg shadow-black/[0.03] border border-border/50 p-4 sm:p-7 md:p-10 max-w-[600px] mx-auto"
+      className="bg-[#FFFAF5] rounded-3xl shadow-lg shadow-black/[0.03] border border-[#E8DDD2]/50 p-4 sm:p-7 md:p-10 max-w-[600px] mx-auto"
     >
       {error && (
         <motion.div
@@ -74,10 +74,10 @@ export default function ComplaintForm() {
         <div>
           <label className={labelClasses}>{t.pugaarPetti.fieldMobile}</label>
           <div className="flex">
-            <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-border bg-surface text-muted text-sm font-semibold">
+            <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-[#E8DDD2] bg-surface text-muted text-sm font-semibold">
               +91
             </span>
-            <input name="mobile" type="tel" required pattern="[0-9]{10}" maxLength={10} className="flex-1 px-4 py-3.5 rounded-r-2xl border border-border bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all text-text" />
+            <input name="mobile" type="tel" required pattern="[0-9]{10}" maxLength={10} className="flex-1 px-4 py-3.5 rounded-r-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text" />
           </div>
         </div>
 
@@ -120,7 +120,7 @@ export default function ComplaintForm() {
 
         <div>
           <label className={labelClasses}>{t.pugaarPetti.fieldPhoto}</label>
-          <div className="border-2 border-dashed border-border rounded-2xl p-6 text-center hover:border-primary/30 transition-colors cursor-pointer relative overflow-hidden">
+          <div className="border-2 border-dashed border-[#E8DDD2] rounded-2xl p-6 text-center hover:border-[#138808]/30 transition-colors cursor-pointer relative overflow-hidden">
             <input name="photo" type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
             {preview ? (
               <div className="flex flex-col items-center gap-2">

@@ -12,7 +12,8 @@ type Complaint = {
   area: string
   title: string
   description: string
-  imageUrl: string | null
+  hasImage: boolean
+  hasAdminReplyImage: boolean
   category: string
   location: string | null
   upvotes: number
@@ -36,11 +37,29 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   const [complaints, setComplaints] = useState(initial)
   const [selected, setSelected] = useState<Complaint | null>(null)
   const [reply, setReply] = useState('')
+  const [replyImage, setReplyImage] = useState<string | null>(null)
+  const [replyImagePreview, setReplyImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState<string>('all')
   const [search, setSearch] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const router = useRouter()
+
+  function handleReplyImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5MB')
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const base64 = ev.target?.result as string
+      setReplyImage(base64)
+      setReplyImagePreview(base64)
+    }
+    reader.readAsDataURL(file)
+  }
 
   async function handleLogout() {
     await adminLogout()
@@ -72,12 +91,15 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   async function handleReply() {
     if (!selected || !reply.trim()) return
     setLoading(true)
-    const result = await adminReply(selected.id, reply)
+    const result = await adminReply(selected.id, reply, replyImage)
     if (result.success) {
+      const hasReplyImg = !!replyImage
       setComplaints(prev => prev.map(c =>
-        c.id === selected.id ? { ...c, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed' } : c
+        c.id === selected.id ? { ...c, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || c.hasAdminReplyImage } : c
       ))
-      setSelected(prev => prev ? { ...prev, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed' } : null)
+      setSelected(prev => prev ? { ...prev, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || prev.hasAdminReplyImage } : null)
+      setReplyImage(null)
+      setReplyImagePreview(null)
     }
     setLoading(false)
   }
@@ -171,7 +193,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                 {filtered.map(c => (
                   <button
                     key={c.id}
-                    onClick={() => { setSelected(c); setReply(c.adminReply || '') }}
+                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImage(null); setReplyImagePreview(null) }}
                     className={`w-full text-left grid grid-cols-[1fr_120px_100px_90px_70px_80px] gap-2 px-5 py-3.5 hover:bg-[#F9FAFB] transition-colors items-center ${
                       selected?.id === c.id ? 'bg-primary/[0.03] border-l-2 border-l-primary' : ''
                     }`}
@@ -268,9 +290,9 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                 </div>
 
                 {/* Image */}
-                {selected.imageUrl && (
+                {selected.hasImage && (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={selected.imageUrl} alt="" className="w-full aspect-video object-cover rounded-xl" />
+                  <img src={`/api/image/${selected.id}`} alt="" className="w-full aspect-video object-cover rounded-xl" />
                 )}
 
                 {/* Description */}
@@ -324,6 +346,10 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                   {selected.adminReply && (
                     <div className="bg-primary/5 border border-primary/10 rounded-xl p-3.5 mb-3">
                       <p className="text-sm text-[#374151]">{selected.adminReply}</p>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {selected.hasAdminReplyImage && (
+                        <img src={`/api/reply-image/${selected.id}`} alt="Reply attachment" className="mt-2 w-full rounded-lg object-cover max-h-48" />
+                      )}
                       {selected.repliedAt && (
                         <p className="text-[10px] text-[#9CA3AF] mt-2">
                           {new Date(selected.repliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -339,6 +365,30 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                     rows={3}
                     className="w-full px-3.5 py-3 rounded-xl border border-[#E5E7EB] focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-sm resize-none mb-3"
                   />
+
+                  {/* Optional image attachment */}
+                  <div className="mb-3">
+                    <label className="flex items-center gap-2 text-xs text-[#6B7280] cursor-pointer hover:text-primary transition-colors">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
+                      </svg>
+                      Attach image (optional)
+                      <input type="file" accept="image/*" onChange={handleReplyImageChange} className="hidden" />
+                    </label>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {replyImagePreview && (
+                      <div className="relative mt-2">
+                        <img src={replyImagePreview} alt="Preview" className="w-full max-h-32 object-cover rounded-lg" />
+                        <button
+                          onClick={() => { setReplyImage(null); setReplyImagePreview(null) }}
+                          className="absolute top-1 right-1 w-5 h-5 bg-black/60 text-white rounded-full flex items-center justify-center text-xs hover:bg-black/80"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   <button
                     onClick={handleReply}
                     disabled={loading || !reply.trim()}

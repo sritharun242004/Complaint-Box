@@ -10,6 +10,17 @@ import SparkleCard from '@/components/SparkleCard'
 import BJPLotus from '@/components/BJPLotus'
 import TimelineSection from '@/components/TimelineSection'
 
+// Section divider component: saffron line + green dot + saffron line
+function SectionDivider() {
+  return (
+    <div className="flex items-center justify-center gap-2 mx-auto mb-8 md:mb-14">
+      <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-primary rounded-full" />
+      <div className="w-2 h-2 bg-[#138808] rounded-full" />
+      <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-primary rounded-full" />
+    </div>
+  )
+}
+
 const trustIcons = [
   <svg key="ear" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m-4-4h8" /></svg>,
   <svg key="cal" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>,
@@ -31,16 +42,16 @@ export default function Home() {
   return (
     <>
       {/* ============ HERO ============ */}
-      <section className="bg-white relative overflow-hidden md:min-h-[calc(100vh-104px)] md:flex md:items-center">
-        {/* Background decorative elements */}
-        <div className="absolute top-10 right-0 w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] md:w-[500px] md:h-[500px] bg-primary/[0.03] rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-primary/[0.02] rounded-full blur-3xl" />
+      <section className="bg-cream relative overflow-hidden md:min-h-[calc(100vh-104px)] md:flex md:items-center">
+        {/* Saffron blob top-right */}
+        <div className="absolute top-10 right-0 w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] md:w-[500px] md:h-[500px] bg-primary/[0.04] rounded-full blur-3xl" />
+        {/* Green blob bottom-left */}
+        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-[#138808]/[0.04] rounded-full blur-3xl" />
 
         <div className="max-w-container mx-auto px-4 md:px-6 py-5 md:py-20 relative z-10 w-full">
-          {/* Mobile: image top, text below — Desktop: text left, image right */}
           <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-16">
 
-            {/* Image — shown first on mobile via order */}
+            {/* Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -48,9 +59,10 @@ export default function Home() {
               className="w-full md:flex-[2] order-1 md:order-2"
             >
               <div className="relative mx-auto w-[220px] sm:w-[260px] md:w-full">
-                <div className="absolute -inset-2 md:-inset-4 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-2xl md:rounded-3xl blur-2xl" />
-                <div className="absolute -inset-0.5 md:-inset-1 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-2xl md:rounded-3xl" />
-                <div className="h-[260px] sm:h-[300px] md:h-auto md:aspect-[3/4] rounded-2xl md:rounded-3xl relative overflow-hidden border-2 border-primary/10 bg-gradient-to-br from-primary/5 to-surface">
+                {/* Saffron-to-green gradient glow */}
+                <div className="absolute -inset-2 md:-inset-4 bg-gradient-to-br from-primary/20 via-[#138808]/10 to-transparent rounded-2xl md:rounded-3xl blur-2xl" />
+                <div className="absolute -inset-0.5 md:-inset-1 bg-gradient-to-br from-primary/30 via-[#138808]/15 to-transparent rounded-2xl md:rounded-3xl" />
+                <div className="h-[260px] sm:h-[300px] md:h-auto md:aspect-[3/4] rounded-2xl md:rounded-3xl relative overflow-hidden border-2 border-primary/10 bg-gradient-to-br from-primary/5 to-cream">
                   <img
                     src="/Dr Tamilisai Soundararajan Main Pic.jpg"
                     alt="Dr. Tamilisai Soundararajan"
@@ -64,15 +76,16 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Text content — below image on mobile */}
+            {/* Text content */}
             <div className="flex-[3] text-center md:text-left order-2 md:order-1">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary font-semibold text-xs md:text-sm tracking-wider uppercase px-3 py-1 md:px-4 md:py-1.5 rounded-full mb-3 md:mb-6">
-                  <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+                {/* Eyebrow badge: GREEN for tricolor rhythm */}
+                <span className="inline-flex items-center gap-1.5 bg-[#138808]/10 text-[#138808] font-semibold text-xs md:text-sm tracking-wider uppercase px-3 py-1 md:px-4 md:py-1.5 rounded-full mb-3 md:mb-6">
+                  <span className="w-1.5 h-1.5 bg-[#138808] rounded-full" />
                   {t.hero.eyebrow}
                 </span>
               </motion.div>
@@ -114,9 +127,10 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
                 </Link>
+                {/* Secondary CTA: green outline */}
                 <a
                   href="#journey"
-                  className="border-2 border-text/20 text-text font-bold px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-base rounded-full hover:border-text hover:bg-text hover:text-white transition-all text-center"
+                  className="border-2 border-[#138808]/30 text-[#138808] font-bold px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-base rounded-full hover:border-[#138808] hover:bg-[#138808] hover:text-white transition-all text-center"
                 >
                   {t.hero.cta2}
                 </a>
@@ -129,11 +143,11 @@ export default function Home() {
 
       {/* ============ WHO I AM ============ */}
       <FadeInSection>
-        <section id="about" className="py-12 md:py-24 bg-white">
+        <section id="about" className="py-12 md:py-24 bg-cream">
           <div className="max-w-container mx-auto px-4 md:px-6">
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
+            <div className="flex flex-col md:flex-row items-start gap-8 md:gap-14">
               <motion.div
-                className="w-full md:w-5/12"
+                className="w-full md:w-5/12 md:sticky md:top-24 md:self-start"
                 whileInView={{ opacity: 1, x: 0 }}
                 initial={{ opacity: 0, x: -30 }}
                 viewport={{ once: true }}
@@ -143,7 +157,7 @@ export default function Home() {
                   <img
                     src="/Tamilisai Thumbnail.jpg"
                     alt="Dr. Tamilisai Soundararajan"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-center"
                   />
                 </div>
               </motion.div>
@@ -155,9 +169,10 @@ export default function Home() {
                 <StaggerContainer className="space-y-5">
                   {[t.whoIAm.point1, t.whoIAm.point2, t.whoIAm.point3, (t.whoIAm as Record<string, string>).point4, (t.whoIAm as Record<string, string>).point5].filter(Boolean).map((point, i) => (
                     <StaggerItem key={i}>
-                      <div className="flex items-start gap-4 p-4 rounded-2xl hover:bg-surface transition-colors group">
-                        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                          <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      {/* Green checkmarks + green left-border on hover */}
+                      <div className="flex items-start gap-4 p-4 rounded-2xl hover:bg-[#138808]/[0.03] border-l-2 border-transparent hover:border-[#138808] transition-all group">
+                        <div className="w-10 h-10 bg-[#138808]/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-[#138808]/20 transition-colors">
+                          <svg className="w-5 h-5 text-[#138808]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
@@ -173,13 +188,16 @@ export default function Home() {
       </FadeInSection>
 
       {/* ============ TRUST (Bento Grid) ============ */}
-      <section className="py-12 md:py-24 bg-surface">
-        <div className="max-w-container mx-auto px-4 md:px-6">
+      <section className="py-12 md:py-24 bg-surface relative">
+        {/* Kolam dot pattern overlay */}
+        <div className="absolute inset-0 kolam-pattern opacity-30 pointer-events-none" />
+
+        <div className="max-w-container mx-auto px-4 md:px-6 relative z-10">
           <FadeInSection>
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.trust.header}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-8 md:mb-14" />
+            <SectionDivider />
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
@@ -190,7 +208,12 @@ export default function Home() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <SparkleCard className="text-center h-full" sparkles={8} duration={4}>
-                    <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary">
+                    {/* Alternate saffron/green icon containers */}
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
+                      i % 2 === 0
+                        ? 'bg-gradient-to-br from-primary/10 to-primary/5 text-primary'
+                        : 'bg-gradient-to-br from-[#138808]/10 to-[#138808]/5 text-[#138808]'
+                    }`}>
                       {trustIcons[i]}
                     </div>
                     <p className="text-sm font-semibold text-text leading-snug">{card}</p>
@@ -202,14 +225,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ ACHIEVEMENTS (Bento) ============ */}
-      <section className="py-12 md:py-24 bg-white">
+      {/* ============ ACHIEVEMENTS (Asymmetric Bento) ============ */}
+      <section className="py-12 md:py-24 bg-cream">
         <div className="max-w-container mx-auto px-4 md:px-6">
           <FadeInSection>
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.achievements.header}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-8 md:mb-14" />
+            <SectionDivider />
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
@@ -222,12 +245,21 @@ export default function Home() {
               <StaggerItem key={i}>
                 <motion.div
                   whileHover={{ y: -2 }}
-                  className="group relative bg-white rounded-2xl p-7 border border-border hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all overflow-hidden"
+                  className={`group relative rounded-2xl p-7 border hover:shadow-lg transition-all overflow-hidden ${
+                    i === 0
+                      ? 'sm:col-span-2 bg-[#138808]/[0.03] border-[#138808]/15 hover:border-[#138808]/30 hover:shadow-[#138808]/5'
+                      : 'bg-cream border-border hover:border-primary/20 hover:shadow-primary/5'
+                  }`}
                 >
-                  {/* Subtle gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+                    i === 0 ? 'bg-gradient-to-br from-[#138808]/[0.03] to-transparent' : 'bg-gradient-to-br from-primary/[0.02] to-transparent'
+                  }`} />
                   <div className="relative z-10">
-                    <div className="w-14 h-14 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mb-5 text-primary group-hover:scale-105 transition-transform">
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-105 transition-transform ${
+                      i === 0
+                        ? 'bg-gradient-to-br from-[#138808]/10 to-[#138808]/5 text-[#138808]'
+                        : 'bg-gradient-to-br from-primary/10 to-primary/5 text-primary'
+                    }`}>
                       {achievementIcons[i]}
                     </div>
                     <h3 className="text-lg font-bold text-text mb-2">{card.title}</h3>
@@ -240,9 +272,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ STATS COUNTER ============ */}
-      <section className="py-10 md:py-20 bg-surface border-y border-border/50">
-        <div className="max-w-container mx-auto px-4 md:px-6">
+      {/* ============ STATS COUNTER — Bold green band ============ */}
+      <section className="py-10 md:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F6B06] via-[#138808] to-[#1A9E0F]" />
+        <div className="absolute inset-0 opacity-[0.05]" style={{
+          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }} />
+        <div className="max-w-container mx-auto px-4 md:px-6 relative z-10">
           <FadeInSection>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               <AnimatedCounter end={25} suffix="+" label="Years of Service" />
@@ -257,24 +294,35 @@ export default function Home() {
       {/* ============ TIMELINE ============ */}
       <TimelineSection items={t.timeline.items} header={t.timeline.header} subtext={t.timeline.subtext} />
 
-      {/* ============ JOURNEY MEANING ============ */}
+      {/* ============ JOURNEY MEANING — Left-aligned layout ============ */}
       <section id="vision" className="py-12 md:py-24 bg-surface">
         <div className="max-w-container mx-auto px-4 md:px-6">
           <FadeInSection>
-            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
+            {/* Left-aligned heading breaks the center pattern */}
+            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text mb-4 md:text-left">
               {t.journeyMeaning.header}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-8 md:mb-14" />
+            <div className="flex items-center gap-2 mb-8 md:mb-14">
+              <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-primary rounded-full" />
+              <div className="w-2 h-2 bg-[#138808] rounded-full" />
+              <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-primary rounded-full" />
+            </div>
           </FadeInSection>
 
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
+          {/* Stacked vertical layout instead of 2x2 grid */}
+          <StaggerContainer className="flex flex-col gap-4 max-w-2xl">
             {[t.journeyMeaning.point1, t.journeyMeaning.point2, t.journeyMeaning.point3, t.journeyMeaning.point4].map((point, i) => (
               <StaggerItem key={i}>
                 <motion.div
-                  whileHover={{ y: -2 }}
-                  className="flex items-start gap-4 bg-white rounded-2xl p-6 shadow-sm border border-border/50 hover:shadow-md transition-all"
+                  whileHover={{ x: 4 }}
+                  className="flex items-start gap-4 bg-cream rounded-2xl p-6 shadow-sm border border-border/50 hover:shadow-md transition-all"
                 >
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-[#FF8533] rounded-xl flex items-center justify-center shrink-0">
+                  {/* Number badges alternate saffron/green */}
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                    i % 2 === 0
+                      ? 'bg-gradient-to-br from-primary to-[#FF8533]'
+                      : 'bg-gradient-to-br from-[#138808] to-[#1A9E0F]'
+                  }`}>
                     <span className="text-white font-bold text-sm">{i + 1}</span>
                   </div>
                   <p className="text-text font-medium leading-relaxed pt-1.5">{point}</p>
@@ -285,11 +333,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ CTA BANNER ============ */}
+      {/* ============ CTA BANNER — Saffron-to-green diagonal gradient ============ */}
       <section className="relative py-24 overflow-hidden">
-        {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#FF7A1A] to-[#FF8533]" />
-        {/* Pattern overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B00] via-[#FF8533] to-[#138808]" />
         <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
           backgroundSize: '32px 32px'
@@ -303,7 +349,7 @@ export default function Home() {
             <p className="text-sm md:text-lg text-white/80 mb-8 md:mb-10 max-w-md mx-auto">{t.ctaBanner.subtext}</p>
             <Link
               href="/pugaar-petti"
-              className="group inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-full hover:bg-white/90 hover:scale-[1.02] hover:shadow-2xl transition-all"
+              className="group inline-flex items-center gap-2 bg-white text-[#138808] font-bold px-8 py-4 rounded-full hover:bg-white/90 hover:scale-[1.02] hover:shadow-2xl transition-all"
             >
               {t.ctaBanner.button}
               <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

@@ -40,8 +40,8 @@ export default function Header() {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 backdrop-blur-xl shadow-sm border-b border-border/50'
-          : 'bg-white border-b border-border'
+          ? 'bg-[#FFFAF5]/80 backdrop-blur-xl shadow-sm border-b border-border/50'
+          : 'bg-[#FFFAF5] border-b border-border'
       }`}
     >
       <div className="max-w-container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
@@ -63,7 +63,7 @@ export default function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="relative px-4 py-2 text-sm font-medium text-muted hover:text-text transition-colors rounded-lg hover:bg-surface"
+              className="relative px-4 py-2 text-sm font-medium text-muted hover:text-[#138808] transition-colors rounded-lg hover:bg-[#138808]/5"
             >
               {item.label}
             </a>
@@ -115,7 +115,7 @@ export default function Header() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="md:hidden overflow-hidden bg-white border-t border-border"
+            className="md:hidden overflow-hidden bg-[#FFFAF5] border-t border-border"
           >
             <nav className="flex flex-col p-4 sm:p-6 gap-1">
               {[
@@ -130,7 +130,7 @@ export default function Header() {
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="text-base font-medium text-text py-3 px-4 rounded-xl hover:bg-surface transition-colors"
+                  className="text-base font-medium text-text py-3 px-4 rounded-xl hover:bg-[#138808]/5 hover:text-[#138808] transition-colors"
                 >
                   {item.label}
                 </motion.a>

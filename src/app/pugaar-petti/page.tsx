@@ -7,6 +7,16 @@ import FadeInSection, { StaggerContainer, StaggerItem } from '@/components/FadeI
 import ComplaintForm from '@/components/ComplaintForm'
 import ComplaintFeed from '@/components/ComplaintFeed'
 
+function SectionDivider() {
+  return (
+    <div className="flex items-center justify-center gap-2 mx-auto mb-8 md:mb-14">
+      <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-primary rounded-full" />
+      <div className="w-2 h-2 bg-[#138808] rounded-full" />
+      <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-primary rounded-full" />
+    </div>
+  )
+}
+
 const stepIcons = [
   <svg key="s1" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>,
   <svg key="s2" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg>,
@@ -30,9 +40,9 @@ export default function PugaarPettiPage() {
   return (
     <>
       {/* ============ HERO ============ */}
-      <section className="py-14 md:py-32 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-primary/[0.03] rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-primary/[0.02] rounded-full blur-3xl" />
+      <section className="py-14 md:py-32 bg-cream relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-primary/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-[#138808]/[0.04] rounded-full blur-3xl" />
 
         <div className="max-w-container mx-auto px-4 md:px-6 text-center relative z-10">
           <motion.h1
@@ -81,7 +91,7 @@ export default function PugaarPettiPage() {
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.pugaarPetti.howItWorks}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-8 md:mb-14" />
+            <SectionDivider />
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
@@ -89,15 +99,19 @@ export default function PugaarPettiPage() {
               <StaggerItem key={i}>
                 <motion.div
                   whileHover={{ y: -4 }}
-                  className="text-center bg-white rounded-2xl p-6 shadow-sm border border-border/50 hover:shadow-md transition-all"
+                  className="text-center bg-cream rounded-2xl p-6 shadow-sm border border-border/50 hover:shadow-md transition-all"
                 >
-                  {/* Step connector line */}
+                  {/* Step numbers alternate saffron/green */}
                   <div className="relative mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-[#FF8533] rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-primary/20">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto shadow-lg ${
+                      i % 2 === 0
+                        ? 'bg-gradient-to-br from-primary to-[#FF8533] shadow-primary/20'
+                        : 'bg-gradient-to-br from-[#138808] to-[#1A9E0F] shadow-[#138808]/20'
+                    }`}>
                       <span className="text-white font-bold text-lg">{i + 1}</span>
                     </div>
                   </div>
-                  <div className="flex justify-center mb-3 text-primary">{stepIcons[i]}</div>
+                  <div className={`flex justify-center mb-3 ${i % 2 === 0 ? 'text-primary' : 'text-[#138808]'}`}>{stepIcons[i]}</div>
                   <p className="text-sm font-semibold text-text">{step}</p>
                 </motion.div>
               </StaggerItem>
@@ -107,13 +121,13 @@ export default function PugaarPettiPage() {
       </section>
 
       {/* ============ SUBMIT FORM ============ */}
-      <section id="submit" className="py-12 md:py-24 bg-white">
+      <section id="submit" className="py-12 md:py-24 bg-cream">
         <div className="max-w-container mx-auto px-4 md:px-6">
           <FadeInSection>
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.pugaarPetti.formTitle}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-8 md:mb-12" />
+            <SectionDivider />
           </FadeInSection>
           <ComplaintForm />
         </div>
@@ -126,20 +140,20 @@ export default function PugaarPettiPage() {
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.pugaarPetti.feedTitle}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto" />
+            <SectionDivider />
           </FadeInSection>
         </div>
         <ComplaintFeed />
       </section>
 
       {/* ============ VISION ============ */}
-      <section className="py-12 md:py-24 bg-white">
+      <section className="py-12 md:py-24 bg-cream">
         <div className="max-w-container mx-auto px-4 md:px-6">
           <FadeInSection>
             <h2 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold text-text text-center mb-4">
               {t.pugaarPetti.vision}
             </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-primary to-[#FF8533] rounded-full mx-auto mb-14" />
+            <SectionDivider />
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -147,9 +161,10 @@ export default function PugaarPettiPage() {
               <StaggerItem key={i}>
                 <motion.div
                   whileHover={{ y: -2 }}
-                  className="flex items-center gap-4 bg-surface rounded-2xl p-5 hover:shadow-md hover:bg-white border border-transparent hover:border-border/50 transition-all"
+                  className="flex items-center gap-4 bg-surface rounded-2xl p-5 hover:shadow-md hover:bg-cream border border-transparent hover:border-border/50 transition-all"
                 >
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0 text-primary">
+                  {/* Green icon containers for vision cards */}
+                  <div className="w-10 h-10 bg-[#138808]/10 rounded-xl flex items-center justify-center shrink-0 text-[#138808]">
                     {visionIcons[i]}
                   </div>
                   <p className="text-sm font-semibold text-text">{v}</p>
@@ -185,9 +200,9 @@ export default function PugaarPettiPage() {
         </section>
       </FadeInSection>
 
-      {/* ============ FINAL CTA ============ */}
+      {/* ============ FINAL CTA — Saffron-to-green gradient ============ */}
       <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#FF7A1A] to-[#FF8533]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B00] via-[#FF8533] to-[#138808]" />
         <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
           backgroundSize: '32px 32px'
@@ -201,7 +216,7 @@ export default function PugaarPettiPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#submit"
-                className="group inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-full hover:bg-white/90 hover:scale-[1.02] hover:shadow-2xl transition-all"
+                className="group inline-flex items-center justify-center gap-2 bg-white text-[#138808] font-bold px-8 py-4 rounded-full hover:bg-white/90 hover:scale-[1.02] hover:shadow-2xl transition-all"
               >
                 {t.pugaarPetti.finalCtaButton1}
                 <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

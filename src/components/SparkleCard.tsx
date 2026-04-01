@@ -28,7 +28,7 @@ export default function SparkleCard({ children, className = '', sparkles = 12, d
   }
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl border border-border/50 p-6 bg-white shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all ${className}`}>
+    <div className={`relative overflow-hidden rounded-2xl border border-[#E8DDD2]/50 p-6 bg-[#FFFAF5] shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all ${className}`}>
       {/* Sparkles */}
       <div className="absolute inset-0 pointer-events-none">
         {dots.map((dot) => (

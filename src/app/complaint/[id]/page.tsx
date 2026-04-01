@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { getComplaint } from '@/lib/actions'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import ComplaintDetail from './ComplaintDetail'
@@ -9,9 +9,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const complaint = await prisma.complaint.findUnique({
-    where: { id },
-  })
+  const complaint = await getComplaint(id)
 
   if (!complaint) return { title: 'Complaint Not Found' }
 
@@ -25,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: complaint.title,
       description,
       type: 'article',
-      images: complaint.imageUrl
-        ? [{ url: `${baseUrl}${complaint.imageUrl}`, width: 1200, height: 630 }]
+      images: complaint.hasImage
+        ? [{ url: `${baseUrl}/api/image/${id}`, width: 1200, height: 630 }]
         : [],
     },
     twitter: {
-      card: complaint.imageUrl ? 'summary_large_image' : 'summary',
+      card: complaint.hasImage ? 'summary_large_image' : 'summary',
       title: complaint.title,
       description,
     },
@@ -39,9 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ComplaintPage({ params }: Props) {
   const { id } = await params
-  const complaint = await prisma.complaint.findUnique({
-    where: { id },
-  })
+  const complaint = await getComplaint(id)
 
   if (!complaint) notFound()
 

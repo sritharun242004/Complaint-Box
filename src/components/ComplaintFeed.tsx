@@ -11,7 +11,8 @@ type Complaint = {
   area: string
   title: string
   description: string
-  imageUrl: string | null
+  hasImage: boolean
+  hasAdminReplyImage: boolean
   category: string
   upvotes: number
   status: string
@@ -51,12 +52,12 @@ export default function ComplaintFeed() {
   return (
     <div>
       {/* Filter bar */}
-      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-sm border-b border-border py-4">
+      <div className="sticky top-16 z-30 bg-[#FFFAF5]/95 backdrop-blur-sm border-b border-[#E8DDD2] py-4">
         <div className="max-w-container mx-auto px-4 md:px-6 flex flex-wrap items-center gap-3">
           <select
             value={area}
             onChange={(e) => setArea(e.target.value)}
-            className="px-4 py-2 rounded-full border border-border text-sm bg-white text-text focus:border-primary outline-none"
+            className="px-4 py-2 rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
           >
             <option value="">{t.pugaarPetti.filterArea}</option>
             {AREAS.map(a => (
@@ -67,7 +68,7 @@ export default function ComplaintFeed() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="px-4 py-2 rounded-full border border-border text-sm bg-white text-text focus:border-primary outline-none"
+            className="px-4 py-2 rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
           >
             <option value="">{t.pugaarPetti.filterCategory}</option>
             {CATEGORIES.map(c => (
@@ -75,11 +76,11 @@ export default function ComplaintFeed() {
             ))}
           </select>
 
-          <div className="flex rounded-full border border-border overflow-hidden ml-auto">
+          <div className="flex rounded-full border border-[#E8DDD2] overflow-hidden ml-auto">
             <button
               onClick={() => setSort('recent')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
-                sort === 'recent' ? 'bg-primary text-white' : 'bg-white text-muted hover:bg-surface'
+                sort === 'recent' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
               }`}
             >
               {t.pugaarPetti.sortRecent}
@@ -87,7 +88,7 @@ export default function ComplaintFeed() {
             <button
               onClick={() => setSort('popular')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
-                sort === 'popular' ? 'bg-primary text-white' : 'bg-white text-muted hover:bg-surface'
+                sort === 'popular' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
               }`}
             >
               {t.pugaarPetti.sortPopular}

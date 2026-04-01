@@ -11,9 +11,13 @@ const config: Config = {
       colors: {
         primary: "#FF6B00",
         "primary-dark": "#E55E00",
-        surface: "#F8F8F8",
+        accent: "#138808",
+        "accent-dark": "#0F6B06",
+        "accent-light": "#E8F5E3",
+        cream: "#FFFAF5",
+        surface: "#FFF7F0",
         muted: "#6B7280",
-        border: "#E5E5E5",
+        border: "#E8DDD2",
         text: "#1A1A1A",
       },
       fontFamily: {

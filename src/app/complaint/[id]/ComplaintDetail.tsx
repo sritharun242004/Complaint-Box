@@ -15,7 +15,8 @@ type Props = {
     area: string
     title: string
     description: string
-    imageUrl: string | null
+    hasImage: boolean
+    hasAdminReplyImage: boolean
     category: string
     location: string | null
     upvotes: number
@@ -63,11 +64,11 @@ export default function ComplaintDetail({ complaint }: Props) {
 
         {/* Main card */}
         <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
-          {/* Image */}
-          {complaint.imageUrl && (
+          {/* Image served via API route */}
+          {complaint.hasImage && (
             <div className="relative aspect-video w-full">
               <img
-                src={complaint.imageUrl}
+                src={`/api/image/${complaint.id}`}
                 alt={complaint.title}
                 className="w-full h-full object-cover"
               />
@@ -126,6 +127,9 @@ export default function ComplaintDetail({ complaint }: Props) {
                   <span className="text-sm font-bold text-primary">Response from Dr. Tamilisai&apos;s Office</span>
                 </div>
                 <p className="text-sm text-text leading-relaxed">{complaint.adminReply}</p>
+                {complaint.hasAdminReplyImage && (
+                  <img src={`/api/reply-image/${complaint.id}`} alt="Resolution proof" className="mt-3 w-full rounded-xl object-cover max-h-64" />
+                )}
                 {complaint.repliedAt && (
                   <p className="text-xs text-muted mt-3">
                     Responded on {new Date(complaint.repliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}

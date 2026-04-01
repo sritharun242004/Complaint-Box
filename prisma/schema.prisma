@@ -21,8 +21,9 @@ model Complaint {
   category    String
   upvotes     Int             @default(0)
   status      ComplaintStatus @default(pending)
-  adminReply  String?         @map("admin_reply")
-  repliedAt   DateTime?       @map("replied_at")
+  adminReply      String?         @map("admin_reply")
+  adminReplyImage String?         @map("admin_reply_image")
+  repliedAt       DateTime?       @map("replied_at")
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
   votes       Vote[]

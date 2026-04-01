@@ -16,7 +16,7 @@ export default function BJPLotus({ className = '', size = 80, animate = true }: 
       transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' as const } : undefined}
     >
       <img
-        src="/BJP Logo.jpg"
+        src="/BJP Logo.png"
         alt="BJP Logo"
         width={size}
         height={size}

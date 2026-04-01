@@ -3,9 +3,6 @@
 import { prisma } from './prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { v4 as uuid } from 'uuid'
 
 const badWords = ['abuse', 'spam', 'hack']
 function containsBadWords(text: string): boolean {
@@ -46,14 +43,14 @@ export async function createComplaint(formData: FormData) {
   let imageUrl: string | null = null
 
   if (photo && photo.size > 0) {
+    if (photo.size > 5 * 1024 * 1024) {
+      return { error: 'Image must be under 5MB' }
+    }
     const bytes = await photo.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    const ext = photo.name.split('.').pop() || 'jpg'
-    const filename = `${uuid()}.${ext}`
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads')
-    await mkdir(uploadDir, { recursive: true })
-    await writeFile(path.join(uploadDir, filename), buffer)
-    imageUrl = `/uploads/${filename}`
+    const base64 = buffer.toString('base64')
+    const mimeType = photo.type || 'image/jpeg'
+    imageUrl = `data:${mimeType};base64,${base64}`
   }
 
   const complaint = await prisma.complaint.create({
@@ -75,6 +72,20 @@ export async function createComplaint(formData: FormData) {
   redirect(`/complaint/${complaint.id}`)
 }
 
+// Lightweight complaint list — never sends image blobs to client
+const listSelect = {
+  id: true,
+  name: true,
+  area: true,
+  title: true,
+  description: true,
+  category: true,
+  upvotes: true,
+  status: true,
+  adminReply: true,
+  createdAt: true,
+} as const
+
 export async function getComplaints(filters?: {
   area?: string
   category?: string
@@ -88,15 +99,68 @@ export async function getComplaints(filters?: {
     ? { upvotes: 'desc' as const }
     : { createdAt: 'desc' as const }
 
-  return prisma.complaint.findMany({
+  const rows = await prisma.complaint.findMany({
     where,
     orderBy,
     take: 50,
+    select: listSelect,
+  })
+
+  // Determine which have images without fetching the blob
+  const ids = rows.map(r => r.id)
+  const imageFlags = ids.length > 0
+    ? await prisma.$queryRawUnsafe<{ id: string; has_image: boolean; has_reply_image: boolean }[]>(
+        `SELECT id, image_url IS NOT NULL as has_image, admin_reply_image IS NOT NULL as has_reply_image FROM complaints WHERE id = ANY($1::text[])`,
+        ids
+      )
+    : []
+  const flagMap = new Map(imageFlags.map(r => [r.id, r]))
+
+  return rows.map(r => {
+    const flags = flagMap.get(r.id)
+    return {
+      ...r,
+      hasImage: flags?.has_image ?? false,
+      hasAdminReplyImage: flags?.has_reply_image ?? false,
+    }
   })
 }
 
 export async function getComplaint(id: string) {
-  return prisma.complaint.findUnique({ where: { id } })
+  const row = await prisma.complaint.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      mobile: true,
+      area: true,
+      title: true,
+      description: true,
+      category: true,
+      location: true,
+      latitude: true,
+      longitude: true,
+      upvotes: true,
+      status: true,
+      adminReply: true,
+      repliedAt: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  })
+
+  if (!row) return null
+
+  const flags = await prisma.$queryRawUnsafe<{ has_image: boolean; has_reply_image: boolean }[]>(
+    `SELECT image_url IS NOT NULL as has_image, admin_reply_image IS NOT NULL as has_reply_image FROM complaints WHERE id = $1`,
+    id
+  )
+
+  return {
+    ...row,
+    hasImage: flags[0]?.has_image ?? false,
+    hasAdminReplyImage: flags[0]?.has_reply_image ?? false,
+  }
 }
 
 export async function upvoteComplaint(complaintId: string, mobile: string) {
@@ -124,18 +188,53 @@ export async function upvoteComplaint(complaintId: string, mobile: string) {
 // ============ ADMIN ACTIONS ============
 
 export async function getAllComplaints() {
-  return prisma.complaint.findMany({
+  const rows = await prisma.complaint.findMany({
     orderBy: { createdAt: 'desc' },
-    include: { _count: { select: { votes: true } } },
+    select: {
+      ...listSelect,
+      mobile: true,
+      location: true,
+      repliedAt: true,
+      updatedAt: true,
+      _count: { select: { votes: true } },
+    },
+  })
+
+  const ids = rows.map(r => r.id)
+  const imageFlags = ids.length > 0
+    ? await prisma.$queryRawUnsafe<{ id: string; has_image: boolean; has_reply_image: boolean }[]>(
+        `SELECT id, image_url IS NOT NULL as has_image, admin_reply_image IS NOT NULL as has_reply_image FROM complaints WHERE id = ANY($1::text[])`,
+        ids
+      )
+    : []
+  const flagMap = new Map(imageFlags.map(r => [r.id, r]))
+
+  return rows.map(r => {
+    const flags = flagMap.get(r.id)
+    return {
+      ...r,
+      hasImage: flags?.has_image ?? false,
+      hasAdminReplyImage: flags?.has_reply_image ?? false,
+    }
   })
 }
 
-export async function adminReply(complaintId: string, reply: string) {
+export async function adminReply(complaintId: string, reply: string, imageBase64?: string | null) {
   if (!reply.trim()) return { error: 'Reply cannot be empty' }
+
+  const data: Record<string, unknown> = {
+    adminReply: reply.trim(),
+    repliedAt: new Date(),
+    status: 'reviewed',
+  }
+
+  if (imageBase64) {
+    data.adminReplyImage = imageBase64
+  }
 
   await prisma.complaint.update({
     where: { id: complaintId },
-    data: { adminReply: reply.trim(), repliedAt: new Date(), status: 'reviewed' },
+    data,
   })
 
   revalidatePath('/pugaar-petti')

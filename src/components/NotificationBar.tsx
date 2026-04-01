@@ -8,7 +8,7 @@ export default function NotificationBar() {
   const { t } = useI18n()
 
   return (
-    <div className="bg-gradient-to-r from-primary via-[#FF8533] to-primary text-white py-2.5 px-4 relative overflow-hidden">
+    <div className="bg-gradient-to-r from-[#FF6B00] via-[#FF8533] to-[#138808] text-white py-2.5 px-4 relative overflow-hidden">
       {/* Subtle animated shimmer */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
