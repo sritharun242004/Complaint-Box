@@ -185,6 +185,18 @@ export async function upvoteComplaint(complaintId: string, mobile: string) {
   return { success: true }
 }
 
+export async function quickUpvote(complaintId: string) {
+  await prisma.complaint.update({
+    where: { id: complaintId },
+    data: { upvotes: { increment: 1 } },
+  })
+
+  revalidatePath('/pugaar-petti')
+  revalidatePath(`/complaint/${complaintId}`)
+
+  return { success: true }
+}
+
 // ============ ADMIN ACTIONS ============
 
 export async function getAllComplaints() {

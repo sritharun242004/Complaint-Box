@@ -4,6 +4,8 @@ import Link from 'next/link'
 /* eslint-disable @next/next/no-img-element */
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { quickUpvote } from '@/lib/actions'
 
 type Props = {
   complaint: {
@@ -25,6 +27,26 @@ export default function ComplaintCard({ complaint }: Props) {
   const { t } = useI18n()
   const areaKey = complaint.area as keyof typeof t.areas
   const categoryKey = complaint.category as keyof typeof t.categories
+  const [upvotes, setUpvotes] = useState(complaint.upvotes)
+  const [voted, setVoted] = useState(false)
+  const [upvoting, setUpvoting] = useState(false)
+
+  useEffect(() => {
+    const key = `voted_${complaint.id}`
+    if (localStorage.getItem(key)) setVoted(true)
+  }, [complaint.id])
+
+  async function handleUpvote(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (voted || upvoting) return
+    setUpvoting(true)
+    setUpvotes(prev => prev + 1)
+    setVoted(true)
+    localStorage.setItem(`voted_${complaint.id}`, '1')
+    await quickUpvote(complaint.id)
+    setUpvoting(false)
+  }
 
   function handleShare(e: React.MouseEvent) {
     e.preventDefault()
@@ -103,7 +125,28 @@ export default function ComplaintCard({ complaint }: Props) {
 
           <div className="flex items-center justify-between pt-3 border-t border-[#E8DDD2]/50">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-text">👍 {complaint.upvotes}</span>
+              <button
+                onClick={handleUpvote}
+                disabled={voted || upvoting}
+                className={`flex items-center gap-1.5 text-sm font-semibold transition-all ${
+                  voted
+                    ? 'text-primary cursor-default'
+                    : 'text-muted hover:text-primary hover:scale-110 active:scale-95'
+                }`}
+                title={voted ? 'Already supported' : 'Support this complaint'}
+              >
+                <svg
+                  className={`w-4 h-4 transition-all ${voted ? 'fill-primary' : 'fill-none'}`}
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={voted ? 0 : 2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 10v12M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+                </svg>
+                {upvotes}
+              </button>
               {complaint.status === 'resolved' && (
                 <span className="text-[10px] font-bold bg-[#138808]/10 text-[#138808] px-2 py-0.5 rounded-full">Resolved</span>
               )}
