@@ -13,9 +13,27 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    let raf = 0
+    let last = window.scrollY > 10
+    setScrolled(last)
+
+    const onScroll = () => {
+      if (raf) return
+      raf = window.requestAnimationFrame(() => {
+        raf = 0
+        const next = window.scrollY > 10
+        if (next !== last) {
+          last = next
+          setScrolled(next)
+        }
+      })
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) window.cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
