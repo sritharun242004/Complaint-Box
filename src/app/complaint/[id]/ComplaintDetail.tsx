@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import { useI18n } from '@/i18n/context'
-import OtpModal from '@/components/OtpModal'
 import ShareSheet from '@/components/ShareSheet'
+import { quickUpvote } from '@/lib/actions'
 
 type Props = {
   complaint: {
@@ -36,9 +36,24 @@ const statusColors: Record<string, string> = {
 
 export default function ComplaintDetail({ complaint }: Props) {
   const { t } = useI18n()
-  const [showOtp, setShowOtp] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [upvotes, setUpvotes] = useState(complaint.upvotes)
+  const [voted, setVoted] = useState(false)
+  const [upvoting, setUpvoting] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.getItem(`voted_${complaint.id}`)) setVoted(true)
+  }, [complaint.id])
+
+  async function handleUpvote() {
+    if (voted || upvoting) return
+    setUpvoting(true)
+    setUpvotes(prev => prev + 1)
+    setVoted(true)
+    localStorage.setItem(`voted_${complaint.id}`, '1')
+    await quickUpvote(complaint.id)
+    setUpvoting(false)
+  }
 
   const areaKey = complaint.area as keyof typeof t.areas
   const categoryKey = complaint.category as keyof typeof t.categories
@@ -141,10 +156,24 @@ export default function ComplaintDetail({ complaint }: Props) {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border">
               <button
-                onClick={() => setShowOtp(true)}
-                className="flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full hover:bg-primary-dark hover:scale-[1.02] transition-all"
+                onClick={handleUpvote}
+                disabled={voted || upvoting}
+                className={`flex items-center justify-center gap-2 font-bold px-6 py-3 rounded-full transition-all ${
+                  voted
+                    ? 'bg-primary/20 text-primary cursor-default'
+                    : 'bg-primary text-white hover:bg-primary-dark hover:scale-[1.02]'
+                }`}
               >
-                <span>👍</span>
+                <svg
+                  className={`w-5 h-5 transition-all ${voted ? 'fill-primary' : 'fill-none'}`}
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={voted ? 0 : 2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 10v12M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+                </svg>
                 <span>{upvotes} {t.complaint.supports}</span>
               </button>
               <button
@@ -160,18 +189,6 @@ export default function ComplaintDetail({ complaint }: Props) {
           </div>
         </div>
       </div>
-
-      {/* OTP Modal */}
-      {showOtp && (
-        <OtpModal
-          complaintId={complaint.id}
-          onClose={() => setShowOtp(false)}
-          onSuccess={() => {
-            setUpvotes(prev => prev + 1)
-            setShowOtp(false)
-          }}
-        />
-      )}
 
       {/* Share Sheet */}
       {showShare && (
