@@ -9,17 +9,25 @@ export default function Footer() {
   const { t } = useI18n()
 
   return (
-    <footer className="bg-[#0F0F0F] text-white relative overflow-hidden">
+    <footer className="bg-[#121212] text-white relative overflow-hidden">
       {/* Top saffron accent bar */}
       <div className="h-1.5 bg-gradient-to-r from-[#FF6B00] via-[#FF8533] to-[#FF6B00]" />
+
+      {/* Soft grey wash across the full footer */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.03] to-transparent pointer-events-none"
+      />
 
       {/* BJP Logo watermark from actual image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/bjplogo.jpg"
+        src="/BJP Logo.jpg"
         alt=""
         aria-hidden="true"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[350px] md:w-[500px] h-auto opacity-[0.04] pointer-events-none select-none grayscale brightness-200 mix-blend-lighten"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                   w-[560px] sm:w-[760px] md:w-[980px] max-w-none h-auto
+                   opacity-[0.06] pointer-events-none select-none grayscale brightness-200 mix-blend-lighten"
         draggable={false}
       />
 
