@@ -2,29 +2,22 @@
 
 import Link from 'next/link'
 import { useI18n } from '@/i18n/context'
-import { motion } from 'framer-motion'
 
 export default function NotificationBar() {
   const { t } = useI18n()
 
   return (
-    <div className="bg-gradient-to-r from-[#FF6B00] via-[#FF8533] to-[#138808] text-white py-2.5 px-4 relative overflow-hidden">
-      {/* Subtle animated shimmer */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-        animate={{ x: ['-100%', '100%'] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'linear', repeatDelay: 2 }}
-      />
-      <div className="max-w-container mx-auto flex items-center justify-between gap-4 relative z-10">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          <p className="text-sm font-medium truncate">{t.notificationBar.text}</p>
+    <div className="bg-primary text-white pt-[max(0.5rem,env(safe-area-inset-top))]">
+      <div className="max-w-container mx-auto px-4 sm:px-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 py-2">
+        <div className="flex items-start sm:items-center gap-2 min-w-0">
+          <span className="w-1 h-1 mt-1.5 sm:mt-0 shrink-0 rounded-full bg-white/90" aria-hidden />
+          <p className="text-[11px] sm:text-xs font-medium leading-snug uppercase tracking-wide">{t.notificationBar.text}</p>
         </div>
         <Link
           href="/pugaar-petti"
-          className="shrink-0 bg-white text-primary text-xs font-bold px-5 py-1.5 rounded-full hover:bg-white/90 hover:scale-105 transition-all shadow-sm"
+          className="shrink-0 inline-flex items-center justify-center min-h-[40px] sm:min-h-0 px-3 py-2 sm:py-1.5 text-[11px] sm:text-xs font-semibold text-primary bg-white rounded-md sm:rounded sm:self-center touch-manipulation active:opacity-90"
         >
-          {t.notificationBar.button}
+          {t.notificationBar.button} →
         </Link>
       </div>
     </div>

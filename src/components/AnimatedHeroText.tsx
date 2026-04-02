@@ -2,15 +2,24 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 interface Props {
   staticText: string
   rotatingWords: string[]
   interval?: number
   className?: string
+  /** e.g. font-tamil / font-hindi so the name line matches script while the h1 stays font-heading for rotating EN */
+  staticClassName?: string
 }
 
-export default function AnimatedHeroText({ staticText, rotatingWords, interval = 2500, className = '' }: Props) {
+export default function AnimatedHeroText({
+  staticText,
+  rotatingWords,
+  interval = 2500,
+  className = '',
+  staticClassName,
+}: Props) {
   const [index, setIndex] = useState(0)
   const words = useMemo(() => rotatingWords, [rotatingWords])
 
@@ -23,13 +32,7 @@ export default function AnimatedHeroText({ staticText, rotatingWords, interval =
 
   return (
     <h1 className={className}>
-      <span className="block">{staticText}</span>
-      {/*
-        Line-height at leading-[1.1] = font-size × 1.1.
-        We use 1.15em so the container is exactly tall enough for one line
-        without letting the wrapped second line bleed through.
-        whitespace-nowrap prevents the text from ever wrapping.
-      */}
+      <span className={cn('block font-black', staticClassName)}>{staticText}</span>
       <span
         className="relative block overflow-hidden w-full"
         style={{ height: '1.15em', lineHeight: '1.15em' }}
@@ -39,8 +42,7 @@ export default function AnimatedHeroText({ staticText, rotatingWords, interval =
             key={index}
             className="absolute left-0 right-0 top-0 bottom-0 flex items-center
                        justify-center md:justify-start
-                       font-extrabold whitespace-nowrap
-                       bg-gradient-to-r from-primary to-[#FF8533] bg-clip-text text-transparent"
+                       whitespace-nowrap font-black text-primary"
             initial={{ y: '110%' }}
             animate={{ y: '0%' }}
             exit={{ y: '-110%' }}

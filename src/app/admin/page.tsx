@@ -4,7 +4,7 @@ import AdminDashboard from './AdminDashboard'
 import AdminLogin from './AdminLogin'
 
 export const metadata = {
-  title: 'Admin Panel | Dr. Tamilisai',
+  title: 'Admin Panel | Dr. Tamilisai Soundarajan',
   robots: 'noindex, nofollow',
 }
 

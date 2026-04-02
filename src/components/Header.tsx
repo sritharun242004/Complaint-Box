@@ -1,34 +1,30 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useI18n } from '@/i18n/context'
 import { motion, AnimatePresence } from 'framer-motion'
 import LanguageSwitcher from './LanguageSwitcher'
-import BJPLotus from './BJPLotus'
 
 export default function Header() {
   const { t } = useI18n()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const lastScroll = useRef(0)
 
   useEffect(() => {
     let raf = 0
-    let last = window.scrollY > 10
-    setScrolled(last)
-
     const onScroll = () => {
       if (raf) return
       raf = window.requestAnimationFrame(() => {
         raf = 0
-        const next = window.scrollY > 10
-        if (next !== last) {
-          last = next
-          setScrolled(next)
-        }
+        const y = window.scrollY
+        setHidden(y > 80 && y > lastScroll.current)
+        setScrolled(y > 10)
+        lastScroll.current = y
       })
     }
-
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', onScroll)
@@ -37,24 +33,31 @@ export default function Header() {
   }, [])
 
   return (
-    <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#FFFAF5]/80 backdrop-blur-xl shadow-sm border-b border-border/50'
-          : 'bg-[#FFFAF5] border-b border-border'
+    <motion.header
+      animate={{ y: hidden && !menuOpen ? '-100%' : '0%' }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className={`sticky top-0 z-40 bg-white transition-colors duration-200 ${
+        scrolled ? 'border-b border-border' : 'border-b border-transparent'
       }`}
     >
-      <div className="max-w-container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2">
-          <BJPLotus size={32} animate={false} />
-          <span className="text-lg font-bold text-text tracking-tight">
-            Dr. Tamilisai
-          </span>
+      <div className="max-w-container mx-auto flex min-h-[52px] items-center justify-between gap-3 px-4 sm:min-h-[56px] sm:px-5 md:h-16 md:px-8">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 touch-manipulation py-2 -my-2">
+          <img
+            src="/BJP Logo.png"
+            alt="BJP"
+            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 object-contain"
+          />
+          <div className="flex flex-col min-w-0 text-left">
+            <span className="font-heading max-w-[11rem] text-left text-xs uppercase leading-tight tracking-tight text-text break-words sm:max-w-[16rem] sm:text-sm md:max-w-none md:text-base">
+              {t.footer.titleLine}
+            </span>
+            <span className="text-[10px] text-primary font-medium uppercase tracking-wider leading-tight">
+              Mylapore
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {[
             { href: '/#about', label: t.nav.about },
             { href: '/#journey', label: t.nav.journey },
@@ -63,32 +66,29 @@ export default function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="relative px-4 py-2 text-sm font-medium text-muted hover:text-[#138808] transition-colors rounded-lg hover:bg-[#138808]/5"
+              className="text-sm font-medium text-text-light hover:text-primary transition-colors"
             >
               {item.label}
             </a>
           ))}
-          <div className="w-px h-6 bg-border mx-2" />
           <LanguageSwitcher />
-          <Link
-            href="/pugaar-petti"
-            className="ml-2 bg-gradient-to-r from-primary to-[#FF8533] text-white text-sm font-bold px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] transition-all"
-          >
+          <Link href="/pugaar-petti" className="btn-primary text-sm px-5 py-2">
             {t.nav.pugaarPetti}
           </Link>
         </nav>
 
-        {/* Mobile */}
         <div className="flex md:hidden items-center gap-2">
           <LanguageSwitcher />
           <button
+            type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-xl hover:bg-surface transition-colors"
-            aria-label="Menu"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md border border-border text-text touch-manipulation active:bg-primary-light/50"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
-            <div className="w-5 h-4 flex flex-col justify-between">
+            <div className="w-5 h-3.5 flex flex-col justify-between">
               <motion.span
-                animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
                 className="w-5 h-0.5 bg-text block origin-center"
                 transition={{ duration: 0.2 }}
               />
@@ -98,7 +98,7 @@ export default function Header() {
                 transition={{ duration: 0.1 }}
               />
               <motion.span
-                animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
                 className="w-5 h-0.5 bg-text block origin-center"
                 transition={{ duration: 0.2 }}
               />
@@ -107,38 +107,34 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="md:hidden overflow-hidden bg-[#FFFAF5] border-t border-border"
+            transition={{ duration: 0.2 }}
+            className="md:hidden overflow-hidden border-t border-border bg-white"
           >
-            <nav className="flex flex-col p-4 sm:p-6 gap-1">
+            <nav className="flex flex-col p-3 gap-0.5 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               {[
                 { href: '/#about', label: t.nav.about },
                 { href: '/#journey', label: t.nav.journey },
                 { href: '/#vision', label: t.nav.vision },
-              ].map((item, i) => (
-                <motion.a
+              ].map((item) => (
+                <a
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="text-base font-medium text-text py-3 px-4 rounded-xl hover:bg-[#138808]/5 hover:text-[#138808] transition-colors"
+                  className="min-h-[48px] flex items-center text-base font-medium text-text px-3 rounded-md active:bg-primary-light"
                 >
                   {item.label}
-                </motion.a>
+                </a>
               ))}
               <Link
                 href="/pugaar-petti"
                 onClick={() => setMenuOpen(false)}
-                className="bg-gradient-to-r from-primary to-[#FF8533] text-white text-center font-bold px-5 py-3.5 rounded-full mt-3"
+                className="btn-primary w-full justify-center mt-2"
               >
                 {t.nav.pugaarPetti}
               </Link>
@@ -146,6 +142,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   )
 }

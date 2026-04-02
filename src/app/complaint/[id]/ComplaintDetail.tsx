@@ -105,7 +105,7 @@ export default function ComplaintDetail({ complaint }: Props) {
             </div>
 
             {/* Title */}
-            <h1 className="text-2xl md:text-3xl font-bold text-text mb-2">
+            <h1 className="font-heading mb-2 text-2xl tracking-tight text-text md:text-3xl">
               {complaint.title}
             </h1>
 
@@ -139,7 +139,7 @@ export default function ComplaintDetail({ complaint }: Props) {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-sm font-bold text-primary">Response from Dr. Tamilisai&apos;s Office</span>
+                  <span className="text-sm font-bold text-primary">{t.complaint.adminReplyHeading}</span>
                 </div>
                 <p className="text-sm text-text leading-relaxed">{complaint.adminReply}</p>
                 {complaint.hasAdminReplyImage && (

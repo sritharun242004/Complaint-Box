@@ -13,7 +13,12 @@
   },
   "hero": {
     "eyebrow": "Mylapore Constituency",
-    "headline": "Tamilisai Soundarajan. MBBS Doctor. Former Governor. Your Voice in Mylapore.",
+    "nameLine": "டாக்டர் தமிழிசை சௌந்தரராஜன்.",
+    "rotatingPhrases": [
+      "MBBS Doctor.",
+      "Former Governor.",
+      "Your Voice in Mylapore."
+    ],
     "subtext": "From treating patients at Madras Medical College to serving as Governor of Telangana and Lt. Governor of Puducherry — I chose public service over practice. Now I'm here for Mylapore.",
     "cta1": "Raise Your Issue",
     "cta2": "See My Journey"
@@ -35,6 +40,8 @@
     "card5": "I stay connected to people"
   },
   "achievements": {
+    "eyebrow": "Achievements",
+    "tamilNameLine": "டாக்டர் தமிழிசை சௌந்தரராஜன்",
     "header": "What I've done so far",
     "card1title": "Governor of Telangana",
     "card1desc": "First woman to serve as Governor of Telangana (2019-2023). Opened Raj Bhavan to the public and conducted health awareness programs.",
@@ -69,13 +76,56 @@
     "point3": "I know where problems exist",
     "point4": "I focus on solving, not speaking"
   },
+  "mediaShowcase": {
+    "eyebrow": "Vision",
+    "header": "What this journey means",
+    "subtext": "Hover a column on desktop or tap a row on mobile to open the post on X. Video playback may require a tap inside the embed.",
+    "viewOnX": "View on X",
+    "embedHint": "Each panel loads an embedded X post when expanded.",
+    "items": [
+      {
+        "tweetId": "2039340495537914031",
+        "title": "On the ground",
+        "description": "Field updates and public engagement from the constituency.",
+        "thumbnail": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&auto=format&fit=crop",
+        "postUrl": "https://x.com/drtamilisai4bjp/status/2039340495537914031"
+      },
+      {
+        "tweetId": "2038549159448650095",
+        "title": "Tribal welfare",
+        "description": "Spearheaded health initiatives in Telangana's remote areas, including adopting six tribal villages, launching nutrition programs with the National Institute of Nutrition (NIN), and improving haemoglobin levels among tribal women.",
+        "thumbnail": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop",
+        "postUrl": "https://x.com/drtamilisai4bjp/status/2038549159448650095"
+      },
+      {
+        "tweetId": "2034156082067869760",
+        "title": "Public life",
+        "description": "Highlights from service, leadership, and listening to people.",
+        "thumbnail": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773f?w=800&q=80&auto=format&fit=crop",
+        "postUrl": "https://x.com/drtamilisai4bjp/status/2034156082067869760"
+      }
+    ]
+  },
   "ctaBanner": {
+    "eyebrow": "Get involved",
     "header": "Listening is where change begins",
     "subtext": "Every issue matters. Every voice counts.",
-    "button": "Go to Pugaar Petti"
+    "button": "Go to Pugaar Petti",
+    "secondaryCta": "See my journey",
+    "marquee": [
+      "Mylapore Constituency",
+      "Your voice in the ward",
+      "Pugaar Petti",
+      "Listening first",
+      "Together for Mylapore"
+    ]
   },
   "footer": {
-    "copy": "Dr. Tamilisai. All rights reserved."
+    "copy": "Dr. Tamilisai Soundarajan. All rights reserved.",
+    "titleLine": "Dr. Tamilisai Soundarajan",
+    "tagLine": "Mylapore",
+    "displayName": "Tamilisai Soundarajan",
+    "watermarkLine": "டாக்டர் தமிழிசை சௌந்தரராஜன்"
   },
   "pugaarPetti": {
     "heroTitle": "Pugaar Petti",
@@ -127,7 +177,8 @@
     "copyLink": "Copy Link",
     "shareWhatsApp": "Share on WhatsApp",
     "shareX": "Share on X",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "adminReplyHeading": "Response from Dr. Tamilisai Soundarajan's Office"
   },
   "otp": {
     "title": "Verify your mobile",

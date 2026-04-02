@@ -13,7 +13,7 @@ interface Props {
 
 export default function AnimatedCounter({ end, suffix = '', prefix = '', label, duration = 1.5 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
   const [display, setDisplay] = useState(0)
   const spring = useSpring(0, { bounce: 0, duration: duration * 1000 })
 
@@ -28,21 +28,20 @@ export default function AnimatedCounter({ end, suffix = '', prefix = '', label, 
   const formatted = display.toLocaleString()
 
   return (
-    <div ref={ref} className="text-center">
+    <div ref={ref} className="text-center px-1">
       <motion.div
-        initial={{ opacity: 0, rotateX: 90, y: 20 }}
-        animate={isInView ? { opacity: 1, rotateX: 0, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ perspective: 400 }}
-        className="text-4xl md:text-5xl font-extrabold text-white tabular-nums"
+        initial={{ opacity: 0, y: 12 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="font-heading text-3xl uppercase tracking-tighter text-white tabular-nums sm:text-4xl md:text-5xl"
       >
         {prefix}{formatted}{suffix}
       </motion.div>
       <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.4, delay: 0.3 }}
-        className="text-sm text-white/70 mt-2 font-medium"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.3, delay: 0.2 }}
+        className="text-[10px] sm:text-xs text-white/75 mt-2 sm:mt-3 font-medium uppercase tracking-widest leading-snug"
       >
         {label}
       </motion.p>
