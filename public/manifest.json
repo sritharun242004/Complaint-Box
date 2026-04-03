@@ -1,0 +1,22 @@
+{
+  "name": "Dr. Tamilisai Soundararajan — Mylapore",
+  "short_name": "Tamilisai Mylapore",
+  "description": "Official constituency website of Dr. Tamilisai Soundararajan — Mylapore. Raise issues, track progress, and stay connected.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFAF5",
+  "theme_color": "#FF6B00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
