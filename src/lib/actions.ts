@@ -35,16 +35,12 @@ export async function createComplaint(formData: FormData) {
     return { error: 'Your submission contains inappropriate content' }
   }
 
-  // ONE COMPLAINT PER MOBILE NUMBER
-  let existing
+  // Test DB connection
   try {
-    existing = await prisma.complaint.findUnique({ where: { mobile } })
+    await prisma.$queryRaw`SELECT 1`
   } catch (e) {
     console.error('DB connection error:', e)
     return { error: 'Database connection failed. Please try again later.' }
-  }
-  if (existing) {
-    return { error: 'You have already submitted a complaint with this mobile number. Only one complaint per person is allowed.' }
   }
 
   let imageUrl: string | null = null

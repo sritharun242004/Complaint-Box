@@ -17,6 +17,7 @@ export default function ComplaintForm() {
   const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
@@ -25,20 +26,16 @@ export default function ComplaintForm() {
     const file = e.target.files?.[0]
     if (!file) return
     setFileName(file.name)
+    setPhotoFile(file)
     const reader = new FileReader()
     reader.onload = (ev) => setPreview(ev.target?.result as string)
     reader.readAsDataURL(file)
-    // Sync the main file input so form submission works
-    if (fileInputRef.current && e.target !== fileInputRef.current) {
-      const dt = new DataTransfer()
-      dt.items.add(file)
-      fileInputRef.current.files = dt.files
-    }
   }
 
   function clearPhoto() {
     setPreview(null)
     setFileName(null)
+    setPhotoFile(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
     if (cameraInputRef.current) cameraInputRef.current.value = ''
   }
@@ -47,6 +44,10 @@ export default function ComplaintForm() {
     setError('')
     setLoading(true)
     try {
+      // Ensure photo from camera or gallery is included
+      if (photoFile) {
+        formData.set('photo', photoFile)
+      }
       const result = await createComplaint(formData)
       if (result?.error) {
         setError(result.error)

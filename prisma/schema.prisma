@@ -28,7 +28,6 @@ model Complaint {
   updatedAt   DateTime        @updatedAt @map("updated_at")
   votes       Vote[]
 
-  @@unique([mobile])
   @@map("complaints")
 }
 
