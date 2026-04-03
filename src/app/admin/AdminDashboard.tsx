@@ -43,9 +43,15 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   const [removeExistingImage, setRemoveExistingImage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState<string>('all')
+  const [areaFilter, setAreaFilter] = useState<string>('all')
+  const [categoryFilter, setCategoryFilter] = useState<string>('all')
+  const [sortVotes, setSortVotes] = useState<'none' | 'asc' | 'desc'>('none')
   const [search, setSearch] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const router = useRouter()
+
+  const areas = [...new Set(complaints.map(c => c.area))].sort()
+  const categories = [...new Set(complaints.map(c => c.category))].sort()
 
   function handleReplyImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -73,10 +79,17 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
 
   const filtered = complaints
     .filter(c => filter === 'all' || c.status === filter)
+    .filter(c => areaFilter === 'all' || c.area === areaFilter)
+    .filter(c => categoryFilter === 'all' || c.category === categoryFilter)
     .filter(c => {
       if (!search) return true
       const q = search.toLowerCase()
       return c.title.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.mobile.includes(q) || c.area.toLowerCase().includes(q)
+    })
+    .sort((a, b) => {
+      if (sortVotes === 'desc') return b.upvotes - a.upvotes
+      if (sortVotes === 'asc') return a.upvotes - b.upvotes
+      return 0
     })
 
   const stats = {
@@ -165,28 +178,82 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
           ))}
         </div>
 
-        {/* Toolbar: filters + search */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-          <div className="flex flex-wrap gap-1.5">
-            {['all', ...statusOptions].map(s => (
-              <button
-                key={s}
-                onClick={() => setFilter(s)}
-                className={`px-3.5 py-2.5 min-h-[44px] rounded-lg text-xs font-semibold transition-colors ${
-                  filter === s ? 'bg-[#111827] text-white' : 'bg-white text-[#6B7280] border border-[#E5E7EB] hover:bg-[#F3F4F6]'
-                }`}
-              >
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </button>
-            ))}
+        {/* Toolbar: status filters */}
+        <div className="flex flex-col gap-3 mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-1.5">
+              {['all', ...statusOptions].map(s => (
+                <button
+                  key={s}
+                  onClick={() => setFilter(s)}
+                  className={`px-3.5 py-2.5 min-h-[44px] rounded-lg text-xs font-semibold transition-colors ${
+                    filter === s ? 'bg-[#111827] text-white' : 'bg-white text-[#6B7280] border border-[#E5E7EB] hover:bg-[#F3F4F6]'
+                  }`}
+                >
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </button>
+              ))}
+            </div>
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search by name, mobile, area, title..."
+              className="w-full sm:w-72 px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#E5E7EB] text-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none bg-white"
+            />
           </div>
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search by name, mobile, area, title..."
-            className="w-full sm:w-72 px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#E5E7EB] text-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none bg-white"
-          />
+
+          {/* Area, Category, Vote sort filters */}
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              value={areaFilter}
+              onChange={e => setAreaFilter(e.target.value)}
+              className="px-3 py-2 min-h-[40px] rounded-lg border border-[#E5E7EB] text-xs font-medium text-[#374151] bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none"
+            >
+              <option value="all">All Areas</option>
+              {areas.map(a => (
+                <option key={a} value={a}>{a}</option>
+              ))}
+            </select>
+
+            <select
+              value={categoryFilter}
+              onChange={e => setCategoryFilter(e.target.value)}
+              className="px-3 py-2 min-h-[40px] rounded-lg border border-[#E5E7EB] text-xs font-medium text-[#374151] bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none"
+            >
+              <option value="all">All Categories</option>
+              {categories.map(c => (
+                <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+              ))}
+            </select>
+
+            <button
+              onClick={() => setSortVotes(prev => prev === 'none' ? 'desc' : prev === 'desc' ? 'asc' : 'none')}
+              className={`flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium transition-colors ${
+                sortVotes !== 'none'
+                  ? 'bg-[#111827] text-white'
+                  : 'bg-white text-[#6B7280] border border-[#E5E7EB] hover:bg-[#F3F4F6]'
+              }`}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {sortVotes === 'asc' ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l4-4m-4 4V4" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                )}
+              </svg>
+              Votes {sortVotes === 'desc' ? '↓' : sortVotes === 'asc' ? '↑' : ''}
+            </button>
+
+            {(areaFilter !== 'all' || categoryFilter !== 'all' || sortVotes !== 'none') && (
+              <button
+                onClick={() => { setAreaFilter('all'); setCategoryFilter('all'); setSortVotes('none') }}
+                className="px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
