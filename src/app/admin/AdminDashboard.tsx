@@ -29,9 +29,10 @@ const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
   reviewed: 'bg-blue-100 text-blue-800',
   resolved: 'bg-green-100 text-green-800',
+  removed: 'bg-red-100 text-red-800',
 }
 
-const statusOptions = ['pending', 'reviewed', 'resolved'] as const
+const statusOptions = ['pending', 'reviewed', 'resolved', 'removed'] as const
 
 export default function AdminDashboard({ complaints: initial }: { complaints: Complaint[] }) {
   const [complaints, setComplaints] = useState(initial)
@@ -86,6 +87,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
     pending: complaints.filter(c => c.status === 'pending').length,
     reviewed: complaints.filter(c => c.status === 'reviewed').length,
     resolved: complaints.filter(c => c.status === 'resolved').length,
+    removed: complaints.filter(c => c.status === 'removed').length,
   }
 
   async function handleReply() {
@@ -104,7 +106,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
     setLoading(false)
   }
 
-  async function handleStatusChange(id: string, status: 'pending' | 'reviewed' | 'resolved') {
+  async function handleStatusChange(id: string, status: 'pending' | 'reviewed' | 'resolved' | 'removed') {
     await updateComplaintStatus(id, status)
     setComplaints(prev => prev.map(c => c.id === id ? { ...c, status } : c))
     if (selected?.id === id) setSelected(prev => prev ? { ...prev, status } : null)

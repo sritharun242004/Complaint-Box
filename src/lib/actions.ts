@@ -101,7 +101,7 @@ export async function getComplaints(filters?: {
   category?: string
   sort?: 'recent' | 'popular'
 }) {
-  const where: Record<string, string> = {}
+  const where: Record<string, unknown> = { status: { not: 'removed' } }
   if (filters?.area) where.area = filters.area
   if (filters?.category) where.category = filters.category
 
@@ -287,7 +287,7 @@ export async function adminReply(complaintId: string, reply: string, imageBase64
   return { success: true }
 }
 
-export async function updateComplaintStatus(complaintId: string, status: 'pending' | 'reviewed' | 'resolved') {
+export async function updateComplaintStatus(complaintId: string, status: 'pending' | 'reviewed' | 'resolved' | 'removed') {
   await prisma.complaint.update({
     where: { id: complaintId },
     data: { status },

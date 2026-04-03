@@ -39,7 +39,7 @@ export default async function ComplaintPage({ params }: Props) {
   const { id } = await params
   const complaint = await getComplaint(id)
 
-  if (!complaint) notFound()
+  if (!complaint || complaint.status === 'removed') notFound()
 
   return (
     <ComplaintDetail
