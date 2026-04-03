@@ -117,10 +117,15 @@ export default function ComplaintDetail({ complaint }: Props) {
               {complaint.title}
             </h1>
 
-            {/* Date */}
-            <p className="text-sm text-muted mb-6">
-              {t.complaint.postedOn} {date}
-            </p>
+            {/* Submitted by + Date */}
+            <div className="flex items-center gap-2 text-sm text-muted mb-6">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" />
+              </svg>
+              <span className="font-medium">{complaint.name}</span>
+              <span>&middot;</span>
+              <span>{date}</span>
+            </div>
 
             {/* Location */}
             {complaint.location && (

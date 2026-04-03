@@ -10,6 +10,7 @@ import { quickUpvote, quickDownvote } from '@/lib/actions'
 type Props = {
   complaint: {
     id: string
+    name: string
     title: string
     description: string
     area: string
@@ -105,12 +106,20 @@ export default function ComplaintCard({ complaint }: Props) {
           <h3 className="font-bold text-text text-base sm:text-lg mb-1 group-hover:text-primary transition-colors line-clamp-1">
             {complaint.title}
           </h3>
-          <div className="flex items-center gap-2 mb-3">
-            <svg className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-            <p className="text-xs text-muted font-medium">{t.areas[areaKey] || complaint.area}</p>
+          <div className="flex items-center gap-3 mb-3 text-xs text-muted font-medium">
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" />
+              </svg>
+              {complaint.name}
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              </svg>
+              {t.areas[areaKey] || complaint.area}
+            </span>
           </div>
           <p className="text-sm text-muted line-clamp-2 mb-3 leading-relaxed">{complaint.description}</p>
 
