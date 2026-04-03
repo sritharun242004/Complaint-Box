@@ -22,6 +22,7 @@ export async function createComplaint(formData: FormData) {
   const latitude = formData.get('latitude') as string | null
   const longitude = formData.get('longitude') as string | null
   const photo = formData.get('photo') as File | null
+  const anonymous = formData.get('anonymous') === 'true'
 
   if (!name || !mobile || !area || !title || !description || !category) {
     return { error: 'All fields are required' }
@@ -73,6 +74,7 @@ export async function createComplaint(formData: FormData) {
         title,
         description,
         category,
+        anonymous,
         imageUrl,
         location: location || null,
         latitude: latitude ? parseFloat(latitude) : null,
@@ -97,6 +99,7 @@ const listSelect = {
   title: true,
   description: true,
   category: true,
+  anonymous: true,
   upvotes: true,
   status: true,
   adminReply: true,
@@ -137,6 +140,7 @@ export async function getComplaints(filters?: {
     const flags = flagMap.get(r.id)
     return {
       ...r,
+      name: r.anonymous ? 'Indian' : r.name,
       hasImage: flags?.has_image ?? false,
       hasAdminReplyImage: flags?.has_reply_image ?? false,
     }
@@ -154,6 +158,7 @@ export async function getComplaint(id: string) {
       title: true,
       description: true,
       category: true,
+      anonymous: true,
       location: true,
       latitude: true,
       longitude: true,
@@ -175,6 +180,7 @@ export async function getComplaint(id: string) {
 
   return {
     ...row,
+    name: row.anonymous ? 'Indian' : row.name,
     hasImage: flags[0]?.has_image ?? false,
     hasAdminReplyImage: flags[0]?.has_reply_image ?? false,
   }
@@ -271,6 +277,7 @@ export async function exportComplaints() {
       title: true,
       description: true,
       category: true,
+      anonymous: true,
       location: true,
       latitude: true,
       longitude: true,

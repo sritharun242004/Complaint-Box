@@ -15,6 +15,7 @@ type Complaint = {
   hasImage: boolean
   hasAdminReplyImage: boolean
   category: string
+  anonymous: boolean
   location: string | null
   upvotes: number
   status: string
@@ -48,6 +49,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   const [sortVotes, setSortVotes] = useState<'none' | 'asc' | 'desc'>('none')
   const [search, setSearch] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'list' | 'table'>('list')
   const router = useRouter()
 
   const areas = [...new Set(complaints.map(c => c.area))].sort()
@@ -141,12 +143,12 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   async function handleExport() {
     const rows = await exportComplaints()
     const headers = [
-      'ID', 'Name', 'Mobile', 'Area', 'Title', 'Description', 'Category',
+      'ID', 'Name', 'Mobile', 'Area', 'Title', 'Description', 'Category', 'Anonymous',
       'Location', 'Latitude', 'Longitude', 'Image URL', 'Upvotes', 'Vote Count',
       'Status', 'Admin Reply', 'Admin Reply Image URL', 'Replied At', 'Created At', 'Updated At'
     ]
     const csvRows = rows.map(r => [
-      r.id, r.name, r.mobile, r.area, r.title, r.description, r.category,
+      r.id, r.name, r.mobile, r.area, r.title, r.description, r.category, r.anonymous,
       r.location || '', r.latitude || '', r.longitude || '',
       r.imageUrl, r.upvotes, r._count.votes,
       r.status, r.adminReply || '', r.adminReplyImage,
@@ -296,95 +298,184 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                 Clear filters
               </button>
             )}
+
+            <div className="ml-auto hidden md:flex items-center bg-[#F3F4F6] rounded-lg p-0.5">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-[#111827]' : 'text-[#9CA3AF] hover:text-[#6B7280]'}`}
+                title="List view"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'table' ? 'bg-white shadow-sm text-[#111827]' : 'text-[#9CA3AF] hover:text-[#6B7280]'}`}
+                title="Table view"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M10.875 12c-.621 0-1.125.504-1.125 1.125M12 12c.621 0 1.125.504 1.125 1.125m0 0v1.5c0 .621-.504 1.125-1.125 1.125M12 15.375c0-.621-.504-1.125-1.125-1.125" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
-          {/* ====== TABLE ====== */}
+          {/* ====== LISTINGS ====== */}
           <div className={`${selected ? 'w-full md:w-3/5' : 'w-full'} transition-all`}>
             <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
-              {/* Table header — hidden on mobile */}
-              <div className="hidden md:grid grid-cols-[1fr_120px_100px_90px_70px_80px] gap-2 px-5 py-3 bg-[#F9FAFB] border-b border-[#E5E7EB] text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-                <span>Complaint</span>
-                <span>Submitted By</span>
-                <span>Area</span>
-                <span>Category</span>
-                <span className="text-center">Votes</span>
-                <span className="text-center">Status</span>
-              </div>
 
-              {/* Table rows */}
-              <div className="divide-y divide-[#F3F4F6] max-h-[calc(100vh-280px)] overflow-y-auto">
-                {filtered.map(c => (
-                  <button
-                    key={c.id}
-                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null); setRemoveExistingImage(false) }}
-                    className={`w-full text-left min-h-[44px] px-4 py-3.5 sm:px-5 hover:bg-[#F9FAFB] transition-colors ${
-                      selected?.id === c.id ? 'bg-primary/[0.03] border-l-2 border-l-primary' : ''
-                    }`}
-                  >
-                    {/* Desktop: grid layout */}
-                    <div className="hidden md:grid grid-cols-[1fr_120px_100px_90px_70px_80px] gap-2 items-center">
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-semibold text-[#111827] truncate">{c.title}</p>
-                          {c.adminReply && (
-                            <span className="shrink-0 w-4 h-4 bg-primary rounded-full flex items-center justify-center" title="Replied">
-                              <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                              </svg>
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-[#9CA3AF] truncate mt-0.5">{c.description}</p>
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium text-[#374151] truncate">{c.name}</p>
-                        <p className="text-[10px] text-[#9CA3AF]">{c.mobile}</p>
-                      </div>
-                      <span className="text-xs text-[#6B7280] truncate">{c.area}</span>
-                      <span className="text-xs text-[#6B7280] capitalize truncate">{c.category}</span>
-                      <span className="text-xs font-semibold text-[#374151] text-center">{c.upvotes}</span>
-                      <div className="flex justify-center">
-                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${statusColors[c.status]}`}>
-                          {c.status}
-                        </span>
-                      </div>
-                    </div>
+              {/* ── TABLE VIEW (dense, horizontal scroll) ── */}
+              {viewMode === 'table' ? (
+                <>
+                  <div className="overflow-x-auto max-h-[calc(100vh-280px)] overflow-y-auto">
+                    <table className="w-full text-left min-w-[900px]">
+                      <thead className="sticky top-0 z-[1]">
+                        <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB] text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+                          <th className="px-3 py-2.5">Title</th>
+                          <th className="px-3 py-2.5">Name</th>
+                          <th className="px-3 py-2.5">Mobile</th>
+                          <th className="px-3 py-2.5">Area</th>
+                          <th className="px-3 py-2.5">Category</th>
+                          <th className="px-3 py-2.5">Location</th>
+                          <th className="px-3 py-2.5 text-center">Votes</th>
+                          <th className="px-3 py-2.5 text-center">Status</th>
+                          <th className="px-3 py-2.5">Replied</th>
+                          <th className="px-3 py-2.5">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#F3F4F6]">
+                        {filtered.map(c => (
+                          <tr
+                            key={c.id}
+                            onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null); setRemoveExistingImage(false) }}
+                            className={`cursor-pointer hover:bg-[#F9FAFB] transition-colors ${selected?.id === c.id ? 'bg-primary/[0.03]' : ''}`}
+                          >
+                            <td className="px-3 py-2 text-xs font-medium text-[#111827] max-w-[200px] truncate">
+                              {c.title}
+                              {c.adminReply && (
+                                <span className="inline-block ml-1 w-3 h-3 bg-primary rounded-full align-middle" title="Replied">
+                                  <svg className="w-2 h-2 text-white m-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-3 py-2 text-xs text-[#374151] whitespace-nowrap">
+                              {c.name}
+                              {c.anonymous && <span className="ml-1 text-[8px] font-bold px-1 py-0.5 rounded bg-purple-100 text-purple-700">A</span>}
+                            </td>
+                            <td className="px-3 py-2 text-[11px] text-[#6B7280] tabular-nums">{c.mobile}</td>
+                            <td className="px-3 py-2 text-[11px] text-[#6B7280]">{c.area}</td>
+                            <td className="px-3 py-2 text-[11px] text-[#6B7280] capitalize">{c.category}</td>
+                            <td className="px-3 py-2 text-[11px] text-[#6B7280] max-w-[120px] truncate">{c.location || '—'}</td>
+                            <td className="px-3 py-2 text-[11px] font-semibold text-[#374151] text-center">{c.upvotes}</td>
+                            <td className="px-3 py-2 text-center">
+                              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${statusColors[c.status]}`}>{c.status}</span>
+                            </td>
+                            <td className="px-3 py-2 text-[11px] text-[#6B7280]">{c.repliedAt ? new Date(c.repliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—'}</td>
+                            <td className="px-3 py-2 text-[11px] text-[#9CA3AF] whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {filtered.length === 0 && (
+                      <div className="py-16 text-center text-sm text-[#9CA3AF]">No complaints found</div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* ── LIST VIEW (original) ── */}
+                  {/* Table header — hidden on mobile */}
+                  <div className="hidden md:grid grid-cols-[1fr_120px_100px_90px_70px_80px] gap-2 px-5 py-3 bg-[#F9FAFB] border-b border-[#E5E7EB] text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+                    <span>Complaint</span>
+                    <span>Submitted By</span>
+                    <span>Area</span>
+                    <span>Category</span>
+                    <span className="text-center">Votes</span>
+                    <span className="text-center">Status</span>
+                  </div>
 
-                    {/* Mobile: card layout */}
-                    <div className="md:hidden">
-                      <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-[#111827] truncate">{c.title}</p>
-                            {c.adminReply && (
-                              <span className="shrink-0 w-4 h-4 bg-primary rounded-full flex items-center justify-center" title="Replied">
-                                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </span>
-                            )}
+                  {/* Table rows */}
+                  <div className="divide-y divide-[#F3F4F6] max-h-[calc(100vh-280px)] overflow-y-auto">
+                    {filtered.map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null); setRemoveExistingImage(false) }}
+                        className={`w-full text-left min-h-[44px] px-4 py-3.5 sm:px-5 hover:bg-[#F9FAFB] transition-colors ${
+                          selected?.id === c.id ? 'bg-primary/[0.03] border-l-2 border-l-primary' : ''
+                        }`}
+                      >
+                        {/* Desktop: grid layout */}
+                        <div className="hidden md:grid grid-cols-[1fr_120px_100px_90px_70px_80px] gap-2 items-center">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-semibold text-[#111827] truncate">{c.title}</p>
+                              {c.adminReply && (
+                                <span className="shrink-0 w-4 h-4 bg-primary rounded-full flex items-center justify-center" title="Replied">
+                                  <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                  </svg>
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[#9CA3AF] truncate mt-0.5">{c.description}</p>
                           </div>
-                          <p className="text-xs text-[#9CA3AF] line-clamp-1 mt-0.5">{c.description}</p>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1">
+                              <p className="text-xs font-medium text-[#374151] truncate">{c.name}</p>
+                              {c.anonymous && (
+                                <span className="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700" title="Anonymous submission">Anon</span>
+                              )}
+                            </div>
+                            <p className="text-[10px] text-[#9CA3AF]">{c.mobile}</p>
+                          </div>
+                          <span className="text-xs text-[#6B7280] truncate">{c.area}</span>
+                          <span className="text-xs text-[#6B7280] capitalize truncate">{c.category}</span>
+                          <span className="text-xs font-semibold text-[#374151] text-center">{c.upvotes}</span>
+                          <div className="flex justify-center">
+                            <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${statusColors[c.status]}`}>
+                              {c.status}
+                            </span>
+                          </div>
                         </div>
-                        <span className={`shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full ${statusColors[c.status]}`}>
-                          {c.status}
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#9CA3AF] mt-2">
-                        <span className="font-medium text-[#374151]">{c.name}</span>
-                        <span>{c.area}</span>
-                        <span className="capitalize">{c.category}</span>
-                        <span>{c.upvotes} votes</span>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-                {filtered.length === 0 && (
-                  <div className="py-16 text-center text-sm text-[#9CA3AF]">No complaints found</div>
-                )}
-              </div>
+
+                        {/* Mobile: card layout */}
+                        <div className="md:hidden">
+                          <div className="flex items-start justify-between gap-2 mb-1.5">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-semibold text-[#111827] truncate">{c.title}</p>
+                                {c.adminReply && (
+                                  <span className="shrink-0 w-4 h-4 bg-primary rounded-full flex items-center justify-center" title="Replied">
+                                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-[#9CA3AF] line-clamp-1 mt-0.5">{c.description}</p>
+                            </div>
+                            <span className={`shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full ${statusColors[c.status]}`}>
+                              {c.status}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#9CA3AF] mt-2">
+                            <span className="font-medium text-[#374151]">{c.name}{c.anonymous && <span className="ml-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Anon</span>}</span>
+                            <span>{c.area}</span>
+                            <span className="capitalize">{c.category}</span>
+                            <span>{c.upvotes} votes</span>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                    {filtered.length === 0 && (
+                      <div className="py-16 text-center text-sm text-[#9CA3AF]">No complaints found</div>
+                    )}
+                  </div>
+                </>
+              )}
 
               {/* Footer */}
               <div className="px-4 py-3 sm:px-5 bg-[#F9FAFB] border-t border-[#E5E7EB] text-xs text-[#9CA3AF]">
@@ -471,7 +562,12 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                   <h4 className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Contact</h4>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#6B7280]">Name</span>
-                    <span className="font-medium text-[#111827]">{selected.name}</span>
+                    <span className="font-medium text-[#111827] flex items-center gap-1.5">
+                      {selected.name}
+                      {selected.anonymous && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Anonymous</span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#6B7280]">Mobile</span>

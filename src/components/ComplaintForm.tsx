@@ -18,6 +18,7 @@ export default function ComplaintForm() {
   const [preview, setPreview] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
   const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [anonymous, setAnonymous] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
@@ -54,6 +55,7 @@ export default function ComplaintForm() {
       if (photoFile) {
         formData.set('photo', photoFile)
       }
+      formData.set('anonymous', anonymous ? 'true' : 'false')
       const result = await createComplaint(formData)
       if (result?.error) {
         setError(result.error)
@@ -111,8 +113,28 @@ export default function ComplaintForm() {
 
       <div className="space-y-6">
         <div>
-          <label className={labelClasses}>{t.pugaarPetti.fieldName}</label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-semibold text-text">{t.pugaarPetti.fieldName}</label>
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <span className="text-xs text-muted">Stranger</span>
+              <button
+                type="button"
+                onClick={() => setAnonymous(!anonymous)}
+                className={`relative w-9 h-5 rounded-full transition-colors ${anonymous ? 'bg-[#138808]' : 'bg-[#D1D5DB]'}`}
+              >
+                <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${anonymous ? 'translate-x-4' : ''}`} />
+              </button>
+            </label>
+          </div>
           <input name="name" type="text" required className={inputClasses} />
+          {anonymous && (
+            <p className="text-xs text-[#138808] mt-1.5 flex items-center gap-1">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+              Your name will only be visible to the admin
+            </p>
+          )}
         </div>
 
         <div>

@@ -19,6 +19,7 @@ model Complaint {
   latitude    Float?
   longitude   Float?
   category    String
+  anonymous   Boolean         @default(false)
   upvotes     Int             @default(0)
   status      ComplaintStatus @default(pending)
   adminReply      String?         @map("admin_reply")
