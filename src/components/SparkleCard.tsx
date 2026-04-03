@@ -11,7 +11,9 @@ interface Props {
 
 export default function SparkleCard({ children, className = '' }: Props) {
   return (
-    <div className={`relative p-4 sm:p-5 border border-border bg-white rounded-lg active:border-primary/40 sm:hover:border-primary/40 transition-colors duration-200 group ${className}`}>
+    <div
+      className={`group relative rounded-lg border border-border bg-white p-5 transition-colors duration-200 active:border-primary/40 sm:p-6 sm:hover:border-primary/40 ${className}`}
+    >
       <div className="relative z-10">{children}</div>
     </div>
   )

@@ -43,17 +43,17 @@ export function SocialVideoShowcase({
   const activeIndex = hovered ?? selected
 
   return (
-    <section id="vision" className="bg-cream py-12 sm:py-16 md:py-20">
-      <div className="mx-auto max-w-container px-4 sm:px-5 md:px-8">
+    <section id="vision" className="layout-section bg-cream">
+      <div className="layout-container">
         <FadeInSection>
-          <p className={`${sectionEyebrow} mb-2`}>{eyebrow}</p>
-          <h2 className={`${sectionTitle} mb-3 sm:mb-4`}>{header}</h2>
+          <p className={`${sectionEyebrow} mb-3`}>{eyebrow}</p>
+          <h2 className={`${sectionTitle} mb-4 sm:mb-5`}>{header}</h2>
           {subtext ? (
-            <p className="mb-8 max-w-2xl text-sm leading-relaxed text-text-light sm:mb-10 sm:text-base">
+            <p className="mb-10 max-w-2xl text-sm leading-[1.72] text-text-light sm:mb-12 sm:text-base sm:leading-[1.75]">
               {subtext}
             </p>
           ) : (
-            <div className="mb-8 sm:mb-10" />
+            <div className="mb-10 sm:mb-12" />
           )}
           {embedHint ? (
             <p className="sr-only">{embedHint}</p>
@@ -61,7 +61,7 @@ export function SocialVideoShowcase({
         </FadeInSection>
 
         <div
-          className="flex flex-col gap-3 md:h-[min(56vh,440px)] md:flex-row md:gap-2"
+          className="flex flex-col gap-4 md:h-[min(56vh,440px)] md:flex-row md:gap-3"
           onMouseLeave={() => setHovered(null)}
         >
           {items.map((item, i) => {

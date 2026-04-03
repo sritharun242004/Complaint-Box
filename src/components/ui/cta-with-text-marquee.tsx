@@ -166,10 +166,10 @@ export function CTAWithTextMarquee({
       <h2 className="font-heading text-3xl uppercase tracking-tighter leading-[1.05] text-text opacity-0 animate-fade-in-up [animation-delay:120ms] [animation-fill-mode:forwards] sm:text-4xl md:text-5xl lg:text-6xl">
         {headline}
       </h2>
-      <p className="text-base leading-relaxed text-muted opacity-0 animate-fade-in-up [animation-delay:240ms] [animation-fill-mode:forwards] sm:text-lg md:text-xl">
+      <p className="text-base leading-[1.72] text-muted opacity-0 animate-fade-in-up [animation-delay:240ms] [animation-fill-mode:forwards] sm:text-lg sm:leading-[1.75] md:text-xl">
         {subtext}
       </p>
-      <div className="flex flex-col gap-3 opacity-0 animate-fade-in-up [animation-delay:360ms] [animation-fill-mode:forwards] sm:flex-row sm:flex-wrap sm:gap-4">
+      <div className="flex flex-col gap-4 opacity-0 animate-fade-in-up [animation-delay:360ms] [animation-fill-mode:forwards] sm:flex-row sm:flex-wrap sm:gap-5">
         <Link href={primaryHref} className="btn-primary w-full justify-center sm:w-auto">
           {primaryLabel}
         </Link>
@@ -185,12 +185,12 @@ export function CTAWithTextMarquee({
   return (
     <section
       className={cn(
-        'relative overflow-hidden border-t border-border bg-cream px-4 py-14 sm:px-5 sm:py-16 md:px-8 md:py-20',
+        'layout-section relative overflow-hidden border-t border-border bg-cream',
         className
       )}
     >
-      <div className="mx-auto w-full max-w-container opacity-0 animate-fade-in-up [animation-fill-mode:forwards]">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-24">
+      <div className="layout-container opacity-0 animate-fade-in-up [animation-fill-mode:forwards]">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20 xl:gap-28">
           {marqueeSide === 'left' ? (
             <>
               {marqueeCol}

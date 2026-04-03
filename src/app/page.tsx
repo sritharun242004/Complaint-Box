@@ -58,8 +58,8 @@ export default function Home() {
     <>
       <section className="relative overflow-hidden border-b border-border bg-white md:min-h-[calc(100dvh-120px)] md:flex md:items-center">
         <LotusWatermark variant="on-light" />
-        <div className="relative z-10 mx-auto w-full max-w-container px-4 py-8 sm:px-5 sm:py-12 md:px-8 md:py-16">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12 lg:gap-16">
+        <div className="layout-hero-inner">
+          <div className="flex flex-col gap-10 md:flex-row md:items-center md:gap-14 lg:gap-20">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ export default function Home() {
 
             <div className="order-2 flex-[3] text-center md:order-1 md:text-left">
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.05 }}>
-                <span className={`${sectionEyebrow} mb-3 inline-block sm:mb-4`}>{t.hero.eyebrow}</span>
+                <span className={`${sectionEyebrow} mb-4 inline-block sm:mb-5`}>{t.hero.eyebrow}</span>
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
@@ -90,7 +90,7 @@ export default function Home() {
                   staticText={t.hero.nameLine}
                   rotatingWords={t.hero.rotatingPhrases}
                   staticClassName={lang === 'hi' ? 'font-hindi normal-case' : 'font-tamil normal-case'}
-                  className="mb-4 font-heading text-[1.75rem] font-black uppercase tracking-tighter leading-[1.05] text-text sm:mb-5 sm:text-4xl md:text-5xl lg:text-6xl"
+                  className="mb-5 font-heading text-[1.75rem] font-black uppercase tracking-tighter leading-[1.05] text-text sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl"
                   interval={2200}
                 />
               </motion.div>
@@ -99,7 +99,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.15 }}
-                className="mx-auto mb-6 max-w-lg text-sm leading-relaxed text-muted sm:text-base md:mx-0 md:mb-8 md:text-lg"
+                className="mx-auto mb-8 max-w-lg text-sm leading-[1.75] text-muted sm:mb-10 sm:text-base md:mx-0 md:text-lg md:leading-[1.7]"
               >
                 {t.hero.subtext}
               </motion.p>
@@ -108,7 +108,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center md:justify-start"
+                className="flex w-full flex-col gap-4 sm:flex-row sm:justify-center md:justify-start md:gap-5"
               >
                 <Link href="/pugaar-petti" className="btn-primary w-full sm:w-auto sm:min-w-[160px]">
                   {t.hero.cta1}
@@ -126,9 +126,9 @@ export default function Home() {
       </section>
 
       <FadeInSection>
-        <section id="about" className="border-b border-border bg-cream py-12 sm:py-16 md:py-20">
-          <div className="max-w-container mx-auto px-4 sm:px-5 md:px-8">
-            <div className="flex flex-col gap-8 md:flex-row md:items-stretch md:gap-12 lg:gap-14">
+        <section id="about" className="layout-section border-b border-border bg-cream">
+          <div className="layout-container">
+            <div className="flex flex-col gap-10 md:flex-row md:items-stretch md:gap-14 lg:gap-16">
               <motion.div
                 className="w-full md:w-5/12 md:flex md:flex-col"
                 whileInView={{ opacity: 1, x: 0 }}
@@ -159,8 +159,8 @@ export default function Home() {
               </motion.div>
 
               <div className="flex w-full flex-col md:w-7/12">
-                <p className={`${sectionEyebrow} mb-2`}>About</p>
-                <h2 className={`${sectionTitle} mb-6 sm:mb-8`}>{t.whoIAm.header}</h2>
+                <p className={`${sectionEyebrow} mb-3`}>About</p>
+                <h2 className={`${sectionTitle} mb-8 sm:mb-10`}>{t.whoIAm.header}</h2>
                 <StaggerContainer
                   className="divide-y divide-border border-y border-border bg-white"
                   onMouseLeave={() => setAboutImageIndex(0)}
@@ -170,7 +170,7 @@ export default function Home() {
                       <div
                         role="button"
                         tabIndex={0}
-                        className="flex cursor-pointer gap-3 py-4 outline-none transition-colors duration-300 hover:bg-primary/[0.04] focus-visible:bg-primary/[0.06] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:gap-4 sm:py-5"
+                        className="flex cursor-pointer gap-4 py-5 outline-none transition-colors duration-300 hover:bg-primary/[0.04] focus-visible:bg-primary/[0.06] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:gap-5 sm:py-6"
                         onMouseEnter={() => setAboutImageIndex(i)}
                         onFocus={() => setAboutImageIndex(i)}
                         onClick={() => setAboutImageIndex(i)}
@@ -184,7 +184,7 @@ export default function Home() {
                         <span className="w-7 shrink-0 pt-0.5 text-xs font-semibold text-primary tabular-nums sm:w-8">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-sm leading-relaxed text-text-light sm:text-base">{point}</p>
+                        <p className="text-sm leading-[1.7] text-text-light sm:text-base sm:leading-[1.72]">{point}</p>
                       </div>
                     </StaggerItem>
                   ))}
@@ -195,21 +195,21 @@ export default function Home() {
         </section>
       </FadeInSection>
 
-      <section className="border-b border-border bg-white py-12 sm:py-16 md:py-20">
-        <div className="max-w-container mx-auto px-4 sm:px-5 md:px-8">
+      <section className="layout-section border-b border-border bg-white">
+        <div className="layout-container">
           <FadeInSection>
-            <p className={`${sectionEyebrow} mb-2 text-center`}>Trust</p>
-            <h2 className={`${sectionTitle} mb-8 text-center sm:mb-10 md:mb-12`}>{t.trust.header}</h2>
+            <p className={`${sectionEyebrow} mb-3 text-center`}>Trust</p>
+            <h2 className={`${sectionTitle} mb-10 text-center sm:mb-12 md:mb-14`}>{t.trust.header}</h2>
           </FadeInSection>
 
-          <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4">
+          <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-5 lg:gap-5">
             {[t.trust.card1, t.trust.card2, t.trust.card3, t.trust.card4, t.trust.card5].map((card, i) => (
               <StaggerItem key={i}>
                 <SparkleCard className="h-full text-left sm:text-center">
                   <div className={`mb-3 flex h-11 w-11 shrink-0 items-center justify-center sm:mx-auto sm:mb-4 ${i % 2 === 0 ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'}`}>
                     {trustIcons[i]}
                   </div>
-                  <p className="text-sm font-medium leading-snug text-text">{card}</p>
+                  <p className="text-sm font-medium leading-relaxed text-text">{card}</p>
                 </SparkleCard>
               </StaggerItem>
             ))}
@@ -230,10 +230,10 @@ export default function Home() {
         ]}
       />
 
-      <section className="border-b border-border bg-primary py-10 sm:py-14 md:py-16">
-        <div className="max-w-container mx-auto px-4 sm:px-5 md:px-8">
+      <section className="border-b border-border bg-primary py-12 sm:py-16 md:py-20">
+        <div className="layout-container">
           <FadeInSection>
-            <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-7 sm:gap-10 md:grid-cols-4 md:gap-8">
               <AnimatedCounter end={25} suffix="+" label="Years of Service" />
               <AnimatedCounter end={5} label="States Served" />
               <AnimatedCounter end={1000} suffix="+" label="Public Events" />

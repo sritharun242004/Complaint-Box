@@ -28,28 +28,28 @@ const bentoCell = (i: number) =>
 
 export function AchievementsBento({ eyebrow, tamilNameLine, header, cards, icons }: Props) {
   return (
-    <section className="border-b border-border bg-cream py-12 sm:py-16 md:py-20">
-      <div className="mx-auto max-w-container px-4 sm:px-5 md:px-8">
+    <section className="layout-section border-b border-border bg-cream">
+      <div className="layout-container">
         <FadeInSection>
-          <p className={`mb-2 text-center text-[10px] font-semibold uppercase tracking-widest text-primary sm:text-xs`}>
+          <p className={`mb-3 text-center text-[10px] font-semibold uppercase tracking-widest text-primary sm:text-xs`}>
             {eyebrow}
           </p>
-          <p className="mb-2 text-center font-tamil text-xl font-black leading-tight text-text/90 sm:text-2xl md:text-3xl">
+          <p className="mb-4 text-center font-tamil text-xl font-black leading-snug text-text/90 sm:text-2xl md:mb-5 md:text-3xl">
             {tamilNameLine}
           </p>
-          <h2 className="mb-8 text-center font-heading text-xl uppercase tracking-tighter text-text sm:mb-10 sm:text-2xl md:mb-12 md:text-3xl lg:text-[2.35rem] xl:text-[2.5rem] leading-[1.05]">
+          <h2 className="mb-10 text-center font-heading text-xl uppercase tracking-tighter text-text sm:mb-12 sm:text-2xl md:mb-14 md:text-3xl lg:text-[2.35rem] xl:text-[2.5rem] leading-[1.05]">
             {header}
           </h2>
         </FadeInSection>
 
-        <StaggerContainer className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-4">
+        <StaggerContainer className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
           {cards.map((card, i) => (
             <StaggerItem key={`achievement-${i}`} className={bentoCell(i)}>
               <article
                 className={cn(
-                  'group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/90 bg-white p-5 shadow-sm transition-all duration-300 sm:p-6',
+                  'group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/90 bg-white p-6 shadow-sm transition-all duration-300 sm:p-8',
                   'hover:border-primary/30 hover:shadow-lg hover:shadow-primary/[0.06]',
-                  i === 0 && 'lg:p-8',
+                  i === 0 && 'lg:p-10',
                   i === 2 && 'lg:min-h-[min(52vh,420px)]',
                 )}
               >
@@ -59,7 +59,7 @@ export function AchievementsBento({ eyebrow, tamilNameLine, header, cards, icons
                 />
                 <div
                   className={cn(
-                    'relative z-10 mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105 sm:h-14 sm:w-14',
+                    'relative z-10 mb-5 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105 sm:mb-6 sm:h-14 sm:w-14',
                     i % 2 === 0 ? 'bg-primary/12 text-primary' : 'bg-accent/12 text-accent',
                   )}
                 >
@@ -67,13 +67,15 @@ export function AchievementsBento({ eyebrow, tamilNameLine, header, cards, icons
                 </div>
                 <h3
                   className={cn(
-                    'relative z-10 mb-2 font-heading uppercase tracking-tight text-text',
+                    'relative z-10 mb-3 font-heading uppercase tracking-tight text-text',
                     i === 0 ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg',
                   )}
                 >
                   {card.title}
                 </h3>
-                <p className="relative z-10 flex-1 text-sm leading-relaxed text-muted sm:text-base">{card.desc}</p>
+                <p className="relative z-10 flex-1 text-sm leading-[1.72] text-muted sm:text-base sm:leading-[1.75]">
+                  {card.desc}
+                </p>
               </article>
             </StaggerItem>
           ))}

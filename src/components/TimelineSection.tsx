@@ -18,7 +18,7 @@ interface Props {
 
 /* Mobile-first: slightly narrower cards so more viewport breathing room */
 const CARD_WIDTH = 300
-const CARD_GAP = 40
+const CARD_GAP = 48
 
 function TimelineCard({
   item,
@@ -83,7 +83,7 @@ function TimelineCard({
       </div>
 
       <div
-        className="border border-border bg-white p-4 sm:p-5 sm:hover:border-primary/30 transition-colors duration-200"
+        className="border border-border bg-white p-5 transition-colors duration-200 sm:p-6 sm:hover:border-primary/30"
         style={{
           width: CARD_WIDTH - 16,
           opacity: isRevealed ? 1 : 0,
@@ -91,8 +91,8 @@ function TimelineCard({
           transition: 'opacity 0.45s ease 0.06s, transform 0.45s ease 0.06s',
         }}
       >
-        <h3 className="font-semibold text-text text-sm sm:text-base mb-1.5">{item.title}</h3>
-        <p className="text-xs sm:text-sm text-muted leading-relaxed">{item.desc}</p>
+        <h3 className="mb-2 text-sm font-semibold text-text sm:mb-2.5 sm:text-base">{item.title}</h3>
+        <p className="text-xs leading-[1.7] text-muted sm:text-sm sm:leading-[1.72]">{item.desc}</p>
       </div>
     </div>
   )
@@ -131,12 +131,17 @@ export default function TimelineSection({ items, header, subtext }: Props) {
       style={{ height: `${Math.max(220, items.length * 38)}vh` }}
     >
       <div className="sticky top-0 min-h-[100dvh] h-[100dvh] overflow-hidden flex flex-col">
-        <motion.div className="text-center pt-14 sm:pt-16 md:pt-20 pb-4 sm:pb-6 px-4 shrink-0" style={{ y: headerY }}>
-          <p className="text-[10px] sm:text-xs text-primary uppercase tracking-[0.2em] font-semibold mb-2 sm:mb-3">Journey</p>
-          <h2 className="font-heading px-2 text-2xl uppercase tracking-tighter text-text sm:mb-3 sm:text-3xl md:text-4xl lg:text-5xl mb-2 leading-[1.05]">
+        <motion.div
+          className="shrink-0 px-5 pb-6 pt-16 text-center sm:px-8 sm:pb-8 sm:pt-20 md:pt-24"
+          style={{ y: headerY }}
+        >
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:mb-4 sm:text-xs">
+            Journey
+          </p>
+          <h2 className="mb-3 px-2 font-heading text-2xl uppercase leading-[1.05] tracking-tighter text-text sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
             {header}
           </h2>
-          <p className="text-sm sm:text-base text-muted max-w-md mx-auto px-2">{subtext}</p>
+          <p className="mx-auto max-w-md px-2 text-sm leading-[1.72] text-muted sm:text-base sm:leading-[1.75]">{subtext}</p>
         </motion.div>
 
         <div className="flex justify-center mb-2 shrink-0">
@@ -182,7 +187,7 @@ export default function TimelineSection({ items, header, subtext }: Props) {
           </motion.div>
         </div>
 
-        <div className="px-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6 shrink-0">
+        <div className="shrink-0 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8 sm:pb-8">
           <div className="max-w-xs mx-auto">
             <div className="h-px bg-border overflow-hidden">
               <motion.div className="h-full bg-accent" style={{ width: lineWidth }} />

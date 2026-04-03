@@ -134,7 +134,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-6">
+      <div className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 md:px-10">
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {[

@@ -40,7 +40,7 @@ export default function Header() {
         scrolled ? 'border-b border-border' : 'border-b border-transparent'
       }`}
     >
-      <div className="max-w-container mx-auto flex min-h-[52px] items-center justify-between gap-3 px-4 sm:min-h-[56px] sm:px-5 md:h-16 md:px-8">
+      <div className="layout-container flex min-h-[52px] items-center justify-between gap-4 sm:min-h-[56px] md:h-16 md:gap-6">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 touch-manipulation py-2 -my-2">
           <img
             src="/BJP Logo.png"

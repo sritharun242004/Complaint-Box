@@ -65,7 +65,7 @@ export default function ComplaintDetail({ complaint }: Props) {
 
   return (
     <div className="min-h-screen bg-surface">
-      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-10">
+      <div className="mx-auto w-full max-w-3xl px-5 py-8 sm:px-8 md:px-10 md:py-12">
         {/* Back button */}
         <Link
           href="/pugaar-petti"

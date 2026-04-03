@@ -11,10 +11,10 @@ export default function Footer() {
     <footer className="bg-text text-white pb-[max(1rem,env(safe-area-inset-bottom))]">
       <div className="h-px bg-primary" aria-hidden />
 
-      <div className="relative mx-auto max-w-container overflow-x-clip px-4 pt-10 sm:px-5 sm:pt-12 md:px-8 md:pt-14">
+      <div className="layout-container relative overflow-x-clip pt-12 sm:pt-14 md:pt-16">
         <LotusWatermark variant="on-dark" />
 
-        <div className="relative z-10 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-12 lg:gap-6 lg:gap-y-12">
+        <div className="relative z-10 grid grid-cols-1 gap-12 sm:grid-cols-2 sm:gap-10 lg:grid-cols-12 lg:gap-8 lg:gap-y-14">
           <div className="lg:col-span-5">
             <div className="flex items-start gap-3 sm:gap-4">
               <img src="/BJP Logo.png" alt="" className="mt-1 h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11" />
@@ -25,7 +25,9 @@ export default function Footer() {
                 <p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-primary sm:text-base">
                   {t.footer.tagLine}
                 </p>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55 sm:text-base">{t.hero.eyebrow}</p>
+                <p className="mt-5 max-w-sm text-sm leading-[1.72] text-white/55 sm:mt-6 sm:text-base sm:leading-[1.75]">
+                  {t.hero.eyebrow}
+                </p>
               </div>
             </div>
           </div>
@@ -74,7 +76,7 @@ export default function Footer() {
         </div>
 
         {/* Full name in Tamil — watermark style only (no solid white headline) */}
-        <div className="relative z-10 mt-10 border-t border-white/10 px-1 pt-8 sm:mt-12 sm:px-2 sm:pt-10 md:mt-14 md:pt-12">
+        <div className="relative z-10 mt-12 border-t border-white/10 px-1 pt-10 sm:mt-14 sm:px-2 sm:pt-12 md:mt-16 md:pt-14">
           <p
             className="pointer-events-none max-w-full select-none break-words text-center font-tamil font-black leading-[1.25] tracking-tight text-primary/[0.26] sm:text-primary/[0.24] md:text-primary/[0.22]"
             style={{ fontSize: 'clamp(1.5rem, 4.5vw, 3.35rem)' }}
@@ -84,7 +86,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="relative z-10 mt-8 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-center sm:mt-10 sm:flex-row sm:text-left md:mt-12">
+        <div className="relative z-10 mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center sm:mt-12 sm:flex-row sm:text-left md:mt-14">
           <p className="text-xs text-white/35">&copy; {new Date().getFullYear()} {t.footer.copy}</p>
           <p className="text-xs text-white/35">Bharatiya Janata Party</p>
         </div>

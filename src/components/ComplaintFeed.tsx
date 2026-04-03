@@ -53,7 +53,7 @@ export default function ComplaintFeed() {
     <div>
       {/* Filter bar */}
       <div className="sticky top-16 z-30 bg-[#FFFAF5]/95 backdrop-blur-sm border-b border-[#E8DDD2] py-4">
-        <div className="max-w-container mx-auto px-4 md:px-6 flex flex-wrap items-center gap-3">
+        <div className="layout-container flex flex-wrap items-center gap-4">
           <select
             value={area}
             onChange={(e) => setArea(e.target.value)}
@@ -98,7 +98,7 @@ export default function ComplaintFeed() {
       </div>
 
       {/* Cards grid */}
-      <div className="max-w-container mx-auto px-4 md:px-6 py-6 md:py-10">
+      <div className="layout-container py-8 md:py-12">
         {loading ? (
           <div className="text-center py-20">
             <div className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />

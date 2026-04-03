@@ -44,7 +44,7 @@ export default function PugaarPettiPage() {
         <div className="absolute top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-primary/[0.04] rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-[#138808]/[0.04] rounded-full blur-3xl" />
 
-        <div className="max-w-container mx-auto px-4 md:px-6 text-center relative z-10">
+        <div className="layout-container text-center relative z-10">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export default function PugaarPettiPage() {
 
       {/* ============ HOW IT WORKS ============ */}
       <section className="py-12 md:py-24 bg-surface">
-        <div className="max-w-container mx-auto px-4 md:px-6">
+        <div className="layout-container">
           <FadeInSection>
             <h2 className="font-heading mb-4 text-center text-2xl uppercase tracking-tighter text-text sm:text-3xl md:text-[2.5rem] leading-[1.05]">
               {t.pugaarPetti.howItWorks}
@@ -122,7 +122,7 @@ export default function PugaarPettiPage() {
 
       {/* ============ SUBMIT FORM ============ */}
       <section id="submit" className="py-12 md:py-24 bg-cream">
-        <div className="max-w-container mx-auto px-4 md:px-6">
+        <div className="layout-container">
           <FadeInSection>
             <h2 className="font-heading mb-4 text-center text-2xl uppercase tracking-tighter text-text sm:text-3xl md:text-[2.5rem] leading-[1.05]">
               {t.pugaarPetti.formTitle}
@@ -135,7 +135,7 @@ export default function PugaarPettiPage() {
 
       {/* ============ LIVE FEED ============ */}
       <section id="feed" className="bg-surface">
-        <div className="max-w-container mx-auto px-6 pt-20 pb-4">
+        <div className="layout-container pt-20 pb-6">
           <FadeInSection>
             <h2 className="font-heading mb-4 text-center text-2xl uppercase tracking-tighter text-text sm:text-3xl md:text-[2.5rem] leading-[1.05]">
               {t.pugaarPetti.feedTitle}
@@ -148,7 +148,7 @@ export default function PugaarPettiPage() {
 
       {/* ============ VISION ============ */}
       <section className="py-12 md:py-24 bg-cream">
-        <div className="max-w-container mx-auto px-4 md:px-6">
+        <div className="layout-container">
           <FadeInSection>
             <h2 className="font-heading mb-4 text-center text-2xl uppercase tracking-tighter text-text sm:text-3xl md:text-[2.5rem] leading-[1.05]">
               {t.pugaarPetti.vision}
@@ -178,7 +178,7 @@ export default function PugaarPettiPage() {
       {/* ============ TRUST STATEMENT ============ */}
       <FadeInSection>
         <section className="py-12 md:py-24 bg-surface">
-          <div className="max-w-2xl mx-auto px-4 md:px-6 text-center">
+          <div className="mx-auto max-w-2xl px-5 text-center sm:px-8 md:px-10">
             <h2 className="font-heading mb-6 text-2xl uppercase tracking-tighter text-text sm:text-3xl md:mb-10 md:text-[2.5rem] leading-[1.05]">
               {t.pugaarPetti.trustHeader}
             </h2>
@@ -209,7 +209,7 @@ export default function PugaarPettiPage() {
         }} />
 
         <FadeInSection>
-          <div className="max-w-container mx-auto px-6 text-center relative z-10">
+          <div className="layout-container relative z-10 text-center">
             <h2 className="font-heading mb-6 text-2xl uppercase tracking-tighter text-white sm:text-3xl md:mb-10 md:text-[2.75rem] leading-[1.05]">
               {t.pugaarPetti.finalCtaHeader}
             </h2>
