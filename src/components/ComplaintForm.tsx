@@ -44,13 +44,22 @@ export default function ComplaintForm() {
   }
 
   return (
+    <div className="relative max-w-[600px] mx-auto rounded-3xl p-[2px] overflow-hidden">
+      {/* Animated border — orange & green conic gradient spinning */}
+      <div
+        className="absolute inset-[-50%] animate-border-spin"
+        style={{
+          background: 'conic-gradient(from 0deg, #FF6B00, #138808, #FF6B00, #138808, #FF6B00)',
+        }}
+      />
+
     <motion.form
       ref={formRef}
       action={handleSubmit}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-[#FFFAF5] rounded-3xl shadow-lg shadow-black/[0.03] border border-[#E8DDD2]/50 p-4 sm:p-7 md:p-10 max-w-[600px] mx-auto"
+      className="relative bg-[#FFFAF5] rounded-[22px] shadow-lg shadow-black/[0.03] p-4 sm:p-7 md:p-10"
     >
       {error && (
         <motion.div
@@ -157,5 +166,6 @@ export default function ComplaintForm() {
         </motion.button>
       </div>
     </motion.form>
+    </div>
   )
 }

@@ -179,3 +179,12 @@ html {
 .text-reveal-line > span {
   display: block;
 }
+
+@keyframes border-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-border-spin {
+  animation: border-spin 3s linear infinite;
+}
