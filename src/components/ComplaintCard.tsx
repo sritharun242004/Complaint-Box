@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { quickUpvote } from '@/lib/actions'
+import { quickUpvote, quickDownvote } from '@/lib/actions'
 
 type Props = {
   complaint: {
@@ -39,12 +39,20 @@ export default function ComplaintCard({ complaint }: Props) {
   async function handleUpvote(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
-    if (voted || upvoting) return
+    if (upvoting) return
     setUpvoting(true)
-    setUpvotes(prev => prev + 1)
-    setVoted(true)
-    localStorage.setItem(`voted_${complaint.id}`, '1')
-    await quickUpvote(complaint.id)
+    const key = `voted_${complaint.id}`
+    if (voted) {
+      setUpvotes(prev => prev - 1)
+      setVoted(false)
+      localStorage.removeItem(key)
+      await quickDownvote(complaint.id)
+    } else {
+      setUpvotes(prev => prev + 1)
+      setVoted(true)
+      localStorage.setItem(key, '1')
+      await quickUpvote(complaint.id)
+    }
     setUpvoting(false)
   }
 
@@ -127,13 +135,13 @@ export default function ComplaintCard({ complaint }: Props) {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleUpvote}
-                disabled={voted || upvoting}
+                disabled={upvoting}
                 className={`flex items-center gap-1.5 text-sm font-semibold transition-all ${
                   voted
-                    ? 'text-primary cursor-default'
+                    ? 'text-primary hover:opacity-70 active:scale-95'
                     : 'text-muted hover:text-primary hover:scale-110 active:scale-95'
                 }`}
-                title={voted ? 'Already supported' : 'Support this complaint'}
+                title={voted ? 'Remove support' : 'Support this complaint'}
               >
                 <svg
                   className={`w-4 h-4 transition-all ${voted ? 'fill-primary' : 'fill-none'}`}

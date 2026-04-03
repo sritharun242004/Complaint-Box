@@ -73,7 +73,7 @@ export function SocialVideoShowcase({
                   'relative overflow-hidden rounded-lg border border-border bg-white shadow-sm transition-all duration-500 ease-out',
                   'md:min-h-0',
                   expanded
-                    ? 'z-[1] min-h-[min(72vh,460px)] md:min-h-0 md:flex-[3] md:min-w-[min(100%,640px)]'
+                    ? 'z-[1] min-h-[min(72vh,460px)] md:min-h-0 md:flex-[3]'
                     : 'z-0 max-h-[72px] min-h-[72px] md:max-h-none md:min-h-full md:flex-[0.65] md:min-w-[3.25rem]',
                   expanded && 'max-md:order-first',
                 )}
@@ -165,7 +165,7 @@ export function SocialVideoShowcase({
                 </div>
 
                 {expanded ? (
-                  <div className="relative z-10 flex h-full min-h-[min(68vh,440px)] w-full flex-col bg-cream md:min-h-0">
+                  <div className="relative z-10 flex h-full min-h-[min(68vh,440px)] w-full flex-col bg-white md:min-h-0">
                     <iframe
                       title={item.title}
                       src={tweetEmbedSrc(item.tweetId)}

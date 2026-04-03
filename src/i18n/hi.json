@@ -56,17 +56,17 @@
     "header": "सार्वजनिक जीवन में मेरी यात्रा",
     "subtext": "कदम दर कदम निर्मित। लोगों को केंद्र में रखकर।",
     "items": [
-      { "year": "1999", "title": "सेवा से शुरुआत, राजनीति से नहीं", "desc": "भाजपा चिकित्सा विंग से स्वास्थ्य सेवा पर ध्यान" },
-      { "year": "2001", "title": "जल्दी नेतृत्व में आईं", "desc": "राज्य महासचिव, चिकित्सा विंग" },
-      { "year": "2005", "title": "तमिलनाडु से परे प्रभाव", "desc": "दक्षिणी राज्यों की जिम्मेदारी" },
-      { "year": "2010", "title": "राज्य नेतृत्व में मान्यता", "desc": "राज्य उपाध्यक्ष, भाजपा तमिलनाडु" },
-      { "year": "2013", "title": "राष्ट्रीय नेतृत्व में प्रवेश", "desc": "राष्ट्रीय सचिव, भाजपा" },
-      { "year": "2014", "title": "तमिलनाडु भाजपा का नेतृत्व", "desc": "राज्य अध्यक्ष" },
-      { "year": "2014-19", "title": "जमीन पर बनी रहीं", "desc": "जिलों में काम किया" },
-      { "year": "2019", "title": "तेलंगाना की राज्यपाल बनीं", "desc": "राज्य की पहली महिला राज्यपाल" },
-      { "year": "2021", "title": "अतिरिक्त जिम्मेदारी", "desc": "पुडुचेरी की उप-राज्यपाल" },
-      { "year": "2024", "title": "सक्रिय राजनीति में वापसी", "desc": "सीधे जुड़ाव का चुनाव" },
-      { "year": "अब", "title": "लोगों के साथ खड़ी हूं", "desc": "सुन रही हूं, समझ रही हूं, काम कर रही हूं" }
+      { "year": "1999", "title": "सेवा से शुरुआत, राजनीति से नहीं", "desc": "भाजपा चिकित्सा विंग से स्वास्थ्य सेवा पर ध्यान", "image": "https://medicaldialogues.in/wp-content/uploads/2019/09/Dr-Tamilisai-Soundararajan.jpg" },
+      { "year": "2001", "title": "जल्दी नेतृत्व में आईं", "desc": "राज्य महासचिव, चिकित्सा विंग", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan.jpg" },
+      { "year": "2005", "title": "तमिलनाडु से परे प्रभाव", "desc": "दक्षिणी राज्यों की जिम्मेदारी", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan-5.jpg" },
+      { "year": "2010", "title": "राज्य नेतृत्व में मान्यता", "desc": "राज्य उपाध्यक्ष, भाजपा तमिलनाडु", "image": "https://starsunfolded.com/wp-content/uploads/2024/03/Tamilisai-Soundararajan.jpg" },
+      { "year": "2013", "title": "राष्ट्रीय नेतृत्व में प्रवेश", "desc": "राष्ट्रीय सचिव, भाजपा", "image": "https://alchetron.com/cdn/tamilisai-soundararajan-8c41c2b7-cf74-4b8e-abc9-ff68e329e81-resize-750.jpeg" },
+      { "year": "2014", "title": "तमिलनाडु भाजपा का नेतृत्व", "desc": "राज्य अध्यक्ष", "image": "https://staticprintenglish.theprint.in/wp-content/uploads/2024/03/Untitled-design-7-2.png" },
+      { "year": "2014-19", "title": "जमीन पर बनी रहीं", "desc": "जिलों में काम किया", "image": "https://pbs.twimg.com/media/EDYGEUeVUAAdPnN.jpg" },
+      { "year": "2019", "title": "तेलंगाना की राज्यपाल बनीं", "desc": "राज्य की पहली महिला राज्यपाल", "image": "https://assets.thehansindia.com/h-upload/feeds/2019/09/08/213982-ts-guv.jpg" },
+      { "year": "2021", "title": "अतिरिक्त जिम्मेदारी", "desc": "पुडुचेरी की उप-राज्यपाल", "image": "https://media.assettype.com/tnm/import/sites/default/files/TamilisaiSoundarajan_Swearingin_Facebook_18022021_1200.jpg" },
+      { "year": "2024", "title": "सक्रिय राजनीति में वापसी", "desc": "सीधे जुड़ाव का चुनाव", "image": "https://newstodaynet.com/storage/2024/03/download-6-22.jpg" },
+      { "year": "अब", "title": "लोगों के साथ खड़ी हूं", "desc": "सुन रही हूं, समझ रही हूं, काम कर रही हूं", "image": "https://www.mylaporetimes.com/wp-content/uploads/2026/03/be5e3dd0-d72a-4125-8b03-28077e15f898.jpg" }
     ]
   },
   "journeyMeaning": {
@@ -87,22 +87,36 @@
         "tweetId": "2039340495537914031",
         "title": "मैदान में",
         "description": "क्षेत्र में जमीनी काम और जनसंपर्क।",
-        "thumbnail": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HE0xVnJaYAAB5Fu.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2039340495537914031"
       },
       {
         "tweetId": "2038549159448650095",
         "title": "आदिवासी कल्याण",
         "description": "तेलंगाना के दूरस्थ क्षेत्रों में स्वास्थ्य पहल, छह आदिवासी ग्राम गोद लेना, राष्ट्रीय पोषण संस्थान (NIN) के साथ पोषण कार्यक्रम, आदिवासी महिलाओं में हीमोग्लोबिन सुधार।",
-        "thumbnail": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HEphp4wbIAAi8Ih.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2038549159448650095"
       },
       {
         "tweetId": "2034156082067869760",
         "title": "सार्वजनिक जीवन",
         "description": "सेवा, नेतृत्व और लोगों की सुनवाई के क्षण।",
-        "thumbnail": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773f?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HDrGLB0bEAAe3gO.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2034156082067869760"
+      },
+      {
+        "tweetId": "2037237100651962805",
+        "title": "शिक्षा और युवा",
+        "description": "अगली पीढ़ी को प्रेरित करने के लिए छात्रों और शैक्षणिक संस्थानों से जुड़ाव।",
+        "thumbnail": "https://pbs.twimg.com/media/HEW4TStbYAM7qFu.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/2037237100651962805"
+      },
+      {
+        "tweetId": "1979933446744273072",
+        "title": "जनसंपर्क",
+        "description": "सबसे मजबूत बूथ पहल के तहत गली-मोहल्ले में बूथ उत्सव और सामुदायिक संपर्क।",
+        "thumbnail": "https://pbs.twimg.com/ext_tw_video_thumb/1979933401281900544/pu/img/8kdvXYRVbsuNF5Bk.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/1979933446744273072"
       }
     ]
   },

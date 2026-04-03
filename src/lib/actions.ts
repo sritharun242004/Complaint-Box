@@ -3,6 +3,7 @@
 import { prisma } from './prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { uploadToS3 } from './s3'
 
 const badWords = ['abuse', 'spam', 'hack']
 function containsBadWords(text: string): boolean {
@@ -48,9 +49,10 @@ export async function createComplaint(formData: FormData) {
     }
     const bytes = await photo.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    const base64 = buffer.toString('base64')
     const mimeType = photo.type || 'image/jpeg'
-    imageUrl = `data:${mimeType};base64,${base64}`
+    const ext = mimeType.split('/')[1] || 'jpg'
+    const key = `complaints/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+    imageUrl = await uploadToS3(buffer, key, mimeType)
   }
 
   const complaint = await prisma.complaint.create({
@@ -197,6 +199,18 @@ export async function quickUpvote(complaintId: string) {
   return { success: true }
 }
 
+export async function quickDownvote(complaintId: string) {
+  await prisma.complaint.update({
+    where: { id: complaintId },
+    data: { upvotes: { decrement: 1 } },
+  })
+
+  revalidatePath('/pugaar-petti')
+  revalidatePath(`/complaint/${complaintId}`)
+
+  return { success: true }
+}
+
 // ============ ADMIN ACTIONS ============
 
 export async function getAllComplaints() {
@@ -241,7 +255,16 @@ export async function adminReply(complaintId: string, reply: string, imageBase64
   }
 
   if (imageBase64) {
-    data.adminReplyImage = imageBase64
+    const match = imageBase64.match(/^data:(.+?);base64,(.+)$/)
+    if (match) {
+      const mimeType = match[1]
+      const buffer = Buffer.from(match[2], 'base64')
+      const ext = mimeType.split('/')[1] || 'jpg'
+      const key = `replies/${complaintId}-${Date.now()}.${ext}`
+      data.adminReplyImage = await uploadToS3(buffer, key, mimeType)
+    } else {
+      data.adminReplyImage = imageBase64
+    }
   }
 
   await prisma.complaint.update({

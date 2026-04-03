@@ -56,17 +56,17 @@
     "header": "My journey in public life",
     "subtext": "Built step by step. With people at the center.",
     "items": [
-      { "year": "1999", "title": "Started with service, not politics", "desc": "Began through BJP medical wing focusing on healthcare" },
-      { "year": "2001", "title": "Stepped into leadership early", "desc": "State General Secretary, Medical Wing" },
-      { "year": "2005", "title": "Expanded impact beyond Tamil Nadu", "desc": "Handled southern states responsibilities" },
-      { "year": "2010", "title": "Recognized at state leadership", "desc": "State Vice-President, BJP Tamil Nadu" },
-      { "year": "2013", "title": "Entered national leadership", "desc": "National Secretary, BJP" },
-      { "year": "2014", "title": "Led Tamil Nadu BJP", "desc": "State President" },
-      { "year": "2014-19", "title": "Stayed on the ground", "desc": "Worked across districts" },
-      { "year": "2019", "title": "Became Governor of Telangana", "desc": "First woman Governor of the state" },
-      { "year": "2021", "title": "Additional responsibility", "desc": "Lieutenant Governor, Puducherry" },
-      { "year": "2024", "title": "Returned to active politics", "desc": "Chose direct engagement" },
-      { "year": "Now", "title": "Standing with people", "desc": "Listening, understanding, acting" }
+      { "year": "1999", "title": "Started with service, not politics", "desc": "Began through BJP medical wing focusing on healthcare", "image": "https://medicaldialogues.in/wp-content/uploads/2019/09/Dr-Tamilisai-Soundararajan.jpg" },
+      { "year": "2001", "title": "Stepped into leadership early", "desc": "State General Secretary, Medical Wing", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan.jpg" },
+      { "year": "2005", "title": "Expanded impact beyond Tamil Nadu", "desc": "Handled southern states responsibilities", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan-5.jpg" },
+      { "year": "2010", "title": "Recognized at state leadership", "desc": "State Vice-President, BJP Tamil Nadu", "image": "https://starsunfolded.com/wp-content/uploads/2024/03/Tamilisai-Soundararajan.jpg" },
+      { "year": "2013", "title": "Entered national leadership", "desc": "National Secretary, BJP", "image": "https://alchetron.com/cdn/tamilisai-soundararajan-8c41c2b7-cf74-4b8e-abc9-ff68e329e81-resize-750.jpeg" },
+      { "year": "2014", "title": "Led Tamil Nadu BJP", "desc": "State President", "image": "https://staticprintenglish.theprint.in/wp-content/uploads/2024/03/Untitled-design-7-2.png" },
+      { "year": "2014-19", "title": "Stayed on the ground", "desc": "Worked across districts", "image": "https://pbs.twimg.com/media/EDYGEUeVUAAdPnN.jpg" },
+      { "year": "2019", "title": "Became Governor of Telangana", "desc": "First woman Governor of the state", "image": "https://assets.thehansindia.com/h-upload/feeds/2019/09/08/213982-ts-guv.jpg" },
+      { "year": "2021", "title": "Additional responsibility", "desc": "Lieutenant Governor, Puducherry", "image": "https://media.assettype.com/tnm/import/sites/default/files/TamilisaiSoundarajan_Swearingin_Facebook_18022021_1200.jpg" },
+      { "year": "2024", "title": "Returned to active politics", "desc": "Chose direct engagement", "image": "https://newstodaynet.com/storage/2024/03/download-6-22.jpg" },
+      { "year": "Now", "title": "Standing with people", "desc": "Listening, understanding, acting", "image": "https://www.mylaporetimes.com/wp-content/uploads/2026/03/be5e3dd0-d72a-4125-8b03-28077e15f898.jpg" }
     ]
   },
   "journeyMeaning": {
@@ -87,22 +87,36 @@
         "tweetId": "2039340495537914031",
         "title": "On the ground",
         "description": "Field updates and public engagement from the constituency.",
-        "thumbnail": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HE0xVnJaYAAB5Fu.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2039340495537914031"
       },
       {
         "tweetId": "2038549159448650095",
         "title": "Tribal welfare",
         "description": "Spearheaded health initiatives in Telangana's remote areas, including adopting six tribal villages, launching nutrition programs with the National Institute of Nutrition (NIN), and improving haemoglobin levels among tribal women.",
-        "thumbnail": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HEphp4wbIAAi8Ih.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2038549159448650095"
       },
       {
         "tweetId": "2034156082067869760",
         "title": "Public life",
         "description": "Highlights from service, leadership, and listening to people.",
-        "thumbnail": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773f?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HDrGLB0bEAAe3gO.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2034156082067869760"
+      },
+      {
+        "tweetId": "2037237100651962805",
+        "title": "Education & youth",
+        "description": "Engaging with students and academic institutions to inspire the next generation.",
+        "thumbnail": "https://pbs.twimg.com/media/HEW4TStbYAM7qFu.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/2037237100651962805"
+      },
+      {
+        "tweetId": "1979933446744273072",
+        "title": "Grassroots connect",
+        "description": "Street corner booth celebrations and community outreach following the strongest booth initiative.",
+        "thumbnail": "https://pbs.twimg.com/ext_tw_video_thumb/1979933401281900544/pu/img/8kdvXYRVbsuNF5Bk.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/1979933446744273072"
       }
     ]
   },

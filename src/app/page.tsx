@@ -38,9 +38,9 @@ const sectionTitle =
 const WHO_I_AM_IMAGES = [
   '/Dr Tamilisai Soundararajan Main Pic.jpg',
   '/Tamilisai Thumbnail.jpg',
-  '/Dr Tamilisai Soundararajan Main Pic.jpg',
+  'https://staticprintenglish.theprint.in/wp-content/uploads/2021/02/Tamilisai-Soundarajan.jpg',
   '/mylapore.png',
-  '/Tamilisai Thumbnail.jpg',
+  'https://www.pondiuni.edu.in/wp-content/uploads/2021/06/HappeningPU18.06.2021-img2-1024x575.jpg',
 ] as const
 
 export default function Home() {

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useI18n } from '@/i18n/context'
 import ShareSheet from '@/components/ShareSheet'
-import { quickUpvote } from '@/lib/actions'
+import { quickUpvote, quickDownvote } from '@/lib/actions'
 
 type Props = {
   complaint: {
@@ -46,12 +46,20 @@ export default function ComplaintDetail({ complaint }: Props) {
   }, [complaint.id])
 
   async function handleUpvote() {
-    if (voted || upvoting) return
+    if (upvoting) return
     setUpvoting(true)
-    setUpvotes(prev => prev + 1)
-    setVoted(true)
-    localStorage.setItem(`voted_${complaint.id}`, '1')
-    await quickUpvote(complaint.id)
+    const key = `voted_${complaint.id}`
+    if (voted) {
+      setUpvotes(prev => prev - 1)
+      setVoted(false)
+      localStorage.removeItem(key)
+      await quickDownvote(complaint.id)
+    } else {
+      setUpvotes(prev => prev + 1)
+      setVoted(true)
+      localStorage.setItem(key, '1')
+      await quickUpvote(complaint.id)
+    }
     setUpvoting(false)
   }
 
@@ -157,10 +165,10 @@ export default function ComplaintDetail({ complaint }: Props) {
             <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border">
               <button
                 onClick={handleUpvote}
-                disabled={voted || upvoting}
+                disabled={upvoting}
                 className={`flex items-center justify-center gap-2 font-bold px-6 py-3 rounded-full transition-all ${
                   voted
-                    ? 'bg-primary/20 text-primary cursor-default'
+                    ? 'bg-primary/20 text-primary hover:bg-primary/30 active:scale-[0.98]'
                     : 'bg-primary text-white hover:bg-primary-dark hover:scale-[1.02]'
                 }`}
               >

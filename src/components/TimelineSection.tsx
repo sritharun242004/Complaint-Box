@@ -46,15 +46,30 @@ function TimelineCard({
           transition: 'clip-path 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
-        <div
-          className="w-full h-full flex items-center justify-center bg-primary-light/30"
-          style={{
-            transform: `translateX(${Math.max(0, (1 - revealAmount) * 16)}px)`,
-            transition: 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
-          }}
-        >
-          <span className="text-4xl sm:text-5xl font-semibold font-display text-primary/25 select-none">{item.year}</span>
-        </div>
+        {item.image ? (
+          <div
+            className="relative w-full h-full"
+            style={{
+              transform: `translateX(${Math.max(0, (1 - revealAmount) * 16)}px)`,
+              transition: 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={item.image} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            <span className="absolute bottom-3 left-3 text-2xl sm:text-3xl font-semibold font-display text-white select-none drop-shadow-md">{item.year}</span>
+          </div>
+        ) : (
+          <div
+            className="w-full h-full flex items-center justify-center bg-primary-light/30"
+            style={{
+              transform: `translateX(${Math.max(0, (1 - revealAmount) * 16)}px)`,
+              transition: 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            }}
+          >
+            <span className="text-4xl sm:text-5xl font-semibold font-display text-primary/25 select-none">{item.year}</span>
+          </div>
+        )}
       </div>
 
       <span

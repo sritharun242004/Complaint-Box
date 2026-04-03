@@ -56,17 +56,17 @@
     "header": "பொது வாழ்வில் என் பயணம்",
     "subtext": "படிப்படியாக கட்டமைக்கப்பட்டது. மக்களை மையமாக கொண்டு.",
     "items": [
-      { "year": "1999", "title": "சேவையிலிருந்து தொடக்கம்", "desc": "பாஜக மருத்துவ பிரிவு மூலம் சுகாதாரத்தில் கவனம்" },
-      { "year": "2001", "title": "தலைமைப் பொறுப்பு", "desc": "மாநில பொதுச் செயலாளர், மருத்துவ பிரிவு" },
-      { "year": "2005", "title": "தமிழ்நாட்டை தாண்டிய தாக்கம்", "desc": "தென் மாநிலங்கள் பொறுப்பு" },
-      { "year": "2010", "title": "மாநில தலைமையில் அங்கீகாரம்", "desc": "மாநில துணைத் தலைவர், பாஜக தமிழ்நாடு" },
-      { "year": "2013", "title": "தேசிய தலைமையில் நுழைவு", "desc": "தேசிய செயலாளர், பாஜக" },
-      { "year": "2014", "title": "தமிழ்நாடு பாஜக தலைவர்", "desc": "மாநிலத் தலைவர்" },
-      { "year": "2014-19", "title": "களத்தில் நின்றேன்", "desc": "மாவட்டங்கள் முழுவதும் பணியாற்றினேன்" },
-      { "year": "2019", "title": "தெலங்கானா ஆளுநர்", "desc": "மாநிலத்தின் முதல் பெண் ஆளுநர்" },
-      { "year": "2021", "title": "கூடுதல் பொறுப்பு", "desc": "புதுச்சேரி துணை ஆளுநர்" },
-      { "year": "2024", "title": "செயல் அரசியலுக்கு திரும்புதல்", "desc": "நேரடி ஈடுபாட்டை தேர்ந்தெடுத்தேன்" },
-      { "year": "இப்போது", "title": "மக்களுடன் நிற்கிறேன்", "desc": "கேட்கிறேன், புரிந்துகொள்கிறேன், செயல்படுகிறேன்" }
+      { "year": "1999", "title": "சேவையிலிருந்து தொடக்கம்", "desc": "பாஜக மருத்துவ பிரிவு மூலம் சுகாதாரத்தில் கவனம்", "image": "https://medicaldialogues.in/wp-content/uploads/2019/09/Dr-Tamilisai-Soundararajan.jpg" },
+      { "year": "2001", "title": "தலைமைப் பொறுப்பு", "desc": "மாநில பொதுச் செயலாளர், மருத்துவ பிரிவு", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan.jpg" },
+      { "year": "2005", "title": "தமிழ்நாட்டை தாண்டிய தாக்கம்", "desc": "தென் மாநிலங்கள் பொறுப்பு", "image": "https://wikibio.in/wp-content/uploads/2023/09/Tamilisai-Soundararajan-5.jpg" },
+      { "year": "2010", "title": "மாநில தலைமையில் அங்கீகாரம்", "desc": "மாநில துணைத் தலைவர், பாஜக தமிழ்நாடு", "image": "https://starsunfolded.com/wp-content/uploads/2024/03/Tamilisai-Soundararajan.jpg" },
+      { "year": "2013", "title": "தேசிய தலைமையில் நுழைவு", "desc": "தேசிய செயலாளர், பாஜக", "image": "https://alchetron.com/cdn/tamilisai-soundararajan-8c41c2b7-cf74-4b8e-abc9-ff68e329e81-resize-750.jpeg" },
+      { "year": "2014", "title": "தமிழ்நாடு பாஜக தலைவர்", "desc": "மாநிலத் தலைவர்", "image": "https://staticprintenglish.theprint.in/wp-content/uploads/2024/03/Untitled-design-7-2.png" },
+      { "year": "2014-19", "title": "களத்தில் நின்றேன்", "desc": "மாவட்டங்கள் முழுவதும் பணியாற்றினேன்", "image": "https://pbs.twimg.com/media/EDYGEUeVUAAdPnN.jpg" },
+      { "year": "2019", "title": "தெலங்கானா ஆளுநர்", "desc": "மாநிலத்தின் முதல் பெண் ஆளுநர்", "image": "https://assets.thehansindia.com/h-upload/feeds/2019/09/08/213982-ts-guv.jpg" },
+      { "year": "2021", "title": "கூடுதல் பொறுப்பு", "desc": "புதுச்சேரி துணை ஆளுநர்", "image": "https://media.assettype.com/tnm/import/sites/default/files/TamilisaiSoundarajan_Swearingin_Facebook_18022021_1200.jpg" },
+      { "year": "2024", "title": "செயல் அரசியலுக்கு திரும்புதல்", "desc": "நேரடி ஈடுபாட்டை தேர்ந்தெடுத்தேன்", "image": "https://newstodaynet.com/storage/2024/03/download-6-22.jpg" },
+      { "year": "இப்போது", "title": "மக்களுடன் நிற்கிறேன்", "desc": "கேட்கிறேன், புரிந்துகொள்கிறேன், செயல்படுகிறேன்", "image": "https://www.mylaporetimes.com/wp-content/uploads/2026/03/be5e3dd0-d72a-4125-8b03-28077e15f898.jpg" }
     ]
   },
   "journeyMeaning": {
@@ -87,22 +87,36 @@
         "tweetId": "2039340495537914031",
         "title": "களத்தில்",
         "description": "தொகுதியில் களப் பணி மற்றும் மக்கள் தொடர்பு.",
-        "thumbnail": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HE0xVnJaYAAB5Fu.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2039340495537914031"
       },
       {
         "tweetId": "2038549159448650095",
         "title": "பழங்குடி நலன்",
         "description": "தெலங்கானாவின் தொலை பகுதிகளில் சுகாதார முன்னெடுப்புகள், ஆறு பழங்குடி கிராமங்களைத் தத்தெடுத்தல், தேசிய ஊட்டச்சத்து நிறுவனத்துடன் (NIN) ஊட்டச்சத்து திட்டங்கள், பழங்குடி பெண்களின் ஹீமோகுளோபின் மேம்பாடு.",
-        "thumbnail": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HEphp4wbIAAi8Ih.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2038549159448650095"
       },
       {
         "tweetId": "2034156082067869760",
         "title": "பொது வாழ்க்கை",
         "description": "சேவை, தலைமைத்துவம் மற்றும் மக்களைக் கேட்டல்.",
-        "thumbnail": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773f?w=800&q=80&auto=format&fit=crop",
+        "thumbnail": "https://pbs.twimg.com/media/HDrGLB0bEAAe3gO.jpg",
         "postUrl": "https://x.com/drtamilisai4bjp/status/2034156082067869760"
+      },
+      {
+        "tweetId": "2037237100651962805",
+        "title": "கல்வி & இளைஞர்",
+        "description": "அடுத்த தலைமுறையை ஊக்குவிக்க மாணவர்கள் மற்றும் கல்வி நிறுவனங்களுடன் ஈடுபாடு.",
+        "thumbnail": "https://pbs.twimg.com/media/HEW4TStbYAM7qFu.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/2037237100651962805"
+      },
+      {
+        "tweetId": "1979933446744273072",
+        "title": "மக்கள் தொடர்பு",
+        "description": "வலுவான சாவடி முன்முயற்சியின் கீழ் தெரு மூலை சாவடி கொண்டாட்டங்கள் மற்றும் சமுதாய தொடர்புகள்.",
+        "thumbnail": "https://pbs.twimg.com/ext_tw_video_thumb/1979933401281900544/pu/img/8kdvXYRVbsuNF5Bk.jpg",
+        "postUrl": "https://x.com/DrTamilisai4BJP/status/1979933446744273072"
       }
     ]
   },
