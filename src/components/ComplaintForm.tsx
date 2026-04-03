@@ -52,7 +52,12 @@ export default function ComplaintForm() {
         setError(result.error)
         setLoading(false)
       }
-    } catch (err) {
+    } catch (err: unknown) {
+      // Next.js redirect() throws a NEXT_REDIRECT error — don't catch it as a failure
+      const message = err instanceof Error ? err.message : String(err)
+      if (message.includes('NEXT_REDIRECT') || message.includes('NEXT_NOT_FOUND')) {
+        return // redirect is happening, let it through
+      }
       setError('Something went wrong. Please try again.')
       setLoading(false)
     }

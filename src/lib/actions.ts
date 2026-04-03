@@ -55,23 +55,31 @@ export async function createComplaint(formData: FormData) {
     imageUrl = await uploadToS3(buffer, key, mimeType)
   }
 
-  const complaint = await prisma.complaint.create({
-    data: {
-      name,
-      mobile,
-      area,
-      title,
-      description,
-      category,
-      imageUrl,
-      location: location || null,
-      latitude: latitude ? parseFloat(latitude) : null,
-      longitude: longitude ? parseFloat(longitude) : null,
-    },
-  })
+  let complaintId: string
+
+  try {
+    const complaint = await prisma.complaint.create({
+      data: {
+        name,
+        mobile,
+        area,
+        title,
+        description,
+        category,
+        imageUrl,
+        location: location || null,
+        latitude: latitude ? parseFloat(latitude) : null,
+        longitude: longitude ? parseFloat(longitude) : null,
+      },
+    })
+    complaintId = complaint.id
+  } catch (e) {
+    console.error('Failed to create complaint:', e)
+    return { error: 'Failed to submit complaint. Please try again.' }
+  }
 
   revalidatePath('/pugaar-petti')
-  redirect(`/complaint/${complaint.id}`)
+  redirect(`/complaint/${complaintId}`)
 }
 
 // Lightweight complaint list — never sends image blobs to client
