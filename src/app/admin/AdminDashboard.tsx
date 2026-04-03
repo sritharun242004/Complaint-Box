@@ -38,7 +38,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   const [complaints, setComplaints] = useState(initial)
   const [selected, setSelected] = useState<Complaint | null>(null)
   const [reply, setReply] = useState('')
-  const [replyImage, setReplyImage] = useState<string | null>(null)
+  const [replyImageFile, setReplyImageFile] = useState<File | null>(null)
   const [replyImagePreview, setReplyImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState<string>('all')
@@ -53,13 +53,9 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
       alert('Image must be under 5MB')
       return
     }
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const base64 = ev.target?.result as string
-      setReplyImage(base64)
-      setReplyImagePreview(base64)
-    }
-    reader.readAsDataURL(file)
+    setReplyImageFile(file)
+    const url = URL.createObjectURL(file)
+    setReplyImagePreview(url)
   }
 
   async function handleLogout() {
@@ -93,15 +89,23 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   async function handleReply() {
     if (!selected || !reply.trim()) return
     setLoading(true)
-    const result = await adminReply(selected.id, reply, replyImage)
+    const formData = new FormData()
+    formData.set('complaintId', selected.id)
+    formData.set('reply', reply)
+    if (replyImageFile) {
+      formData.set('photo', replyImageFile)
+    }
+    const result = await adminReply(formData)
     if (result.success) {
-      const hasReplyImg = !!replyImage
+      const hasReplyImg = !!replyImageFile
       setComplaints(prev => prev.map(c =>
         c.id === selected.id ? { ...c, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || c.hasAdminReplyImage } : c
       ))
       setSelected(prev => prev ? { ...prev, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || prev.hasAdminReplyImage } : null)
-      setReplyImage(null)
+      setReplyImageFile(null)
       setReplyImagePreview(null)
+    } else if (result.error) {
+      alert(result.error)
     }
     setLoading(false)
   }
@@ -195,7 +199,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                 {filtered.map(c => (
                   <button
                     key={c.id}
-                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImage(null); setReplyImagePreview(null) }}
+                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null) }}
                     className={`w-full text-left min-h-[44px] px-4 py-3.5 sm:px-5 hover:bg-[#F9FAFB] transition-colors ${
                       selected?.id === c.id ? 'bg-primary/[0.03] border-l-2 border-l-primary' : ''
                     }`}
@@ -410,7 +414,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                         <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-3">
                           <span className="text-xs text-white font-medium">Image attached</span>
                           <button
-                            onClick={() => { setReplyImage(null); setReplyImagePreview(null) }}
+                            onClick={() => { setReplyImageFile(null); setReplyImagePreview(null) }}
                             className="min-h-[36px] min-w-[36px] bg-black/50 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

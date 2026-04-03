@@ -260,8 +260,13 @@ export async function getAllComplaints() {
   })
 }
 
-export async function adminReply(complaintId: string, reply: string, imageBase64?: string | null) {
-  if (!reply.trim()) return { error: 'Reply cannot be empty' }
+export async function adminReply(formData: FormData) {
+  const complaintId = formData.get('complaintId') as string
+  const reply = formData.get('reply') as string
+  const photo = formData.get('photo') as File | null
+
+  if (!complaintId) return { error: 'Missing complaint ID' }
+  if (!reply?.trim()) return { error: 'Reply cannot be empty' }
 
   const data: Record<string, unknown> = {
     adminReply: reply.trim(),
@@ -269,16 +274,20 @@ export async function adminReply(complaintId: string, reply: string, imageBase64
     status: 'reviewed',
   }
 
-  if (imageBase64) {
-    const match = imageBase64.match(/^data:(.+?);base64,(.+)$/)
-    if (match) {
-      const mimeType = match[1]
-      const buffer = Buffer.from(match[2], 'base64')
+  if (photo && photo.size > 0) {
+    if (photo.size > 5 * 1024 * 1024) {
+      return { error: 'Image must be under 5MB' }
+    }
+    try {
+      const bytes = await photo.arrayBuffer()
+      const buffer = Buffer.from(bytes)
+      const mimeType = photo.type || 'image/jpeg'
       const ext = mimeType.split('/')[1] || 'jpg'
       const key = `replies/${complaintId}-${Date.now()}.${ext}`
       data.adminReplyImage = await uploadToS3(buffer, key, mimeType)
-    } else {
-      data.adminReplyImage = imageBase64
+    } catch (e) {
+      console.error('S3 upload error for admin reply:', e)
+      return { error: 'Failed to upload image. Please try again.' }
     }
   }
 
