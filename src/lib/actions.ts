@@ -36,7 +36,13 @@ export async function createComplaint(formData: FormData) {
   }
 
   // ONE COMPLAINT PER MOBILE NUMBER
-  const existing = await prisma.complaint.findUnique({ where: { mobile } })
+  let existing
+  try {
+    existing = await prisma.complaint.findUnique({ where: { mobile } })
+  } catch (e) {
+    console.error('DB connection error:', e)
+    return { error: 'Database connection failed. Please try again later.' }
+  }
   if (existing) {
     return { error: 'You have already submitted a complaint with this mobile number. Only one complaint per person is allowed.' }
   }
@@ -47,12 +53,17 @@ export async function createComplaint(formData: FormData) {
     if (photo.size > 5 * 1024 * 1024) {
       return { error: 'Image must be under 5MB' }
     }
-    const bytes = await photo.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    const mimeType = photo.type || 'image/jpeg'
-    const ext = mimeType.split('/')[1] || 'jpg'
-    const key = `complaints/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-    imageUrl = await uploadToS3(buffer, key, mimeType)
+    try {
+      const bytes = await photo.arrayBuffer()
+      const buffer = Buffer.from(bytes)
+      const mimeType = photo.type || 'image/jpeg'
+      const ext = mimeType.split('/')[1] || 'jpg'
+      const key = `complaints/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+      imageUrl = await uploadToS3(buffer, key, mimeType)
+    } catch (e) {
+      console.error('S3 upload error:', e)
+      return { error: 'Failed to upload image. Please try again.' }
+    }
   }
 
   let complaintId: string
