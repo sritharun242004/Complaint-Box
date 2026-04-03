@@ -40,6 +40,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
   const [reply, setReply] = useState('')
   const [replyImageFile, setReplyImageFile] = useState<File | null>(null)
   const [replyImagePreview, setReplyImagePreview] = useState<string | null>(null)
+  const [removeExistingImage, setRemoveExistingImage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState<string>('all')
   const [search, setSearch] = useState('')
@@ -95,15 +96,23 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
     if (replyImageFile) {
       formData.set('photo', replyImageFile)
     }
+    if (removeExistingImage && !replyImageFile) {
+      formData.set('removeImage', 'true')
+    }
     const result = await adminReply(formData)
     if (result.success) {
-      const hasReplyImg = !!replyImageFile
+      const hasReplyImg = replyImageFile
+        ? true
+        : removeExistingImage
+          ? false
+          : selected.hasAdminReplyImage
       setComplaints(prev => prev.map(c =>
-        c.id === selected.id ? { ...c, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || c.hasAdminReplyImage } : c
+        c.id === selected.id ? { ...c, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg } : c
       ))
-      setSelected(prev => prev ? { ...prev, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg || prev.hasAdminReplyImage } : null)
+      setSelected(prev => prev ? { ...prev, adminReply: reply, repliedAt: new Date().toISOString(), status: 'reviewed', hasAdminReplyImage: hasReplyImg } : null)
       setReplyImageFile(null)
       setReplyImagePreview(null)
+      setRemoveExistingImage(false)
     } else if (result.error) {
       alert(result.error)
     }
@@ -199,7 +208,7 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                 {filtered.map(c => (
                   <button
                     key={c.id}
-                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null) }}
+                    onClick={() => { setSelected(c); setReply(c.adminReply || ''); setReplyImageFile(null); setReplyImagePreview(null); setRemoveExistingImage(false) }}
                     className={`w-full text-left min-h-[44px] px-4 py-3.5 sm:px-5 hover:bg-[#F9FAFB] transition-colors ${
                       selected?.id === c.id ? 'bg-primary/[0.03] border-l-2 border-l-primary' : ''
                     }`}
@@ -379,22 +388,14 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
 
                 {/* Reply section */}
                 <div className="border-t border-[#E5E7EB] pt-5">
-                  <h4 className="text-sm font-bold text-[#111827] mb-3">Admin Reply</h4>
-
-                  {selected.adminReply && (
-                    <div className="bg-primary/5 border border-primary/10 rounded-xl p-3.5 mb-3">
-                      <p className="text-sm text-[#374151]">{selected.adminReply}</p>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      {selected.hasAdminReplyImage && (
-                        <img src={`/api/reply-image/${selected.id}`} alt="Reply attachment" className="mt-2 w-full rounded-lg object-cover max-h-48" />
-                      )}
-                      {selected.repliedAt && (
-                        <p className="text-[10px] text-[#9CA3AF] mt-2">
-                          {new Date(selected.repliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-bold text-[#111827]">Admin Reply</h4>
+                    {selected.repliedAt && (
+                      <span className="text-[10px] text-[#9CA3AF]">
+                        Last updated {new Date(selected.repliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span>
+                    )}
+                  </div>
 
                   <textarea
                     value={reply}
@@ -404,42 +405,83 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
                     className="w-full px-3.5 py-3 min-h-[44px] rounded-xl border border-[#E5E7EB] focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none text-sm resize-none mb-3"
                   />
 
-                  {/* Image attachment */}
+                  {/* Image attachment area */}
                   <div className="mb-3">
+                    {/* New image preview (replacing or adding) */}
                     {replyImagePreview ? (
                       <div className="relative rounded-xl overflow-hidden border border-[#E5E7EB]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={replyImagePreview} alt="Preview" className="w-full max-h-48 object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-3">
-                          <span className="text-xs text-white font-medium">Image attached</span>
+                          <span className="text-xs text-white font-medium">New image</span>
                           <button
                             onClick={() => { setReplyImageFile(null); setReplyImagePreview(null) }}
                             className="min-h-[36px] min-w-[36px] bg-black/50 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                           </button>
                         </div>
                       </div>
+                    ) : selected.hasAdminReplyImage && !removeExistingImage ? (
+                      /* Existing reply image with edit controls */
+                      <div className="relative rounded-xl overflow-hidden border border-[#E5E7EB]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`/api/reply-image/${selected.id}`} alt="Current reply image" className="w-full max-h-48 object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-3">
+                          <span className="text-xs text-white font-medium">Current image</span>
+                          <div className="flex gap-2">
+                            <label className="min-h-[36px] min-w-[36px] bg-black/50 hover:bg-primary text-white rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                              </svg>
+                              <input type="file" accept="image/*" onChange={handleReplyImageChange} className="hidden" />
+                            </label>
+                            <button
+                              onClick={() => setRemoveExistingImage(true)}
+                              className="min-h-[36px] min-w-[36px] bg-black/50 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     ) : (
-                      <div className="flex gap-2">
-                        <label className="flex-1 flex items-center justify-center gap-2 min-h-[44px] px-3 py-2.5 rounded-xl border border-dashed border-[#E5E7EB] text-xs text-[#6B7280] cursor-pointer hover:border-primary hover:text-primary hover:bg-primary/[0.02] transition-colors">
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
-                          </svg>
-                          Choose photo
-                          <input type="file" accept="image/*" onChange={handleReplyImageChange} className="hidden" />
-                        </label>
-                        <label className="flex items-center justify-center gap-2 min-h-[44px] px-3 py-2.5 rounded-xl border border-dashed border-[#E5E7EB] text-xs text-[#6B7280] cursor-pointer hover:border-primary hover:text-primary hover:bg-primary/[0.02] transition-colors md:hidden">
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                          </svg>
-                          Camera
-                          <input type="file" accept="image/*" capture="environment" onChange={handleReplyImageChange} className="hidden" />
-                        </label>
+                      /* No image — show upload buttons */
+                      <div>
+                        {removeExistingImage && (
+                          <div className="flex items-center justify-between bg-red-50 border border-red-100 rounded-xl px-3.5 py-2.5 mb-2">
+                            <span className="text-xs text-red-600 font-medium">Image will be removed on save</span>
+                            <button
+                              onClick={() => setRemoveExistingImage(false)}
+                              className="text-xs text-red-500 hover:text-red-700 font-semibold underline"
+                            >
+                              Undo
+                            </button>
+                          </div>
+                        )}
+                        <div className="flex gap-2">
+                          <label className="flex-1 flex items-center justify-center gap-2 min-h-[44px] px-3 py-2.5 rounded-xl border border-dashed border-[#E5E7EB] text-xs text-[#6B7280] cursor-pointer hover:border-primary hover:text-primary hover:bg-primary/[0.02] transition-colors">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
+                            </svg>
+                            {removeExistingImage ? 'Replace with new photo' : 'Attach photo'}
+                            <input type="file" accept="image/*" onChange={handleReplyImageChange} className="hidden" />
+                          </label>
+                          <label className="flex items-center justify-center gap-2 min-h-[44px] px-3 py-2.5 rounded-xl border border-dashed border-[#E5E7EB] text-xs text-[#6B7280] cursor-pointer hover:border-primary hover:text-primary hover:bg-primary/[0.02] transition-colors md:hidden">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                            </svg>
+                            Camera
+                            <input type="file" accept="image/*" capture="environment" onChange={handleReplyImageChange} className="hidden" />
+                          </label>
+                        </div>
                       </div>
                     )}
                   </div>

@@ -264,6 +264,7 @@ export async function adminReply(formData: FormData) {
   const complaintId = formData.get('complaintId') as string
   const reply = formData.get('reply') as string
   const photo = formData.get('photo') as File | null
+  const removeImage = formData.get('removeImage') === 'true'
 
   if (!complaintId) return { error: 'Missing complaint ID' }
   if (!reply?.trim()) return { error: 'Reply cannot be empty' }
@@ -289,6 +290,8 @@ export async function adminReply(formData: FormData) {
       console.error('S3 upload error for admin reply:', e)
       return { error: 'Failed to upload image. Please try again.' }
     }
+  } else if (removeImage) {
+    data.adminReplyImage = null
   }
 
   await prisma.complaint.update({
