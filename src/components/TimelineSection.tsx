@@ -17,19 +17,23 @@ interface Props {
   headerClassName?: string
 }
 
-const CARD_GAP = 48
-
-function useResponsiveCardWidth() {
-  const [width, setWidth] = useState(300)
+function useResponsiveValues() {
+  const [values, setValues] = useState({ cardWidth: 300, gap: 48, isMobile: false })
   useEffect(() => {
     function calc() {
-      setWidth(Math.min(300, window.innerWidth * 0.85))
+      const w = window.innerWidth
+      const isMobile = w < 768
+      setValues({
+        cardWidth: Math.min(300, w * 0.82),
+        gap: isMobile ? 28 : 48,
+        isMobile,
+      })
     }
     calc()
     window.addEventListener('resize', calc)
     return () => window.removeEventListener('resize', calc)
   }, [])
-  return width
+  return values
 }
 
 function TimelineCard({
@@ -45,7 +49,6 @@ function TimelineCard({
   progress: number
   cardWidth: number
 }) {
-  // Map cards into 0–0.85 range so the last card fully reveals before scroll ends
   const cardCenter = totalItems > 1 ? (index / (totalItems - 1)) * 0.85 : 0
   const isRevealed = progress > cardCenter - 0.08
   const revealAmount = Math.min(1, Math.max(0, 1 - (Math.max(0, cardCenter - progress) * (totalItems - 1)) * 0.7))
@@ -53,10 +56,10 @@ function TimelineCard({
   return (
     <div className="flex flex-col items-center shrink-0" style={{ width: cardWidth }}>
       <div
-        className="overflow-hidden mb-4 sm:mb-6 relative bg-primary-light/40 border border-border"
+        className="overflow-hidden mb-3 sm:mb-6 relative bg-primary-light/40 border border-border"
         style={{
           width: cardWidth - 16,
-          height: 180,
+          height: 160,
           clipPath: `inset(0 ${Math.max(0, (1 - revealAmount) * 100)}% 0 0)`,
           transition: 'clip-path 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
@@ -72,7 +75,7 @@ function TimelineCard({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.image} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <span className="absolute bottom-3 left-3 text-2xl sm:text-3xl font-semibold font-display text-white select-none drop-shadow-md">{item.year}</span>
+            <span className="absolute bottom-2 left-2 text-xl sm:text-3xl font-semibold font-display text-white select-none drop-shadow-md">{item.year}</span>
           </div>
         ) : (
           <div
@@ -82,13 +85,13 @@ function TimelineCard({
               transition: 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
             }}
           >
-            <span className="text-4xl sm:text-5xl font-semibold font-display text-primary/25 select-none">{item.year}</span>
+            <span className="text-3xl sm:text-5xl font-semibold font-display text-primary/25 select-none">{item.year}</span>
           </div>
         )}
       </div>
 
       <span
-        className={`inline-block text-white text-[10px] sm:text-xs font-semibold px-3 py-1 mb-3 sm:mb-4 uppercase tracking-widest ${
+        className={`inline-block text-white text-[10px] sm:text-xs font-semibold px-3 py-1 mb-2 sm:mb-4 uppercase tracking-widest ${
           index % 2 === 0 ? 'bg-primary' : 'bg-accent'
         }`}
         style={{
@@ -100,7 +103,7 @@ function TimelineCard({
         {item.year}
       </span>
 
-      <div className="relative z-10 mb-3 sm:mb-4">
+      <div className="relative z-10 mb-2 sm:mb-4">
         <div
           className={`w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full ring-2 ring-white ${
             index % 2 === 0 ? 'bg-primary' : 'bg-accent'
@@ -113,7 +116,7 @@ function TimelineCard({
       </div>
 
       <div
-        className="border border-border bg-white p-5 transition-colors duration-200 sm:p-6 sm:hover:border-primary/30"
+        className="border border-border bg-white p-4 transition-colors duration-200 sm:p-6 sm:hover:border-primary/30"
         style={{
           width: cardWidth - 16,
           opacity: isRevealed ? 1 : 0,
@@ -121,8 +124,8 @@ function TimelineCard({
           transition: 'opacity 0.45s ease 0.06s, transform 0.45s ease 0.06s',
         }}
       >
-        <h3 className="mb-2 text-sm font-semibold text-text sm:mb-2.5 sm:text-base">{item.title}</h3>
-        <p className="text-xs leading-[1.7] text-muted sm:text-sm sm:leading-[1.72]">{item.desc}</p>
+        <h3 className="mb-1.5 text-sm font-semibold text-text sm:mb-2.5 sm:text-base">{item.title}</h3>
+        <p className="text-xs leading-[1.6] text-muted sm:text-sm sm:leading-[1.72]">{item.desc}</p>
       </div>
     </div>
   )
@@ -131,18 +134,24 @@ function TimelineCard({
 export default function TimelineSection({ items, header, subtext, headerClassName }: Props) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const cardWidth = useResponsiveCardWidth()
+  const { cardWidth, gap, isMobile } = useResponsiveValues()
 
-  const maxTranslate = Math.max(0, (items.length - 1) * (cardWidth + CARD_GAP))
+  const maxTranslate = Math.max(0, (items.length - 1) * (cardWidth + gap))
+
+  // On mobile: shorter scroll height so it doesn't feel endless
+  const sectionHeight = isMobile
+    ? `${Math.max(180, items.length * 32)}vh`
+    : `${Math.max(220, items.length * 38)}vh`
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   })
 
+  // Snappier spring on mobile
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 25,
+    stiffness: isMobile ? 120 : 80,
+    damping: isMobile ? 30 : 25,
     restDelta: 0.001,
   })
 
@@ -159,23 +168,23 @@ export default function TimelineSection({ items, header, subtext, headerClassNam
       id="journey"
       ref={sectionRef}
       className="relative bg-white border-t border-border"
-      style={{ height: `${Math.max(220, items.length * 38)}vh` }}
+      style={{ height: sectionHeight }}
     >
       <div className="sticky top-0 min-h-[100dvh] h-[100dvh] overflow-hidden flex flex-col">
         <motion.div
-          className="shrink-0 px-5 pb-6 pt-16 text-center sm:px-8 sm:pb-8 sm:pt-20 md:pt-24"
+          className="shrink-0 px-5 pb-4 pt-12 text-center sm:px-8 sm:pb-8 sm:pt-20 md:pt-24"
           style={{ y: headerY }}
         >
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary sm:mb-4 sm:text-sm">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary sm:mb-4 sm:text-sm">
             Journey
           </p>
-          <h2 className={`mb-3 px-2 text-2xl leading-[1.05] tracking-tighter text-text sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl ${headerClassName || 'font-heading uppercase'}`}>
+          <h2 className={`mb-2 px-2 text-xl leading-[1.05] tracking-tighter text-text sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl ${headerClassName || 'font-heading uppercase'}`}>
             {header}
           </h2>
-          <p className="mx-auto max-w-md px-2 text-sm leading-[1.72] text-muted sm:text-base sm:leading-[1.75]">{subtext}</p>
+          <p className="mx-auto max-w-md px-2 text-xs leading-[1.6] text-muted sm:text-base sm:leading-[1.75]">{subtext}</p>
         </motion.div>
 
-        <div className="flex justify-center mb-2 shrink-0">
+        <div className="flex justify-center mb-1 sm:mb-2 shrink-0">
           <motion.div
             className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted uppercase tracking-widest"
             animate={{ opacity: scrollProgress > 0.05 ? 0 : 1 }}
@@ -189,7 +198,7 @@ export default function TimelineSection({ items, header, subtext, headerClassNam
         </div>
 
         <div className="flex-1 flex items-center relative overflow-hidden min-h-0">
-          <div className="absolute left-0 right-0 pointer-events-none z-0" style={{ top: '50%', marginTop: 48 }}>
+          <div className="absolute left-0 right-0 pointer-events-none z-0" style={{ top: '50%', marginTop: 40 }}>
             <div className="h-px bg-border w-full" />
             <motion.div
               className="absolute top-0 left-0 h-px bg-primary origin-left"
@@ -200,7 +209,7 @@ export default function TimelineSection({ items, header, subtext, headerClassNam
           <motion.div
             className="flex items-start relative z-10"
             style={{
-              gap: CARD_GAP,
+              gap,
               paddingLeft: `calc(50vw - ${cardWidth / 2}px)`,
               paddingRight: `calc(50vw - ${cardWidth / 2}px)`,
               x: translateX,
@@ -219,7 +228,7 @@ export default function TimelineSection({ items, header, subtext, headerClassNam
           </motion.div>
         </div>
 
-        <div className="shrink-0 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8 sm:pb-8">
+        <div className="shrink-0 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8 sm:pb-8">
           <div className="max-w-xs mx-auto">
             <div className="h-px bg-border overflow-hidden">
               <motion.div className="h-full bg-accent" style={{ width: lineWidth }} />
