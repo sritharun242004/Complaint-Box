@@ -25,6 +25,12 @@ export default function ComplaintForm() {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be under 5 MB. Please choose a smaller photo.')
+      e.target.value = ''
+      return
+    }
+    setError('')
     setFileName(file.name)
     setPhotoFile(file)
     const reader = new FileReader()
@@ -59,7 +65,15 @@ export default function ComplaintForm() {
       if (message.includes('NEXT_REDIRECT') || message.includes('NEXT_NOT_FOUND')) {
         return // redirect is happening, let it through
       }
-      setError('Something went wrong. Please try again.')
+      // Show descriptive error based on what went wrong
+      if (message.toLowerCase().includes('body exceeded') || message.toLowerCase().includes('body size') || message.toLowerCase().includes('too large')) {
+        setError('Image is too large. Please upload an image under 5 MB.')
+      } else if (message.toLowerCase().includes('network') || message.toLowerCase().includes('fetch')) {
+        setError('Network error. Please check your internet connection and try again.')
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+      console.error('Complaint submission error:', message)
       setLoading(false)
     }
   }
@@ -206,6 +220,7 @@ export default function ComplaintForm() {
               <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange} className="hidden" />
             </div>
           )}
+          <p className="text-xs text-muted/60 mt-2">Max file size: 5 MB</p>
         </div>
 
         <motion.button
