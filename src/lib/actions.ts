@@ -260,6 +260,39 @@ export async function getAllComplaints() {
   })
 }
 
+export async function exportComplaints() {
+  const rows = await prisma.complaint.findMany({
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      name: true,
+      mobile: true,
+      area: true,
+      title: true,
+      description: true,
+      category: true,
+      location: true,
+      latitude: true,
+      longitude: true,
+      imageUrl: true,
+      upvotes: true,
+      status: true,
+      adminReply: true,
+      adminReplyImage: true,
+      repliedAt: true,
+      createdAt: true,
+      updatedAt: true,
+      _count: { select: { votes: true } },
+    },
+  })
+
+  return rows.map(r => ({
+    ...r,
+    imageUrl: r.imageUrl || '',
+    adminReplyImage: r.adminReplyImage || '',
+  }))
+}
+
 export async function adminReply(formData: FormData) {
   const complaintId = formData.get('complaintId') as string
   const reply = formData.get('reply') as string

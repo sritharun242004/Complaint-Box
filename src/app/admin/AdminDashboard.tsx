@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { adminReply, updateComplaintStatus, deleteComplaint } from '@/lib/actions'
+import { adminReply, updateComplaintStatus, deleteComplaint, exportComplaints } from '@/lib/actions'
 import { adminLogout } from '@/lib/admin-auth'
 
 type Complaint = {
@@ -138,6 +138,40 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
     if (selected?.id === id) setSelected(prev => prev ? { ...prev, status } : null)
   }
 
+  async function handleExport() {
+    const rows = await exportComplaints()
+    const headers = [
+      'ID', 'Name', 'Mobile', 'Area', 'Title', 'Description', 'Category',
+      'Location', 'Latitude', 'Longitude', 'Image URL', 'Upvotes', 'Vote Count',
+      'Status', 'Admin Reply', 'Admin Reply Image URL', 'Replied At', 'Created At', 'Updated At'
+    ]
+    const csvRows = rows.map(r => [
+      r.id, r.name, r.mobile, r.area, r.title, r.description, r.category,
+      r.location || '', r.latitude || '', r.longitude || '',
+      r.imageUrl, r.upvotes, r._count.votes,
+      r.status, r.adminReply || '', r.adminReplyImage,
+      r.repliedAt ? new Date(r.repliedAt).toISOString() : '',
+      new Date(r.createdAt).toISOString(),
+      new Date(r.updatedAt).toISOString(),
+    ])
+
+    const escape = (v: unknown) => {
+      const s = String(v ?? '')
+      return s.includes(',') || s.includes('"') || s.includes('\n')
+        ? `"${s.replace(/"/g, '""')}"`
+        : s
+    }
+
+    const csv = [headers.join(','), ...csvRows.map(row => row.map(escape).join(','))].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `complaints-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
       {/* Top bar */}
@@ -148,6 +182,15 @@ export default function AdminDashboard({ complaints: initial }: { complaints: Co
             <p className="text-xs text-[#6B7280] hidden sm:block">Manage complaints, reply, and update status</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <button
+              onClick={handleExport}
+              className="min-h-[44px] flex items-center gap-1.5 text-sm text-[#6B7280] hover:text-[#111827] font-medium transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span className="hidden sm:inline">Export CSV</span>
+            </button>
             <a href="/" className="min-h-[44px] flex items-center text-sm text-primary font-medium hover:underline">&larr; Site</a>
             <button
               onClick={handleLogout}
