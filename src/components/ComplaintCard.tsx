@@ -71,6 +71,7 @@ export default function ComplaintCard({ complaint }: Props) {
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      style={{ position: 'relative', zIndex: 0 }}
     >
       <Link
         href={`/complaint/${complaint.id}`}
@@ -113,21 +114,23 @@ export default function ComplaintCard({ complaint }: Props) {
           </div>
           <p className="text-sm text-muted line-clamp-2 mb-3 leading-relaxed">{complaint.description}</p>
 
-          {/* Admin reply: green tint for official response */}
+          {/* Admin reply: compact indicator for card view */}
           {complaint.adminReply && (
-            <div className="bg-[#138808]/5 border border-[#138808]/10 rounded-xl p-3 mb-3">
-              <div className="flex items-center gap-1.5 mb-1">
-                <div className="w-4 h-4 bg-[#138808] rounded-full flex items-center justify-center">
+            <div className="bg-[#138808]/5 border border-[#138808]/10 rounded-xl p-2.5 mb-3">
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 bg-[#138808] rounded-full flex items-center justify-center shrink-0">
                   <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <span className="text-xs font-semibold text-[#138808]">Admin Reply</span>
+                {complaint.hasAdminReplyImage && (
+                  <svg className="w-3.5 h-3.5 text-[#138808]/60 ml-auto shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
+                  </svg>
+                )}
               </div>
-              <p className="text-xs text-muted line-clamp-2">{complaint.adminReply}</p>
-              {complaint.hasAdminReplyImage && (
-                <img src={`/api/reply-image/${complaint.id}`} alt="" loading="lazy" className="mt-2 w-full rounded-lg object-cover max-h-24" />
-              )}
+              <p className="text-xs text-muted line-clamp-1 mt-1">{complaint.adminReply}</p>
             </div>
           )}
 
@@ -136,7 +139,7 @@ export default function ComplaintCard({ complaint }: Props) {
               <button
                 onClick={handleUpvote}
                 disabled={upvoting}
-                className={`flex items-center gap-1.5 text-sm font-semibold transition-all ${
+                className={`flex items-center gap-1.5 min-h-[44px] px-2 -mx-2 text-sm font-semibold transition-all ${
                   voted
                     ? 'text-primary hover:opacity-70 active:scale-95'
                     : 'text-muted hover:text-primary hover:scale-110 active:scale-95'
@@ -161,7 +164,7 @@ export default function ComplaintCard({ complaint }: Props) {
             </div>
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 text-sm text-muted hover:text-primary transition-colors font-medium"
+              className="flex items-center gap-1.5 min-h-[44px] px-2 -mx-2 text-sm text-muted hover:text-primary transition-colors font-medium"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />

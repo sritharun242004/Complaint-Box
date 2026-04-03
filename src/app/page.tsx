@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useI18n } from '@/i18n/context'
 import { motion } from 'framer-motion'
@@ -30,22 +30,42 @@ const achievementIcons = [
   <svg key="a4" className="w-7 h-7 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46" /></svg>,
 ]
 
-const sectionEyebrow = 'text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-primary'
-const sectionTitle =
-  'font-heading uppercase tracking-tighter text-xl sm:text-2xl md:text-3xl lg:text-[2.35rem] xl:text-[2.5rem] text-text leading-[1.05]'
+const sectionEyebrow = 'text-xs sm:text-sm font-bold uppercase tracking-widest text-primary'
+const sectionTitleBase =
+  'font-black tracking-tighter text-xl sm:text-2xl md:text-3xl lg:text-[2.35rem] xl:text-[2.5rem] text-text leading-[1.05]'
 
 /** One image per About bullet; swap files in /public anytime. */
 const WHO_I_AM_IMAGES = [
   '/Dr Tamilisai Soundararajan Main Pic.jpg',
   '/Tamilisai Thumbnail.jpg',
   'https://staticprintenglish.theprint.in/wp-content/uploads/2021/02/Tamilisai-Soundarajan.jpg',
-  '/mylapore.png',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tamilisai_Soundararajan_with_Bathukamma_in_Raj_Bhavan%2C_Hyderabad_%2830.09.2019%29_03.jpg/1280px-Tamilisai_Soundararajan_with_Bathukamma_in_Raj_Bhavan%2C_Hyderabad_%2830.09.2019%29_03.jpg',
   'https://www.pondiuni.edu.in/wp-content/uploads/2021/06/HappeningPU18.06.2021-img2-1024x575.jpg',
 ] as const
 
 export default function Home() {
   const { t, lang } = useI18n()
+  const fontClass = lang === 'ta' ? 'font-tamil font-extrabold' : lang === 'hi' ? 'font-hindi font-extrabold' : 'font-heading uppercase'
+  const sectionTitle = `${fontClass} ${sectionTitleBase}`
   const [aboutImageIndex, setAboutImageIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  // Auto-cycle about images on mobile
+  useEffect(() => {
+    if (!isMobile) return
+    const timer = setInterval(() => {
+      setAboutImageIndex(prev => (prev + 1) % WHO_I_AM_IMAGES.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [isMobile])
+
   const whoPoints = [
     t.whoIAm.point1,
     t.whoIAm.point2,
@@ -99,7 +119,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.15 }}
-                className="mx-auto mb-8 max-w-lg text-sm leading-[1.75] text-muted sm:mb-10 sm:text-base md:mx-0 md:text-lg md:leading-[1.7]"
+                className="mx-auto mb-8 max-w-lg text-sm text-center leading-[1.75] text-muted sm:mb-10 sm:text-base md:mx-0 md:text-left md:text-lg md:leading-[1.7]"
               >
                 {t.hero.subtext}
               </motion.p>
@@ -170,7 +190,7 @@ export default function Home() {
                       <div
                         role="button"
                         tabIndex={0}
-                        className="flex cursor-pointer gap-4 py-5 outline-none transition-colors duration-300 hover:bg-primary/[0.04] focus-visible:bg-primary/[0.06] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:gap-5 sm:py-6"
+                        className="flex cursor-pointer gap-4 px-4 py-5 outline-none transition-colors duration-300 hover:bg-primary/[0.04] focus-visible:bg-primary/[0.06] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:gap-5 sm:px-5 sm:py-6"
                         onMouseEnter={() => setAboutImageIndex(i)}
                         onFocus={() => setAboutImageIndex(i)}
                         onClick={() => setAboutImageIndex(i)}
@@ -195,22 +215,32 @@ export default function Home() {
         </section>
       </FadeInSection>
 
-      <section className="layout-section border-b border-border bg-white">
+      <section className="layout-section border-b border-border bg-cream">
         <div className="layout-container">
           <FadeInSection>
             <p className={`${sectionEyebrow} mb-3 text-center`}>Trust</p>
             <h2 className={`${sectionTitle} mb-10 text-center sm:mb-12 md:mb-14`}>{t.trust.header}</h2>
           </FadeInSection>
 
-          <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-5 lg:gap-5">
+          <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-5 lg:gap-5">
             {[t.trust.card1, t.trust.card2, t.trust.card3, t.trust.card4, t.trust.card5].map((card, i) => (
               <StaggerItem key={i}>
-                <SparkleCard className="h-full text-left sm:text-center">
-                  <div className={`mb-3 flex h-11 w-11 shrink-0 items-center justify-center sm:mx-auto sm:mb-4 ${i % 2 === 0 ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'}`}>
-                    {trustIcons[i]}
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="group h-full rounded-2xl border border-border bg-white p-4 sm:p-5 md:p-6 transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20"
+                >
+                  <div className="flex items-center gap-3.5 sm:flex-col sm:text-center">
+                    <div className={`flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl sm:mx-auto sm:mb-2 shadow-sm ${
+                      i % 2 === 0
+                        ? 'bg-gradient-to-br from-primary/10 to-primary/5 text-primary ring-1 ring-primary/10'
+                        : 'bg-gradient-to-br from-accent/10 to-accent/5 text-accent ring-1 ring-accent/10'
+                    }`}>
+                      {trustIcons[i]}
+                    </div>
+                    <p className="text-sm font-semibold leading-relaxed text-text sm:text-[13px] sm:leading-[1.6]">{card}</p>
                   </div>
-                  <p className="text-sm font-medium leading-relaxed text-text">{card}</p>
-                </SparkleCard>
+                </motion.div>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -243,7 +273,7 @@ export default function Home() {
         </div>
       </section>
 
-      <TimelineSection items={t.timeline.items} header={t.timeline.header} subtext={t.timeline.subtext} />
+      <TimelineSection items={t.timeline.items} header={t.timeline.header} subtext={t.timeline.subtext} headerClassName={fontClass} />
 
       <SocialVideoShowcase
         eyebrow={t.mediaShowcase.eyebrow}

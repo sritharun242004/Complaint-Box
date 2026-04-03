@@ -50,54 +50,58 @@ export default function ComplaintFeed() {
   }, [area, category, sort])
 
   return (
-    <div>
+    <>
       {/* Filter bar */}
-      <div className="sticky top-16 z-30 bg-[#FFFAF5]/95 backdrop-blur-sm border-b border-[#E8DDD2] py-4">
-        <div className="layout-container flex flex-wrap items-center gap-4">
-          <select
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-            className="px-4 py-2 rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
-          >
-            <option value="">{t.pugaarPetti.filterArea}</option>
-            {AREAS.map(a => (
-              <option key={a} value={a}>{t.areas[a]}</option>
-            ))}
-          </select>
-
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="px-4 py-2 rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
-          >
-            <option value="">{t.pugaarPetti.filterCategory}</option>
-            {CATEGORIES.map(c => (
-              <option key={c} value={c}>{t.categories[c]}</option>
-            ))}
-          </select>
-
-          <div className="flex rounded-full border border-[#E8DDD2] overflow-hidden ml-auto">
-            <button
-              onClick={() => setSort('recent')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                sort === 'recent' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
-              }`}
+      <div className="bg-[#FFFAF5] border-b border-[#E8DDD2] py-3 sm:py-4">
+        <div className="layout-container flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <select
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 min-h-[44px] rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
             >
-              {t.pugaarPetti.sortRecent}
-            </button>
-            <button
-              onClick={() => setSort('popular')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                sort === 'popular' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
-              }`}
+              <option value="">{t.pugaarPetti.filterArea}</option>
+              {AREAS.map(a => (
+                <option key={a} value={a}>{t.areas[a]}</option>
+              ))}
+            </select>
+
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 min-h-[44px] rounded-full border border-[#E8DDD2] text-sm bg-[#FFFAF5] text-text focus:border-[#138808] outline-none"
             >
-              {t.pugaarPetti.sortPopular}
-            </button>
+              <option value="">{t.pugaarPetti.filterCategory}</option>
+              {CATEGORIES.map(c => (
+                <option key={c} value={c}>{t.categories[c]}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex justify-center sm:justify-end sm:ml-auto">
+            <div className="flex rounded-full border border-[#E8DDD2] overflow-hidden">
+              <button
+                onClick={() => setSort('recent')}
+                className={`px-4 py-2 min-h-[40px] sm:min-h-[44px] text-sm font-medium transition-colors ${
+                  sort === 'recent' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
+                }`}
+              >
+                {t.pugaarPetti.sortRecent}
+              </button>
+              <button
+                onClick={() => setSort('popular')}
+                className={`px-4 py-2 min-h-[40px] sm:min-h-[44px] text-sm font-medium transition-colors ${
+                  sort === 'popular' ? 'bg-[#138808] text-white' : 'bg-[#FFFAF5] text-muted hover:bg-surface'
+                }`}
+              >
+                {t.pugaarPetti.sortPopular}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Cards grid */}
+      {/* Cards grid — clipPath ensures nothing escapes upward */}
       <div className="layout-container py-8 md:py-12">
         {loading ? (
           <div className="text-center py-20">
@@ -115,6 +119,6 @@ export default function ComplaintFeed() {
           </div>
         )}
       </div>
-    </div>
+    </>
   )
 }

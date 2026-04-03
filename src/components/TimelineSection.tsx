@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useMotionValueEvent, useSpring } from 'framer-motion'
 
 interface TimelineItem {
@@ -14,33 +14,48 @@ interface Props {
   items: TimelineItem[]
   header: string
   subtext: string
+  headerClassName?: string
 }
 
-/* Mobile-first: slightly narrower cards so more viewport breathing room */
-const CARD_WIDTH = 300
 const CARD_GAP = 48
+
+function useResponsiveCardWidth() {
+  const [width, setWidth] = useState(300)
+  useEffect(() => {
+    function calc() {
+      setWidth(Math.min(300, window.innerWidth * 0.85))
+    }
+    calc()
+    window.addEventListener('resize', calc)
+    return () => window.removeEventListener('resize', calc)
+  }, [])
+  return width
+}
 
 function TimelineCard({
   item,
   index,
   totalItems,
   progress,
+  cardWidth,
 }: {
   item: TimelineItem
   index: number
   totalItems: number
   progress: number
+  cardWidth: number
 }) {
-  const cardCenter = totalItems > 1 ? index / (totalItems - 1) : 0
+  // Map cards into 0–0.85 range so the last card fully reveals before scroll ends
+  const cardCenter = totalItems > 1 ? (index / (totalItems - 1)) * 0.85 : 0
   const isRevealed = progress > cardCenter - 0.08
   const revealAmount = Math.min(1, Math.max(0, 1 - (Math.max(0, cardCenter - progress) * (totalItems - 1)) * 0.7))
 
   return (
-    <div className="flex flex-col items-center shrink-0" style={{ width: CARD_WIDTH }}>
+    <div className="flex flex-col items-center shrink-0" style={{ width: cardWidth }}>
       <div
         className="overflow-hidden mb-4 sm:mb-6 relative bg-primary-light/40 border border-border"
         style={{
-          width: CARD_WIDTH - 16,
+          width: cardWidth - 16,
           height: 180,
           clipPath: `inset(0 ${Math.max(0, (1 - revealAmount) * 100)}% 0 0)`,
           transition: 'clip-path 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
@@ -100,7 +115,7 @@ function TimelineCard({
       <div
         className="border border-border bg-white p-5 transition-colors duration-200 sm:p-6 sm:hover:border-primary/30"
         style={{
-          width: CARD_WIDTH - 16,
+          width: cardWidth - 16,
           opacity: isRevealed ? 1 : 0,
           transform: isRevealed ? 'translateY(0)' : 'translateY(12px)',
           transition: 'opacity 0.45s ease 0.06s, transform 0.45s ease 0.06s',
@@ -113,11 +128,12 @@ function TimelineCard({
   )
 }
 
-export default function TimelineSection({ items, header, subtext }: Props) {
+export default function TimelineSection({ items, header, subtext, headerClassName }: Props) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const cardWidth = useResponsiveCardWidth()
 
-  const maxTranslate = Math.max(0, (items.length - 1) * (CARD_WIDTH + CARD_GAP))
+  const maxTranslate = Math.max(0, (items.length - 1) * (cardWidth + CARD_GAP))
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -150,10 +166,10 @@ export default function TimelineSection({ items, header, subtext }: Props) {
           className="shrink-0 px-5 pb-6 pt-16 text-center sm:px-8 sm:pb-8 sm:pt-20 md:pt-24"
           style={{ y: headerY }}
         >
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:mb-4 sm:text-xs">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary sm:mb-4 sm:text-sm">
             Journey
           </p>
-          <h2 className="mb-3 px-2 font-heading text-2xl uppercase leading-[1.05] tracking-tighter text-text sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
+          <h2 className={`mb-3 px-2 text-2xl leading-[1.05] tracking-tighter text-text sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl ${headerClassName || 'font-heading uppercase'}`}>
             {header}
           </h2>
           <p className="mx-auto max-w-md px-2 text-sm leading-[1.72] text-muted sm:text-base sm:leading-[1.75]">{subtext}</p>
@@ -185,8 +201,8 @@ export default function TimelineSection({ items, header, subtext }: Props) {
             className="flex items-start relative z-10"
             style={{
               gap: CARD_GAP,
-              paddingLeft: `calc(50vw - ${CARD_WIDTH / 2}px)`,
-              paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`,
+              paddingLeft: `calc(50vw - ${cardWidth / 2}px)`,
+              paddingRight: `calc(50vw - ${cardWidth / 2}px)`,
               x: translateX,
             }}
           >
@@ -197,6 +213,7 @@ export default function TimelineSection({ items, header, subtext }: Props) {
                 index={i}
                 totalItems={items.length}
                 progress={scrollProgress}
+                cardWidth={cardWidth}
               />
             ))}
           </motion.div>

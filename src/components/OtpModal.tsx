@@ -35,7 +35,7 @@ export default function OtpModal({ complaintId, onClose, onSuccess }: Props) {
       <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md p-4 sm:p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-muted hover:text-text transition-colors"
+          className="absolute top-3 right-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-muted hover:text-text transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -61,14 +61,14 @@ export default function OtpModal({ complaintId, onClose, onSuccess }: Props) {
               value={mobile}
               onChange={e => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
               placeholder="Enter 10-digit mobile number"
-              className="flex-1 px-4 py-3 rounded-r-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none text-text"
+              className="flex-1 px-4 py-3.5 min-h-[48px] rounded-r-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none text-text"
               onKeyDown={e => e.key === 'Enter' && handleSupport()}
             />
           </div>
           <button
             onClick={handleSupport}
             disabled={loading}
-            className="w-full bg-primary text-white font-bold py-3 rounded-full hover:bg-primary-dark transition-all disabled:opacity-50"
+            className="w-full bg-primary text-white font-bold py-3.5 min-h-[48px] rounded-full hover:bg-primary-dark transition-all disabled:opacity-50"
           >
             {loading ? 'Submitting...' : 'Give Support'}
           </button>

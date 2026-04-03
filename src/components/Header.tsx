@@ -41,17 +41,17 @@ export default function Header() {
       }`}
     >
       <div className="layout-container flex min-h-[52px] items-center justify-between gap-4 sm:min-h-[56px] md:h-16 md:gap-6">
-        <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 touch-manipulation py-2 -my-2">
+        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 min-w-0 touch-manipulation py-2 -my-2">
           <img
             src="/BJP Logo.png"
             alt="BJP"
-            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 object-contain"
+            className="w-7 h-7 sm:w-9 sm:h-9 shrink-0 object-contain"
           />
           <div className="flex flex-col min-w-0 text-left">
-            <span className="font-heading max-w-[11rem] text-left text-xs uppercase leading-tight tracking-tight text-text break-words sm:max-w-[16rem] sm:text-sm md:max-w-none md:text-base">
+            <span className="font-heading text-[11px] uppercase leading-tight tracking-tight text-text sm:text-sm md:text-base whitespace-nowrap">
               {t.footer.titleLine}
             </span>
-            <span className="text-[10px] text-primary font-medium uppercase tracking-wider leading-tight">
+            <span className="text-[9px] sm:text-[10px] text-primary font-medium uppercase tracking-[0.15em] leading-tight mt-0.5">
               Mylapore
             </span>
           </div>

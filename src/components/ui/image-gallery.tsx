@@ -39,11 +39,11 @@ export function ImageGallery({
         <p className="mt-2 text-sm text-text-light">{subtitle}</p>
       </div>
 
-      <div className="mt-10 flex h-[400px] w-full max-w-5xl items-center gap-2 px-4">
-        {images.map((src) => (
+      <div className="mt-10 flex h-[250px] sm:h-[320px] md:h-[400px] w-full max-w-5xl items-center gap-2 px-4">
+        {images.map((src, i) => (
           <div
             key={src}
-            className="group relative h-[400px] w-56 flex-grow overflow-hidden rounded-lg transition-all duration-500 hover:w-full"
+            className={`group relative h-[250px] sm:h-[320px] md:h-[400px] w-24 sm:w-40 md:w-56 flex-grow overflow-hidden rounded-lg transition-all duration-500 hover:w-full ${i >= 4 ? 'hidden sm:block' : ''}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

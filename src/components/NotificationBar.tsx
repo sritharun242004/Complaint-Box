@@ -11,7 +11,11 @@ export default function NotificationBar() {
       <div className="layout-container flex flex-col gap-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-5 sm:py-3">
         <div className="flex items-start sm:items-center gap-2 min-w-0">
           <span className="w-1 h-1 mt-1.5 sm:mt-0 shrink-0 rounded-full bg-white/90" aria-hidden />
-          <p className="text-[11px] sm:text-xs font-medium leading-snug uppercase tracking-wide">{t.notificationBar.text}</p>
+          <p className="text-xs sm:text-sm font-semibold leading-snug uppercase tracking-wide">
+            {t.notificationBar.text.split(/(issue)/i).map((part: string, idx: number) =>
+              part.toLowerCase() === 'issue' ? <strong key={idx} className="font-black">{part}</strong> : part
+            )}
+          </p>
         </div>
         <Link
           href="/pugaar-petti"

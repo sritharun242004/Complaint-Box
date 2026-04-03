@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 const AREAS = ['mylapore', 'mandaveli', 'alwarpet', 'rajaAnnamalaiPuram', 'royapettah'] as const
 const CATEGORIES = ['roads', 'water', 'sanitation', 'electricity', 'safety', 'other'] as const
 
-const inputClasses = "w-full px-4 py-3.5 rounded-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text placeholder:text-muted/50"
+const inputClasses = "w-full px-4 py-4 min-h-[48px] rounded-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text placeholder:text-muted/50"
 const labelClasses = "block text-sm font-semibold text-text mb-2"
 
 export default function ComplaintForm() {
@@ -18,6 +18,8 @@ export default function ComplaintForm() {
   const [preview, setPreview] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -26,6 +28,19 @@ export default function ComplaintForm() {
     const reader = new FileReader()
     reader.onload = (ev) => setPreview(ev.target?.result as string)
     reader.readAsDataURL(file)
+    // Sync the main file input so form submission works
+    if (fileInputRef.current && e.target !== fileInputRef.current) {
+      const dt = new DataTransfer()
+      dt.items.add(file)
+      fileInputRef.current.files = dt.files
+    }
+  }
+
+  function clearPhoto() {
+    setPreview(null)
+    setFileName(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+    if (cameraInputRef.current) cameraInputRef.current.value = ''
   }
 
   async function handleSubmit(formData: FormData) {
@@ -86,7 +101,7 @@ export default function ComplaintForm() {
             <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-[#E8DDD2] bg-surface text-muted text-sm font-semibold">
               +91
             </span>
-            <input name="mobile" type="tel" required pattern="[0-9]{10}" maxLength={10} className="flex-1 px-4 py-3.5 rounded-r-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text" />
+            <input name="mobile" type="tel" required pattern="[0-9]{10}" maxLength={10} className="flex-1 px-4 py-4 min-h-[48px] rounded-r-2xl border border-[#E8DDD2] bg-[#FFFAF5] focus:border-[#138808] focus:ring-2 focus:ring-[#138808]/10 outline-none transition-all text-text" />
           </div>
         </div>
 
@@ -129,22 +144,62 @@ export default function ComplaintForm() {
 
         <div>
           <label className={labelClasses}>{t.pugaarPetti.fieldPhoto}</label>
-          <div className="border-2 border-dashed border-[#E8DDD2] rounded-2xl p-6 text-center hover:border-[#138808]/30 transition-colors cursor-pointer relative overflow-hidden">
-            <input name="photo" type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-            {preview ? (
-              <div className="flex flex-col items-center gap-2">
-                <img src={preview} alt="preview" className="max-h-40 rounded-xl object-contain" />
-                <p className="text-xs text-muted truncate max-w-full">{fileName}</p>
+          {/* Hidden file input for form submission */}
+          <input ref={fileInputRef} name="photo" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+
+          {preview ? (
+            <div className="relative rounded-2xl overflow-hidden border-2 border-[#138808]/20">
+              <img src={preview} alt="preview" className="w-full max-h-52 object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-6 h-6 bg-[#138808] rounded-full flex items-center justify-center shrink-0">
+                    <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-white font-medium truncate">{fileName}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={clearPhoto}
+                  className="min-h-[36px] min-w-[36px] bg-black/50 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors shrink-0"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
-            ) : (
-              <>
-                <svg className="w-8 h-8 text-muted/40 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            </div>
+          ) : (
+            <div className="flex gap-3">
+              {/* Upload from gallery */}
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex-1 border-2 border-dashed border-[#E8DDD2] rounded-2xl p-5 text-center hover:border-[#138808]/30 transition-colors cursor-pointer"
+              >
+                <svg className="w-7 h-7 text-muted/40 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
                 </svg>
-                <p className="text-sm text-muted">Click or drag to upload</p>
-              </>
-            )}
-          </div>
+                <p className="text-sm text-muted font-medium">Upload Photo</p>
+              </button>
+
+              {/* Camera capture — visible on all devices, only triggers camera on mobile */}
+              <button
+                type="button"
+                onClick={() => cameraInputRef.current?.click()}
+                className="flex-1 border-2 border-dashed border-[#E8DDD2] rounded-2xl p-5 text-center hover:border-[#138808]/30 transition-colors cursor-pointer sm:hidden"
+              >
+                <svg className="w-7 h-7 text-muted/40 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                </svg>
+                <p className="text-sm text-muted font-medium">Take Photo</p>
+              </button>
+              <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange} className="hidden" />
+            </div>
+          )}
         </div>
 
         <motion.button

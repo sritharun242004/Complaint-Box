@@ -94,25 +94,21 @@ export default function PugaarPettiPage() {
             <SectionDivider />
           </FadeInSection>
 
-          <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+          <StaggerContainer className="grid grid-cols-1 min-[350px]:grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {steps.map((step, i) => (
               <StaggerItem key={i}>
                 <motion.div
                   whileHover={{ y: -4 }}
-                  className="text-center bg-cream rounded-2xl p-6 shadow-sm border border-border/50 hover:shadow-md transition-all"
+                  className="group text-center bg-cream rounded-2xl p-6 sm:p-8 shadow-sm border border-border/50 hover:shadow-lg hover:border-primary/20 transition-all"
                 >
-                  {/* Step numbers alternate saffron/green */}
-                  <div className="relative mb-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto shadow-lg ${
-                      i % 2 === 0
-                        ? 'bg-gradient-to-br from-primary to-[#FF8533] shadow-primary/20'
-                        : 'bg-gradient-to-br from-[#138808] to-[#1A9E0F] shadow-[#138808]/20'
-                    }`}>
-                      <span className="text-white font-bold text-lg">{i + 1}</span>
-                    </div>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform group-hover:scale-110 ${
+                    i % 2 === 0
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-[#138808]/10 text-[#138808]'
+                  }`}>
+                    {stepIcons[i]}
                   </div>
-                  <div className={`flex justify-center mb-3 ${i % 2 === 0 ? 'text-primary' : 'text-[#138808]'}`}>{stepIcons[i]}</div>
-                  <p className="text-sm font-semibold text-text">{step}</p>
+                  <p className="text-sm font-semibold text-text leading-snug">{step}</p>
                 </motion.div>
               </StaggerItem>
             ))}

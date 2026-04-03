@@ -133,7 +133,7 @@ export function CTAWithTextMarquee({
           {marqueeItems.map((item, idx) => (
             <div
               key={idx}
-              className="marquee-item font-display text-3xl font-light tracking-tight text-text py-6 sm:text-4xl md:text-5xl lg:py-8 lg:text-6xl"
+              className="marquee-item font-heading text-3xl font-bold uppercase tracking-tighter text-text py-6 sm:text-4xl md:text-5xl lg:py-8 lg:text-6xl"
             >
               {item}
             </div>
@@ -159,7 +159,7 @@ export function CTAWithTextMarquee({
       )}
     >
       {eyebrow ? (
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-primary opacity-0 animate-fade-in-up [animation-fill-mode:forwards] sm:text-xs">
+        <p className="text-xs font-bold uppercase tracking-widest text-primary opacity-0 animate-fade-in-up [animation-fill-mode:forwards] sm:text-sm">
           {eyebrow}
         </p>
       ) : null}

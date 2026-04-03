@@ -31,7 +31,7 @@ export function AchievementsBento({ eyebrow, tamilNameLine, header, cards, icons
     <section className="layout-section border-b border-border bg-cream">
       <div className="layout-container">
         <FadeInSection>
-          <p className={`mb-3 text-center text-[10px] font-semibold uppercase tracking-widest text-primary sm:text-xs`}>
+          <p className={`mb-3 text-center text-xs font-bold uppercase tracking-widest text-primary sm:text-sm`}>
             {eyebrow}
           </p>
           <p className="mb-4 text-center font-tamil text-xl font-black leading-snug text-text/90 sm:text-2xl md:mb-5 md:text-3xl">

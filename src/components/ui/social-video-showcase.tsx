@@ -22,7 +22,7 @@ export type SocialVideoShowcaseProps = {
 }
 
 const sectionEyebrow =
-  'text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-primary'
+  'text-xs sm:text-sm font-bold uppercase tracking-widest text-primary'
 const sectionTitle =
   'font-heading uppercase tracking-tighter text-xl sm:text-2xl md:text-3xl lg:text-[2.35rem] xl:text-[2.5rem] text-text leading-[1.05]'
 
@@ -141,22 +141,19 @@ export function SocialVideoShowcase({
                   </div>
                 </div>
 
-                {/* Desktop collapsed: vertical title in strip */}
+                {/* Desktop collapsed: "View on X" link only */}
                 <div
                   className={cn(
-                    'pointer-events-none absolute inset-0 z-[3] hidden items-center justify-center md:flex',
+                    'pointer-events-none absolute inset-0 z-[3] hidden items-end justify-center md:flex',
                     expanded ? 'opacity-0' : 'opacity-100',
                   )}
                 >
-                  <div className="pointer-events-auto flex flex-col items-center justify-end pb-4 pt-8">
-                    <p className="font-heading text-center text-[10px] font-semibold uppercase tracking-wide text-white [writing-mode:vertical-rl] rotate-180">
-                      {item.title}
-                    </p>
+                  <div className="pointer-events-auto pb-4">
                     <a
                       href={item.postUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 text-[10px] font-semibold text-primary underline-offset-2 hover:underline"
+                      className="text-[10px] font-semibold text-primary underline-offset-2 hover:underline"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {viewOnX}

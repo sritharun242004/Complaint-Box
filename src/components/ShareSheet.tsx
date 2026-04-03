@@ -24,10 +24,10 @@ export default function ShareSheet({ complaintId, title, description, onClose }:
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md p-4 sm:p-6 relative">
+      <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-muted hover:text-text transition-colors"
+          className="absolute top-3 right-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-muted hover:text-text transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

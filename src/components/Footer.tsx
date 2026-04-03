@@ -75,18 +75,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Full name in Tamil — watermark style only (no solid white headline) */}
-        <div className="relative z-10 mt-12 border-t border-white/10 px-1 pt-10 sm:mt-14 sm:px-2 sm:pt-12 md:mt-16 md:pt-14">
-          <p
-            className="pointer-events-none max-w-full select-none break-words text-center font-tamil font-black leading-[1.25] tracking-tight text-primary/[0.26] sm:text-primary/[0.24] md:text-primary/[0.22]"
-            style={{ fontSize: 'clamp(1.5rem, 4.5vw, 3.35rem)' }}
-            aria-hidden
-          >
-            {t.footer.watermarkLine}
-          </p>
-        </div>
-
-        <div className="relative z-10 mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center sm:mt-12 sm:flex-row sm:text-left md:mt-14">
+        <div className="relative z-10 mt-10 flex flex-col items-center justify-between gap-4 pt-8 text-center sm:mt-12 sm:flex-row sm:text-left md:mt-14">
           <p className="text-xs text-white/35">&copy; {new Date().getFullYear()} {t.footer.copy}</p>
           <p className="text-xs text-white/35">Bharatiya Janata Party</p>
         </div>
