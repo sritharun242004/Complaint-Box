@@ -116,7 +116,7 @@ export default function ComplaintForm() {
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-semibold text-text">{t.pugaarPetti.fieldName}</label>
             <label className="flex items-center gap-2 cursor-pointer select-none">
-              <span className="text-xs text-muted">Stranger</span>
+              <span className="text-xs text-muted">Hide my name</span>
               <button
                 type="button"
                 onClick={() => setAnonymous(!anonymous)}
