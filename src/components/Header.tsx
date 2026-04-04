@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Header() {
-  const { t } = useI18n()
+  const { t, lang, setLang } = useI18n()
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -20,7 +20,7 @@ export default function Header() {
       raf = window.requestAnimationFrame(() => {
         raf = 0
         const y = window.scrollY
-        setHidden(y > 80 && y > lastScroll.current)
+        setHidden(false)
         setScrolled(y > 10)
         lastScroll.current = y
       })
@@ -78,7 +78,9 @@ export default function Header() {
         </nav>
 
         <div className="flex md:hidden items-center gap-2">
-          <LanguageSwitcher />
+          <Link href="/pugaar-petti" className="shrink-0 rounded-md bg-primary px-3 py-1.5 text-[11px] font-bold text-white active:bg-primary-dark">
+            {t.nav.pugaarPetti}
+          </Link>
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -131,6 +133,23 @@ export default function Header() {
                   {item.label}
                 </a>
               ))}
+              <div className="flex items-center gap-2 px-3 pt-3">
+                {[
+                  { code: 'en' as const, label: 'English' },
+                  { code: 'ta' as const, label: 'தமிழ்' },
+                  { code: 'hi' as const, label: 'हिन्दी' },
+                ].map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => setLang(l.code)}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md border text-center transition-colors ${
+                      lang === l.code ? 'border-primary bg-primary/10 text-primary' : 'border-border text-text'
+                    }`}
+                  >
+                    {l.label}
+                  </button>
+                ))}
+              </div>
               <Link
                 href="/pugaar-petti"
                 onClick={() => setMenuOpen(false)}

@@ -119,12 +119,13 @@ function TimelineCard({
         className="border border-border bg-white p-4 transition-colors duration-200 sm:p-6 sm:hover:border-primary/30"
         style={{
           width: cardWidth - 16,
+          minHeight: 120,
           opacity: isRevealed ? 1 : 0,
           transform: isRevealed ? 'translateY(0)' : 'translateY(12px)',
           transition: 'opacity 0.45s ease 0.06s, transform 0.45s ease 0.06s',
         }}
       >
-        <h3 className="mb-1.5 text-sm font-semibold text-text sm:mb-2.5 sm:text-base">{item.title}</h3>
+        <h3 className="mb-1.5 text-sm font-bold text-text sm:mb-2.5 sm:text-lg">{item.title}</h3>
         <p className="text-xs leading-[1.6] text-muted sm:text-sm sm:leading-[1.72]">{item.desc}</p>
       </div>
     </div>
@@ -163,6 +164,80 @@ export default function TimelineSection({ items, header, subtext, headerClassNam
   const lineWidth = useTransform(smoothProgress, [0, 1], ['0%', '100%'])
   const headerY = useTransform(scrollYProgress, [0, 0.25], [0, -16])
 
+  // Mobile: horizontal swipe scroll with progress line
+  const mobileScrollRef = useRef<HTMLDivElement>(null)
+  const [mobileProgress, setMobileProgress] = useState(0)
+
+  useEffect(() => {
+    const el = mobileScrollRef.current
+    if (!el || !isMobile) return
+    const onScroll = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth
+      setMobileProgress(maxScroll > 0 ? el.scrollLeft / maxScroll : 0)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [isMobile])
+
+  if (isMobile) {
+    return (
+      <section id="journey" className="relative bg-white border-t border-border py-10">
+        <div className="px-5 pb-6 text-center">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            Journey
+          </p>
+          <h2 className={`mb-2 px-2 text-xl leading-[1.05] tracking-tighter text-text ${headerClassName || 'font-heading uppercase'}`}>
+            {header}
+          </h2>
+          <p className="mx-auto max-w-md px-2 text-xs leading-[1.6] text-muted">{subtext}</p>
+        </div>
+
+        <div className="flex justify-center mb-3">
+          <div className="flex items-center gap-1.5 text-[10px] text-muted uppercase tracking-widest">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden>
+              <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Swipe
+          </div>
+        </div>
+
+        <div ref={mobileScrollRef} className="overflow-x-auto overflow-y-hidden scrollbar-hide">
+          <div
+            className="flex items-start px-5"
+            style={{ gap, width: 'max-content' }}
+          >
+            {items.map((item, i) => (
+              <TimelineCard
+                key={i}
+                item={item}
+                index={i}
+                totalItems={items.length}
+                progress={1}
+                cardWidth={cardWidth}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="px-5 pt-4">
+          <div className="max-w-xs mx-auto">
+            <div className="relative h-[2px] bg-border overflow-hidden">
+              <div
+                className="absolute top-0 left-0 h-full bg-primary"
+                style={{ width: `${mobileProgress * 100}%`, transition: 'width 0.15s ease-out' }}
+              />
+            </div>
+            <div className="flex justify-between mt-2 text-[10px] text-muted uppercase tracking-widest">
+              <span>{items[0]?.year}</span>
+              <span>{items[items.length - 1]?.year}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Desktop: vertical scroll driven horizontal animation
   return (
     <section
       id="journey"

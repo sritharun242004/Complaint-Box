@@ -75,10 +75,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="relative z-10 mt-10 flex flex-col items-center justify-between gap-4 pt-8 text-center sm:mt-12 sm:flex-row sm:text-left md:mt-14">
-          <p className="text-xs text-white/35">&copy; {new Date().getFullYear()} {t.footer.copy}</p>
-          <p className="text-xs text-white/35">Bharatiya Janata Party</p>
-        </div>
+      </div>
+
+      {/* Name watermark - outside layout-container to use full width */}
+      <div className="overflow-hidden px-4">
+        <p className="whitespace-nowrap text-center font-heading font-black select-none" style={{ fontSize: 'min(4.8vw, 4.5rem)', color: 'rgba(244, 114, 22, 0.35)', WebkitTextStroke: '1px rgba(244, 114, 22, 0.3)' }}>
+          டாக்டர் தமிழிசை சௌந்தரராஜன்
+        </p>
+      </div>
+
+      <div className="layout-container flex flex-col items-center justify-between gap-4 py-4 text-center sm:flex-row sm:text-left">
+        <p className="text-xs text-white/35">&copy; {new Date().getFullYear()} {t.footer.copy}</p>
+        <p className="text-xs text-white/35">Bharatiya Janata Party</p>
       </div>
     </footer>
   )
